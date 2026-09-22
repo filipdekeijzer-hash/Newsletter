@@ -25,16 +25,16 @@
 </header>
 
 <div class="toolbar">
-  <button class="btn btn-ghost" id="btn-nieuw">🗒️ Nieuwe strip</button>
-  <button class="btn btn-ghost" id="btn-voorbeeld">✨ Voorbeeld invullen</button>
+  <button class="btn btn-ghost" id="st-btn-nieuw">🗒️ Nieuwe strip</button>
+  <button class="btn btn-ghost" id="st-btn-voorbeeld">✨ Voorbeeld invullen</button>
   <label class="btn btn-ghost" style="margin:0;">
     📥 Importeer JSON
-    <input type="file" id="input-import" accept="application/json" style="display:none;">
+    <input type="file" id="st-input-import" accept="application/json" style="display:none;">
   </label>
-  <button class="btn btn-secondary" id="btn-export">📤 Exporteer JSON</button>
-  <button class="btn btn-primary" id="btn-print">🖨️ Print / Opslaan als PDF</button>
+  <button class="btn btn-secondary" id="st-btn-export">📤 Exporteer JSON</button>
+  <button class="btn btn-primary" id="st-btn-print">🖨️ Print / Opslaan als PDF</button>
   <span class="spacer"></span>
-  <span class="status" id="status-text">Automatisch opgeslagen in deze browser.</span>
+  <span class="status" id="st-status">Automatisch opgeslagen in deze browser.</span>
 </div>
 
 <main class="layout">
@@ -45,12 +45,12 @@
     <div class="panel">
       <h3><span class="emoji">🎬</span> Basisgegevens</h3>
       <div class="field">
-        <label for="f-titel">Titel van de strip</label>
-        <input id="f-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+        <label for="st-titel">Titel van de strip</label>
+        <input id="st-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
       </div>
       <div class="field">
-        <label for="f-onderwerp">Onderwerp-label</label>
-        <input id="f-onderwerp" placeholder="Bijv. Thema: datakwaliteit">
+        <label for="st-onderwerp">Onderwerp-label</label>
+        <input id="st-onderwerp" placeholder="Bijv. Thema: datakwaliteit">
         <small class="hint">Kort label boven de strip, handig om edities uit elkaar te houden.</small>
       </div>
       <small class="hint">De vaste vormgeving (6 vakjes, personages Data-Daan &amp; Boer Bert) blijft elke editie hetzelfde — alleen de inhoud hieronder verandert per onderwerp.</small>
@@ -58,14 +58,14 @@
 
     <div class="panel">
       <h3><span class="emoji">🖼️</span> De 6 vakjes</h3>
-      <div id="panels-editor"></div>
+      <div id="st-panels-editor"></div>
     </div>
 
   </section>
 
   <!-- ============================= PREVIEW ============================= -->
   <section class="preview-col">
-    <article class="strip-sheet" id="strip-sheet">
+    <article class="strip-sheet" id="st-sheet">
       <!-- wordt gevuld door strip.js -->
     </article>
   </section>

@@ -1,0 +1,2567 @@
+<meta charset="utf-8">
+<title>CONO Databericht Bouwer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+<style>
+/* =========================================================================
+   CONO HUISSTIJL — het enige bestand dat aangepast hoeft te worden om de
+   nieuwsbrief en de strip in de echte CONO-huisstijl te zetten.
+   -------------------------------------------------------------------------
+   Voor Interne Communicatie / vormgeving:
+
+   Alles in dit sjabloon (nieuwsbrief, strip, knoppen, tekeningen) leest zijn
+   kleuren en lettertypen uit de variabelen hieronder. Je hoeft dus géén
+   HTML of JavaScript aan te raken — pas hier de waarden aan en de hele
+   website verandert mee, inclusief de figuurtjes in de strip.
+
+   De huidige waarden zijn een PLACEHOLDER in de sfeer van kaas/zuivel
+   (goud, warm rood, weiland-groen, romig crème). Ze zijn NIET overgenomen
+   uit een officiële huisstijlgids — die was niet beschikbaar toen dit
+   sjabloon gemaakt werd.
+
+   Vervang daarnaast het logo: zoek in index.html, nieuwsbrief.html en
+   strip.html naar <span class="logo-badge">CK</span> en zet daar het echte
+   logo neer, bijvoorbeeld <img src="assets/img/cono-logo.svg" alt="CONO">.
+   ========================================================================= */
+
+/* Lettertypen — vervang door de huisstijl-fonts.
+   Staat het huisstijl-lettertype niet op Google Fonts? Zet het bestand dan
+   in assets/fonts/ en vervang deze regel door een @font-face-declaratie. */
+
+:root {
+  /* --- Hoofdkleuren --------------------------------------------------- */
+  --cono-red: #c8262a;        /* accentkleur: koppen, rubriek "Kop van de maand", JargonJudo */
+  --cono-red-dark: #9c1c1f;   /* donkere variant van het accent (hover, verlopen) */
+  --cono-gold: #e0a730;       /* kaas-goud: labels, stempels, rubriek "Stamdata spotlight" */
+  --cono-gold-light: #f4d998; /* lichte variant van goud (vlakken, cijfers) */
+  --cono-green: #345c34;      /* basiskleur: balken, knoppen, rubriek "CONO Successen" */
+  --cono-green-dark: #24401f; /* donkergroen: kopteksten en tekst op lichte vlakken */
+  --cono-blue: #2f6fb0;       /* techniek/AI: rubriek "AI & Analytics", shirt van Data-Daan */
+  --cono-cream: #fbf3e2;      /* zachte achtergrond van kaders */
+  --cono-cream-dark: #f1e3c4; /* paginakleur en randen */
+  --cono-ink: #2c2013;        /* standaard tekstkleur */
+
+  /* --- Typografie ----------------------------------------------------- */
+  --font-heading: 'Poppins', 'Nunito Sans', system-ui, sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
+
+  /* --- Vormtaal (afrondingen en schaduwen) ---------------------------- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-soft: 0 6px 20px rgba(44, 32, 19, 0.1);
+  --shadow-card: 0 2px 8px rgba(44, 32, 19, 0.08);
+}
+
+/* =========================================================================
+   CONO Nieuwsbrief & Strip Bouwer — gedeelde stijlen
+   -------------------------------------------------------------------------
+   De kleuren en lettertypen staan NIET in dit bestand, maar in
+   assets/css/huisstijl.css. Dat is het enige bestand dat Interne
+   Communicatie hoeft aan te passen om alles in de echte CONO-huisstijl te
+   zetten. Gebruik hieronder dus altijd de var(--cono-...)-variabelen en
+   nooit losse kleurcodes.
+   ========================================================================= */
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--cono-cream-dark);
+  color: var(--cono-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  margin: 0 0 .4em;
+  color: var(--cono-green-dark);
+}
+
+a { color: var(--cono-red); }
+
+img, svg { max-width: 100%; }
+
+button, .btn {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: .95rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: .65em 1.1em;
+  cursor: pointer;
+  transition: transform .1s ease, box-shadow .15s ease, background .15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+}
+button:active, .btn:active { transform: translateY(1px); }
+
+.btn-primary { background: var(--cono-red); color: #fff; }
+.btn-primary:hover { background: var(--cono-red-dark); }
+
+.btn-secondary { background: var(--cono-green); color: #fff; }
+.btn-secondary:hover { background: var(--cono-green-dark); }
+
+.btn-ghost { background: #fff; color: var(--cono-green-dark); border: 2px solid var(--cono-cream-dark); }
+.btn-ghost:hover { border-color: var(--cono-gold); }
+
+.btn-danger { background: #fff; color: var(--cono-red-dark); border: 2px solid #f1d3d3; padding: .4em .7em; font-size: .85rem; }
+.btn-danger:hover { background: #fdecec; }
+
+.btn-icon { background: #fff; color: var(--cono-green-dark); border: 2px solid var(--cono-cream-dark); padding: .35em .6em; font-size: .85rem; }
+.btn-icon:hover { border-color: var(--cono-gold); }
+
+input, textarea, select {
+  font-family: var(--font-body);
+  font-size: .95rem;
+  padding: .55em .7em;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--cono-cream-dark);
+  background: #fff;
+  color: var(--cono-ink);
+  width: 100%;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--cono-gold);
+}
+label {
+  font-weight: 700;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: var(--cono-green-dark);
+  display: block;
+  margin-bottom: .3em;
+}
+.field { margin-bottom: .85em; }
+.field small.hint {
+  display: block;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #7a6b52;
+  margin-top: .25em;
+  font-size: .8rem;
+}
+
+/* --- Topbalk --- */
+.topbar {
+  background: linear-gradient(120deg, var(--cono-green-dark), var(--cono-green));
+  color: #fff;
+  padding: .9em 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .8em;
+  box-shadow: var(--shadow-soft);
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 50;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .6em;
+  text-decoration: none;
+  color: #fff;
+}
+.brand .logo-badge {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  background: var(--cono-gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--cono-green-dark);
+  font-size: 1.1rem;
+  border: 3px solid #fff;
+}
+.brand .brand-text .name { font-family: var(--font-heading); font-weight: 800; font-size: 1.15rem; line-height: 1; }
+.brand .brand-text .tag { font-size: .75rem; opacity: .85; }
+
+.topnav { display: flex; gap: .5em; flex-wrap: wrap; }
+.topnav a {
+  color: #fff;
+  text-decoration: none;
+  padding: .5em .9em;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: .9rem;
+  background: rgba(255,255,255,.12);
+}
+.topnav a.active, .topnav a:hover { background: var(--cono-gold); color: var(--cono-green-dark); }
+
+.toolbar {
+  display: flex;
+  gap: .5em;
+  flex-wrap: wrap;
+  padding: 1em 1.3em;
+  background: #fff;
+  border-bottom: 3px solid var(--cono-cream-dark);
+  position: sticky;
+  top: calc(68px + env(safe-area-inset-top, 0px));
+  z-index: 40;
+}
+.toolbar .spacer { flex: 1; }
+.toolbar .status {
+  font-size: .82rem;
+  color: #7a6b52;
+  align-self: center;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 480px) 1fr;
+  gap: 1.4em;
+  padding: 1.4em;
+  align-items: start;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+}
+
+.editor-col { position: sticky; top: calc(140px + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 160px); overflow-y: auto; padding-right: .3em; }
+@media (max-width: 980px) { .editor-col { position: static; max-height: none; } }
+
+.panel {
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  padding: 1.1em 1.2em;
+  margin-bottom: 1em;
+  border: 1px solid var(--cono-cream-dark);
+}
+.panel > h3 {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  border-bottom: 2px dashed var(--cono-cream-dark);
+  padding-bottom: .5em;
+  margin-bottom: .8em;
+}
+.panel > h3 .emoji { font-size: 1.2em; }
+
+.section-card {
+  border: 2px solid var(--cono-cream-dark);
+  border-radius: var(--radius-md);
+  padding: .9em 1em;
+  margin-bottom: .9em;
+  background: var(--cono-cream);
+  position: relative;
+}
+.section-card .section-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .6em;
+}
+.section-card .section-type-label {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--cono-red);
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.section-card .section-actions { display: flex; gap: .3em; }
+
+.add-section-row {
+  display: flex;
+  gap: .5em;
+  margin-top: .8em;
+  flex-wrap: wrap;
+}
+.add-section-row select { flex: 1; min-width: 180px; }
+
+/* --- Preview kolom: A4 nieuwsbrief-vel --- */
+.preview-col { display: flex; flex-direction: column; align-items: center; }
+
+.sheet {
+  width: 100%;
+  max-width: 794px; /* ~A4 breedte @96dpi */
+  min-height: 1123px;
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  color: var(--cono-ink);
+}
+
+.nl-header {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,.15), transparent 40%),
+    linear-gradient(120deg, var(--cono-red), var(--cono-red-dark));
+  color: #fff;
+  padding: 1.8em 2em 2.2em;
+  position: relative;
+  overflow: hidden;
+}
+.nl-header::after {
+  content: "";
+  position: absolute;
+  right: -40px; bottom: -60px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.08);
+}
+.nl-header .eyebrow {
+  display: inline-block;
+  background: var(--cono-gold);
+  color: var(--cono-green-dark);
+  font-weight: 800;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .3em .8em;
+  border-radius: 999px;
+  margin-bottom: .6em;
+}
+.nl-header h1 { color: #fff; font-size: 1.9rem; margin-bottom: .15em; }
+.nl-header .subtitle { font-size: 1rem; opacity: .92; max-width: 32em; }
+.nl-header .meta-row {
+  margin-top: 1em;
+  display: flex;
+  gap: 1.2em;
+  font-size: .85rem;
+  opacity: .9;
+  flex-wrap: wrap;
+}
+
+.nl-body { padding: 1.8em 2em 2.4em; }
+
+.nl-intro {
+  background: var(--cono-cream);
+  border-left: 5px solid var(--cono-gold);
+  border-radius: var(--radius-sm);
+  padding: 1em 1.2em;
+  margin-bottom: 1.6em;
+  font-size: .97rem;
+}
+.nl-intro .auteur { margin-top: .6em; font-weight: 700; color: var(--cono-green-dark); font-size: .85rem; }
+
+.nl-section { margin-bottom: 1.7em; }
+.nl-section-title {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  font-family: var(--font-heading);
+  color: var(--cono-green-dark);
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: .5em;
+}
+.nl-section-title .icon-badge {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--cono-green);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Wist-je-dat kaart: speels voorbeeld uit een artikel/paper */
+.card-wistjedat {
+  background: linear-gradient(135deg, var(--cono-gold-light), #fff 70%);
+  border: 2px dashed var(--cono-gold);
+  border-radius: var(--radius-md);
+  padding: 1em 1.2em;
+  position: relative;
+}
+.card-wistjedat .stempel {
+  position: absolute;
+  top: -12px; right: 14px;
+  background: var(--cono-red);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: .72rem;
+  padding: .3em .7em;
+  border-radius: 999px;
+  transform: rotate(4deg);
+  box-shadow: var(--shadow-card);
+}
+.card-wistjedat .bron {
+  font-size: .78rem;
+  font-style: italic;
+  color: #7a6b52;
+  margin-bottom: .4em;
+}
+.card-wistjedat blockquote {
+  margin: 0 0 .6em;
+  padding-left: .8em;
+  border-left: 3px solid var(--cono-red);
+  font-weight: 600;
+  color: var(--cono-ink);
+}
+
+.card-onderwerp {
+  background: #fff;
+  border: 2px solid var(--cono-cream-dark);
+  border-radius: var(--radius-md);
+  padding: 1em 1.2em;
+}
+.card-onderwerp .waarom {
+  margin-top: .6em;
+  padding-top: .6em;
+  border-top: 1px dashed var(--cono-cream-dark);
+  font-size: .9rem;
+}
+.card-onderwerp .waarom strong { color: var(--cono-green-dark); }
+.card-onderwerp .actie {
+  margin-top: .5em;
+  display: inline-block;
+  background: var(--cono-green);
+  color: #fff;
+  font-weight: 700;
+  font-size: .82rem;
+  padding: .35em .8em;
+  border-radius: 999px;
+}
+
+.cijfer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: .8em; }
+.cijfer-tile {
+  background: var(--cono-green-dark);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 1em;
+  text-align: center;
+}
+.cijfer-tile .getal { font-family: var(--font-heading); font-size: 1.9rem; font-weight: 800; color: var(--cono-gold-light); }
+.cijfer-tile .label { font-weight: 700; font-size: .85rem; margin-top: .1em; }
+.cijfer-tile .toelichting { font-size: .78rem; opacity: .85; margin-top: .3em; }
+
+.card-quote {
+  background: var(--cono-cream);
+  border-radius: var(--radius-md);
+  padding: 1em 1.2em;
+  font-style: italic;
+  border-left: 5px solid var(--cono-green);
+}
+.card-quote .naam { margin-top: .6em; font-weight: 800; font-style: normal; color: var(--cono-green-dark); }
+.card-quote .functie { font-weight: 400; font-style: normal; font-size: .82rem; color: #7a6b52; }
+
+.card-tekst { background: #fff; }
+
+/* --- Vaste rubrieken (maandelijks terugkerend) --- */
+.rubriek {
+  border: 2px solid var(--cono-cream-dark);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  --accent: var(--cono-green);
+}
+.rubriek--rood { --accent: var(--cono-red); }
+.rubriek--groen { --accent: var(--cono-green); }
+.rubriek--goud { --accent: var(--cono-gold); }
+.rubriek--blauw { --accent: var(--cono-blue); }
+
+.rubriek-label {
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .5em .9em;
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  flex-wrap: wrap;
+}
+.rubriek--goud .rubriek-label { color: var(--cono-green-dark); }
+.rubriek-subtitel {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+  font-size: .78rem;
+  opacity: .9;
+}
+.rubriek-body { padding: 1em 1.2em; }
+.rubriek-body p { margin: 0 0 .7em; }
+.rubriek-body p:last-child { margin-bottom: 0; }
+.rubriek-kop {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  color: var(--cono-green-dark);
+  margin: 0 0 .5em;
+}
+.term-chip {
+  display: inline-block;
+  background: var(--cono-cream);
+  border: 1px solid var(--accent);
+  color: var(--cono-green-dark);
+  font-weight: 700;
+  font-size: .78rem;
+  padding: .2em .7em;
+  border-radius: 999px;
+  margin-bottom: .6em;
+}
+.rubriek-brug {
+  margin-top: .7em;
+  padding: .6em .9em;
+  background: var(--cono-cream);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  color: var(--cono-green-dark);
+}
+.rubriek-tip {
+  margin-top: .7em;
+  font-size: .88rem;
+  background: var(--cono-gold-light);
+  border-radius: var(--radius-sm);
+  padding: .5em .8em;
+}
+.bron-regel {
+  font-size: .8rem;
+  font-style: italic;
+  color: #7a6b52;
+  margin-bottom: .5em;
+}
+.bron-link { font-size: .82rem; word-break: break-all; }
+
+/* Stamdata spotlight: woordenboek-notatie */
+.woordenboek {
+  background: var(--cono-cream);
+  border-radius: var(--radius-sm);
+  padding: .8em 1em;
+  margin-bottom: .7em;
+  border-bottom: 3px solid var(--cono-gold);
+}
+.woordenboek .woord {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--cono-green-dark);
+  display: block;
+}
+.woordenboek .definitie { font-style: italic; color: #5c4f39; }
+
+/* CONO Successen */
+.successen-lijst { list-style: none; margin: 0; padding: 0; }
+.successen-lijst li {
+  padding: .5em 0 .5em 1.8em;
+  position: relative;
+  border-bottom: 1px dashed var(--cono-cream-dark);
+}
+.successen-lijst li:last-child { border-bottom: none; }
+.successen-lijst li::before {
+  content: "🧀";
+  position: absolute;
+  left: 0;
+  top: .45em;
+}
+.successen-lijst .toelichting {
+  display: block;
+  font-size: .85rem;
+  color: #7a6b52;
+}
+
+/* JargonJudo */
+.jargon-term {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--cono-red);
+  margin-bottom: .2em;
+}
+.jargon-prikkel {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  background: var(--cono-ink);
+  color: #fff;
+  padding: .5em .9em;
+  border-radius: var(--radius-sm);
+  margin-bottom: .8em;
+  transform: rotate(-.6deg);
+}
+.jargon-stap {
+  display: flex;
+  gap: .7em;
+  align-items: flex-start;
+  margin-bottom: .6em;
+  font-size: .95rem;
+}
+.jargon-stap .stap-nr {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--cono-cream-dark);
+  color: var(--cono-green-dark);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.jargon-stap--pointe .stap-nr { background: var(--cono-red); color: #fff; }
+.jargon-strip {
+  margin-top: .6em;
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--cono-green-dark);
+  background: var(--cono-cream);
+  border-radius: var(--radius-sm);
+  padding: .5em .8em;
+}
+
+/* Vraag van de maand */
+.vraag-coupon .rubriek-body {
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(224,167,48,.08) 12px, rgba(224,167,48,.08) 24px);
+}
+.vraag-tekst {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cono-green-dark);
+}
+.beloning {
+  margin-top: .6em;
+  display: inline-block;
+  background: var(--cono-gold);
+  color: var(--cono-green-dark);
+  font-weight: 800;
+  font-size: .85rem;
+  padding: .4em .9em;
+  border-radius: 999px;
+  border: 2px dashed var(--cono-green-dark);
+}
+
+.nl-strip-teaser {
+  background: var(--cono-green);
+  color: #fff;
+  border-radius: var(--radius-md);
+  padding: 1.1em 1.3em;
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.nl-strip-teaser .txt strong { display: block; font-family: var(--font-heading); font-size: 1.05rem; }
+
+.nl-footer {
+  background: var(--cono-cream-dark);
+  padding: 1.2em 2em;
+  font-size: .82rem;
+  color: #5c4f39;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5em;
+}
+
+/* --- Exporteer-dialoog --- */
+.deel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(44, 32, 19, .55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+}
+.deel-kaart {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: 1.4em;
+  width: min(560px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.deel-kaart h3 { margin-top: 0; }
+.deel-kaart p { font-size: .9rem; color: #5c4f39; }
+.deel-tekst {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: .78rem;
+  resize: vertical;
+}
+.deel-knoppen {
+  display: flex;
+  gap: .5em;
+  flex-wrap: wrap;
+  margin-top: .9em;
+}
+
+.empty-state {
+  text-align: center;
+  color: #9c8b6b;
+  font-style: italic;
+  padding: 2em 1em;
+}
+
+/* --- Strip / comic --- */
+.strip-sheet {
+  width: 100%;
+  max-width: 794px;
+  background: #fff;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 1.6em;
+}
+.strip-header {
+  text-align: center;
+  margin-bottom: 1em;
+}
+.strip-header .strip-kicker {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: var(--cono-red);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-size: .78rem;
+}
+.strip-header h1 { font-size: 1.6rem; color: var(--cono-green-dark); }
+.strip-header .onderwerp-tag {
+  display: inline-block;
+  margin-top: .3em;
+  background: var(--cono-gold-light);
+  color: var(--cono-green-dark);
+  font-weight: 700;
+  font-size: .8rem;
+  padding: .25em .8em;
+  border-radius: 999px;
+}
+
+.strip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8em;
+}
+.strip-panel {
+  border: 3px solid var(--cono-ink);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #eef4ea;
+}
+.strip-panel .panel-number {
+  position: absolute;
+  top: 6px; left: 6px;
+  background: var(--cono-ink);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: .7rem;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 5;
+}
+.strip-panel svg { width: 100%; height: 100%; display: block; }
+
+.strip-footer-note {
+  margin-top: 1em;
+  font-size: .78rem;
+  color: #7a6b52;
+  text-align: center;
+}
+
+.legend-cast {
+  display: flex;
+  gap: 1.2em;
+  justify-content: center;
+  margin-top: 1em;
+  flex-wrap: wrap;
+  font-size: .82rem;
+  color: #5c4f39;
+}
+.legend-cast .cast-item { display: flex; align-items: center; gap: .4em; }
+.legend-cast .swatch { width: 16px; height: 16px; border-radius: 50%; display: inline-block; }
+
+/* --- Landingspagina --- */
+.hero {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 2.4em 1.4em 1em;
+  text-align: center;
+}
+.hero h1 { font-size: 2.1rem; }
+.hero p { font-size: 1.05rem; color: #5c4f39; max-width: 40em; margin: 0 auto 1.4em; }
+
+.cards-landing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
+  gap: 1.2em;
+  max-width: 980px;
+  margin: 0 auto 2em;
+  padding: 0 1.4em;
+}
+.landing-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 1.6em;
+  text-align: left;
+  border-top: 6px solid var(--cono-gold);
+  text-decoration: none;
+  color: var(--cono-ink);
+  display: block;
+}
+.landing-card:nth-child(2) { border-top-color: var(--cono-green); }
+.landing-card .icon { font-size: 2rem; }
+.landing-card h2 { color: var(--cono-green-dark); }
+.landing-card .go { color: var(--cono-red); font-weight: 800; margin-top: .8em; display: inline-block; }
+
+.info-strip {
+  max-width: 980px;
+  margin: 0 auto 3em;
+  padding: 1.4em;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+.info-strip h3 { color: var(--cono-green-dark); }
+.info-strip ul { margin: 0; padding-left: 1.2em; }
+.info-strip li { margin-bottom: .4em; }
+
+footer.site-footer {
+  text-align: center;
+  padding: 1.5em;
+  font-size: .8rem;
+  color: #8a7a5c;
+}
+
+/* --- Print --- */
+@media print {
+  .topbar, .toolbar, .editor-col, footer.site-footer, .hero, .cards-landing, .info-strip { display: none !important; }
+  body { background: #fff; }
+  .layout { display: block; padding: 0; }
+  .sheet, .strip-sheet { box-shadow: none; max-width: 100%; border-radius: 0; }
+  .preview-col { align-items: stretch; }
+  .nl-section, .rubriek, .strip-panel, .cijfer-tile { break-inside: avoid; page-break-inside: avoid; }
+}
+
+
+/* --- Tabbladen (alleen in de gebundelde versie) --- */
+[hidden] { display: none !important; }
+.tabbalk { display: flex; gap: .5em; flex-wrap: wrap; }
+.tabknop {
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  border: none;
+  padding: .5em .9em;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: .9rem;
+  cursor: pointer;
+}
+.tabknop[aria-selected="true"] { background: var(--cono-gold); color: var(--cono-green-dark); }
+.tabknop:focus-visible { outline: 3px solid var(--cono-gold-light); outline-offset: 2px; }
+
+</style>
+
+<header class="topbar">
+  <span class="brand">
+    <span class="logo-badge">CK</span>
+    <span class="brand-text">
+      <span class="name">CONO Kaasmakers</span>
+      <span class="tag">Databericht — nieuwsbrief &amp; strip</span>
+    </span>
+  </span>
+  <nav class="tabbalk" role="tablist" aria-label="Onderdelen">
+    <button type="button" class="tabknop" role="tab" data-tab="nieuwsbrief" aria-selected="true" aria-controls="paneel-nieuwsbrief" id="tab-nieuwsbrief">📰 Nieuwsbrief</button>
+    <button type="button" class="tabknop" role="tab" data-tab="strip" aria-selected="false" aria-controls="paneel-strip" id="tab-strip">🥋 Strip maker</button>
+  </nav>
+</header>
+
+<section id="paneel-nieuwsbrief" role="tabpanel" aria-labelledby="tab-nieuwsbrief">
+<div class="toolbar">
+  <button class="btn btn-ghost" id="btn-nieuw" title="Begin een nieuwe, lege editie">🗒️ Nieuwe editie</button>
+  <button class="btn btn-ghost" id="btn-voorbeeld" title="Vul het formulier met een voorbeeldeditie">✨ Voorbeeld invullen</button>
+  <label class="btn btn-ghost" style="margin:0;">
+    📥 Importeer JSON
+    <input type="file" id="input-import" accept="application/json" style="display:none;">
+  </label>
+  <button class="btn btn-secondary" id="btn-export">📤 Exporteer JSON</button>
+  <button class="btn btn-primary" id="btn-print">🖨️ Print / Opslaan als PDF</button>
+  <span class="spacer"></span>
+  <span class="status" id="status-text">Automatisch opgeslagen in deze browser.</span>
+</div>
+<main class="layout">
+
+  <!-- ============================= EDITOR ============================= -->
+  <section class="editor-col">
+
+    <div class="panel">
+      <h3><span class="emoji">🧾</span> Basisgegevens</h3>
+      <div class="field">
+        <label for="f-titel">Titel van de nieuwsbrief</label>
+        <input id="f-titel" placeholder="Bijv. CONO Databericht">
+      </div>
+      <div class="field">
+        <label for="f-ondertitel">Ondertitel / slogan</label>
+        <input id="f-ondertitel" placeholder="Bijv. Samen slim met data, zonder moeilijke woorden">
+        <small class="hint">Één zin die kort uitlegt waar deze editie over gaat.</small>
+      </div>
+      <div class="field">
+        <label for="f-editie">Editienummer</label>
+        <input id="f-editie" placeholder="Bijv. Editie 3 — najaar 2026">
+      </div>
+      <div class="field">
+        <label for="f-datum">Datum</label>
+        <input id="f-datum" placeholder="Bijv. 22 september 2026">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">👋</span> Voorwoord</h3>
+      <div class="field">
+        <label for="f-voorwoord-tekst">Welkomsttekst</label>
+        <textarea id="f-voorwoord-tekst" rows="4" placeholder="Korte, vriendelijke introductie van deze editie in gewone taal..."></textarea>
+      </div>
+      <div class="field">
+        <label for="f-voorwoord-auteur">Ondertekening</label>
+        <input id="f-voorwoord-auteur" placeholder="Bijv. Team Data &amp; Informatie">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">🧩</span> Inhoud van deze editie</h3>
+      <button class="btn btn-ghost" id="btn-standaard" style="margin-bottom:.9em;">📋 Standaard indeling (8 vaste rubrieken)</button>
+      <div id="sections-list"></div>
+      <div class="add-section-row">
+        <select id="new-section-type">
+          <optgroup label="Vaste rubrieken">
+            <option value="kopvandemaand">📰 Kop van de maand</option>
+            <option value="iam">🔑 IAM in beeld</option>
+            <option value="stamdata">🔦 Stamdata spotlight</option>
+            <option value="aianalytics">🤖 AI &amp; Analytics (buiten CONO)</option>
+            <option value="successen">🏆 CONO Successen</option>
+            <option value="jargonjudo">🥋 JargonJudo</option>
+            <option value="actietips">✅ Actie &amp; Tips</option>
+            <option value="vraagvandemaand">❓ Vraag van de maand</option>
+          </optgroup>
+          <optgroup label="Vrije blokken">
+            <option value="wistjedat">💡 Wist-je-dat — voorbeeld uit een artikel</option>
+            <option value="onderwerp">📘 Onderwerp uitgelegd — in simpele taal</option>
+            <option value="cijfer">📊 Cijfers &amp; weetjes</option>
+            <option value="quote">💬 Quote van een collega</option>
+            <option value="tekst">📝 Los tekstblok</option>
+          </optgroup>
+        </select>
+        <button class="btn btn-secondary" id="btn-add-section">+ Sectie toevoegen</button>
+      </div>
+      <small class="hint">De acht vaste rubrieken keren elke editie terug. Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je overslaat. Met de pijltjes verander je de volgorde.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">📖</span> Strip van deze editie</h3>
+      <div class="field">
+        <label for="f-strip-titel">Titel van de strip</label>
+        <input id="f-strip-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+      </div>
+      <div class="field">
+        <label for="f-strip-teaser">Teaser-tekst</label>
+        <textarea id="f-strip-teaser" rows="2" placeholder="Eén zin die nieuwsgierig maakt naar de strip."></textarea>
+      </div>
+      <small class="hint">Maak de bijpassende strip op de pagina <a href="#strip" data-tab="strip">Strip maker</a> en print die apart, of neem 'm erbij als los vel.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">📮</span> Afsluiting</h3>
+      <div class="field">
+        <label for="f-contact">Contactpersoon</label>
+        <input id="f-contact" placeholder="Bijv. Data-team — data@cono.nl">
+      </div>
+      <div class="field">
+        <label for="f-volgende">Volgende editie</label>
+        <input id="f-volgende" placeholder="Bijv. De volgende editie verschijnt in december">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================= PREVIEW ============================= -->
+  <section class="preview-col">
+    <article class="sheet" id="preview-sheet">
+      <!-- wordt gevuld door nieuwsbrief.js -->
+    </article>
+  </section>
+
+</main>
+</section>
+
+<section id="paneel-strip" role="tabpanel" aria-labelledby="tab-strip" hidden>
+<div class="toolbar">
+  <button class="btn btn-ghost" id="st-btn-nieuw">🗒️ Nieuwe strip</button>
+  <button class="btn btn-ghost" id="st-btn-voorbeeld">✨ Voorbeeld invullen</button>
+  <label class="btn btn-ghost" style="margin:0;">
+    📥 Importeer JSON
+    <input type="file" id="st-input-import" accept="application/json" style="display:none;">
+  </label>
+  <button class="btn btn-secondary" id="st-btn-export">📤 Exporteer JSON</button>
+  <button class="btn btn-primary" id="st-btn-print">🖨️ Print / Opslaan als PDF</button>
+  <span class="spacer"></span>
+  <span class="status" id="st-status">Automatisch opgeslagen in deze browser.</span>
+</div>
+<main class="layout">
+
+  <!-- ============================= EDITOR ============================= -->
+  <section class="editor-col">
+
+    <div class="panel">
+      <h3><span class="emoji">🎬</span> Basisgegevens</h3>
+      <div class="field">
+        <label for="st-titel">Titel van de strip</label>
+        <input id="st-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+      </div>
+      <div class="field">
+        <label for="st-onderwerp">Onderwerp-label</label>
+        <input id="st-onderwerp" placeholder="Bijv. Thema: datakwaliteit">
+        <small class="hint">Kort label boven de strip, handig om edities uit elkaar te houden.</small>
+      </div>
+      <small class="hint">De vaste vormgeving (6 vakjes, personages Data-Daan &amp; Boer Bert) blijft elke editie hetzelfde — alleen de inhoud hieronder verandert per onderwerp.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">🖼️</span> De 6 vakjes</h3>
+      <div id="st-panels-editor"></div>
+    </div>
+
+  </section>
+
+  <!-- ============================= PREVIEW ============================= -->
+  <section class="preview-col">
+    <article class="strip-sheet" id="st-sheet">
+      <!-- wordt gevuld door strip.js -->
+    </article>
+  </section>
+
+</main>
+</section>
+
+<footer class="site-footer">Intern sjabloon voor het datamanagement-project bij CONO Kaasmakers. De kleuren zijn nog een voorlopige huisstijl.</footer>
+
+<script>
+(function () {
+/* Gedeelde hulpfuncties voor de nieuwsbrief- en stripbouwer. */
+
+function uid() {
+  return 'id-' + Math.random().toString(36).slice(2, 10);
+}
+
+function debounce(fn, wait) {
+  let t;
+  return function (...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
+
+function escapeHtml(str) {
+  if (str === undefined || str === null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Zet platte tekst met enters om naar veilige <p>-blokken voor de preview.
+function textToParagraphs(str) {
+  if (!str) return '';
+  return String(str)
+    .split(/\n{2,}/)
+    .map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`)
+    .join('');
+}
+
+// Laat alleen echte web-links door, zodat een geïmporteerd bestand geen
+// javascript:-link in de nieuwsbrief kan zetten.
+function safeUrl(str) {
+  if (!str) return '';
+  const trimmed = String(str).trim();
+  try {
+    const parsed = new URL(trimmed, window.location.href);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+  } catch (e) {
+    return '';
+  }
+}
+
+function saveLocal(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch (e) {
+    console.warn('Opslaan mislukt:', e);
+    return false;
+  }
+}
+
+function loadLocal(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.warn('Laden mislukt:', e);
+    return null;
+  }
+}
+
+function downloadJSON(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* Een bestand opslaan. In een gewone browser (lokaal of op een webserver)
+   kan dat rechtstreeks. In de gedeelde online versie draait de pagina
+   afgeschermd en loopt opslaan via de host, die het de kijker eerst vraagt. */
+function bewaarBestand(filename, data, json, knop) {
+  const oorspronkelijk = knop.textContent;
+  const melding = (tekst) => {
+    knop.textContent = tekst;
+    setTimeout(() => { knop.textContent = oorspronkelijk; }, 2500);
+  };
+
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('downloads').then((downloads) => {
+      if (!downloads) {
+        melding('Opslaan kan hier niet — gebruik Kopiëren');
+        return;
+      }
+      return downloads.save({ filename, data: json }).then(
+        () => melding('✓ Opgeslagen'),
+        (fout) => {
+          if (fout && fout.code === 'declined') return;
+          melding('Opslaan lukte niet — gebruik Kopiëren');
+        }
+      );
+    });
+    return;
+  }
+
+  downloadJSON(filename, data);
+}
+
+/* Exporteren via een dialoog met zowel "kopiëren" als "opslaan": kopiëren
+   werkt overal, opslaan waar de omgeving dat toestaat. */
+function exporteerJSON(filename, data) {
+  const json = JSON.stringify(data, null, 2);
+  const vorigeFocus = document.activeElement;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'deel-overlay';
+  overlay.innerHTML = `
+    <div class="deel-kaart" role="dialog" aria-modal="true" aria-label="Exporteren">
+      <h3>Deze editie bewaren of delen</h3>
+      <p>Kopieer de tekst hieronder en bewaar 'm, of mail 'm naar een collega. Met <strong>Importeer JSON</strong> laadt diegene de editie precies zo weer in.</p>
+      <textarea readonly rows="8" class="deel-tekst"></textarea>
+      <div class="deel-knoppen">
+        <button type="button" class="btn btn-primary" data-deel="kopieer">📋 Kopieer naar klembord</button>
+        <button type="button" class="btn btn-ghost" data-deel="download">💾 Opslaan als bestand</button>
+        <button type="button" class="btn btn-ghost" data-deel="sluit">Sluiten</button>
+      </div>
+    </div>`;
+
+  const tekstvak = overlay.querySelector('.deel-tekst');
+  tekstvak.value = json;
+
+  function sluit() {
+    overlay.remove();
+    document.removeEventListener('keydown', opToets);
+    if (vorigeFocus && vorigeFocus.focus) vorigeFocus.focus();
+  }
+  function opToets(e) { if (e.key === 'Escape') sluit(); }
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) { sluit(); return; }
+    const knop = e.target.closest('button[data-deel]');
+    if (!knop) return;
+
+    if (knop.dataset.deel === 'sluit') {
+      sluit();
+    } else if (knop.dataset.deel === 'download') {
+      bewaarBestand(filename, data, json, knop);
+    } else {
+      tekstvak.select();
+      const klaar = () => { knop.textContent = '✓ Gekopieerd'; setTimeout(() => { knop.textContent = '📋 Kopieer naar klembord'; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(json).then(klaar, () => { knop.textContent = 'Kopiëren lukte niet — selecteer de tekst en gebruik Ctrl+C'; });
+      } else {
+        knop.textContent = 'Selecteer de tekst en gebruik Ctrl+C';
+      }
+    }
+  });
+
+  document.addEventListener('keydown', opToets);
+  document.body.appendChild(overlay);
+  tekstvak.focus();
+  tekstvak.select();
+}
+
+function readJSONFile(file, onLoaded, onError) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      onLoaded(data);
+    } catch (e) {
+      if (onError) onError(e);
+      else console.warn('Kon bestand niet lezen:', e);
+    }
+  };
+  reader.onerror = () => { if (onError) onError(reader.error); };
+  reader.readAsText(file);
+}
+
+function showStatus(el, message, revertAfterMs) {
+  if (!el) return;
+  el.textContent = message;
+  if (revertAfterMs) {
+    setTimeout(() => { el.textContent = 'Automatisch opgeslagen in deze browser.'; }, revertAfterMs);
+  }
+}
+
+function todayNL() {
+  const d = new Date();
+  const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  return `${d.getDate()} ${maanden[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+/* CONO Nieuwsbrief bouwer — state, editor en live preview */
+
+const STORAGE_KEY = 'cono_nieuwsbrief_draft_v1';
+
+/* De vaste rubrieken die elke editie terugkeren. Per rubriek: het label dat
+   boven het blok komt, een icoon, de accentkleur en een eventuele ondertitel. */
+const RUBRIEK_META = {
+  kopvandemaand:   { label: 'Kop van de maand', icoon: '📰', kleur: 'rood',  subtitel: 'Wat moet je deze maand echt weten?' },
+  iam:             { label: 'IAM in beeld',     icoon: '🔑', kleur: 'groen', subtitel: 'Toegang & wachtwoorden' },
+  stamdata:        { label: 'Stamdata spotlight', icoon: '🔦', kleur: 'goud', subtitel: '' },
+  aianalytics:     { label: 'AI & Analytics',   icoon: '🤖', kleur: 'blauw', subtitel: 'buiten CONO' },
+  successen:       { label: 'CONO Successen',   icoon: '🏆', kleur: 'groen', subtitel: 'waar we zelf mee bezig zijn' },
+  jargonjudo:      { label: 'JargonJudo',       icoon: '🥋', kleur: 'rood',  subtitel: 'moeilijk woord in één beweging op de mat' },
+  actietips:       { label: 'Actie & Tips',     icoon: '✅', kleur: 'groen', subtitel: '' },
+  vraagvandemaand: { label: 'Vraag van de maand', icoon: '❓', kleur: 'goud', subtitel: '' }
+};
+
+const STANDAARD_VOLGORDE = ['kopvandemaand', 'iam', 'stamdata', 'aianalytics', 'successen', 'jargonjudo', 'actietips', 'vraagvandemaand'];
+
+const VRIJE_BLOK_LABELS = {
+  wistjedat: '💡 Wist-je-dat',
+  onderwerp: '📘 Onderwerp uitgelegd',
+  cijfer: '📊 Cijfers & weetjes',
+  quote: '💬 Quote van een collega',
+  tekst: '📝 Tekstblok'
+};
+
+function sectionLabel(type) {
+  if (RUBRIEK_META[type]) return `${RUBRIEK_META[type].icoon} ${RUBRIEK_META[type].label}`;
+  return VRIJE_BLOK_LABELS[type] || type;
+}
+
+function defaultState() {
+  return {
+    meta: {
+      titel: 'CONO Databericht',
+      ondertitel: 'Samen slim met data — zonder moeilijke woorden',
+      editie: 'Editie 1',
+      datum: todayNL()
+    },
+    voorwoord: {
+      tekst: 'Welkom bij deze editie! Hierin lees je op een luchtige manier waar we mee bezig zijn rond data bij CONO, zonder ingewikkeld jargon.',
+      auteur: 'Team Data & Informatie'
+    },
+    sections: [],
+    strip: { titel: '', teaser: '' },
+    footer: {
+      contact: 'Data-team — data@cono.nl',
+      volgende: 'De volgende editie verschijnt over een maand.'
+    }
+  };
+}
+
+function nieuwSectie(type) {
+  const id = uid();
+  switch (type) {
+    /* --- Vaste rubrieken --- */
+    case 'kopvandemaand':
+      return { id, type, kop: 'De prikkelende vraag van deze maand?', term: 'Het begrip erachter',
+        uitleg: 'Leg in gewone taal uit hoe het zit. Gebruik een voorbeeld dat iedereen van buiten het werk herkent.',
+        brug: 'En bij ons? Vertaal het door naar een vraag over data bij CONO.' };
+    case 'iam':
+      return { id, type, titel: 'Onderwerp rond toegang of wachtwoorden',
+        uitleg: 'Waarom dit speelt en hoe het werkt, in gewone taal.',
+        tip: 'Concrete tip of eerste stap.' };
+    case 'stamdata':
+      return { id, type, term: 'Term uit ons systeem', definitie: 'De definitie zoals iedereen hem zou opschrijven.',
+        constatering: 'De verrassing: wat is er wél of niet vastgelegd, en waarom maakt dat uit?' };
+    case 'aianalytics':
+      return { id, type, titel: 'Wat er buiten CONO gebeurt met AI of analytics',
+        bron: 'Bron: titel van het artikel', link: '',
+        uitleg: 'Wat het artikel laat zien en wat dat betekent nu we een paar jaar verder zijn.' };
+    case 'successen':
+      return { id, type, items: [
+        { id: uid(), tekst: 'Naam van het project of de vraag', toelichting: '' }
+      ] };
+    case 'jargonjudo':
+      return { id, type, term: 'Het moeilijke woord', prikkel: 'Een kop die niet klopt, maar wel logisch klinkt',
+        observatie: 'Wat je ziet in de cijfers.', ontknoping: 'Hoe het écht zit — en waarom de kop dus onzin is.',
+        striplink: 'Zie de strip op de volgende pagina.' };
+    case 'actietips':
+      return { id, type, tekst: 'Wat kan de lezer deze maand zelf doen?', actie: 'De concrete actie in één zin' };
+    case 'vraagvandemaand':
+      return { id, type, vraag: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
+        waar: 'Mail je vraag naar het data-team.', beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' };
+
+    /* --- Vrije blokken --- */
+    case 'wistjedat':
+      return { id, type, titel: 'Wist je dat...', emoji: '🧀', bron: 'Bron: naam van artikel of paper', citaat: 'Een pakkende zin of cijfer uit het artikel...', uitleg: 'Leg in gewone taal uit wat dit betekent voor CONO en waarom het leuk/interessant is als opstapje naar dit onderwerp.' };
+    case 'onderwerp':
+      return { id, type, titel: 'Naam van het onderwerp', icoon: '🗂️', uitleg: 'Wat het onderwerp inhoudt, in simpele taal — alsof je het aan een collega uitlegt die er niets van weet.', waarom: 'Waarom dit voor CONO belangrijk is.', actie: 'Wat iemand nu concreet kan doen' };
+    case 'cijfer':
+      return { id, type, titel: 'Cijfers & weetjes', tiles: [ { id: uid(), getal: '87%', label: 'Korte omschrijving', toelichting: 'Extra duiding in één zin.' } ] };
+    case 'quote':
+      return { id, type, naam: 'Naam collega', functie: 'Functie / afdeling', quote: 'Wat deze collega zegt over data of dit onderwerp.' };
+    case 'tekst':
+      return { id, type, titel: 'Titel van dit blok', tekst: 'Vrije tekst voor bijvoorbeeld een oproep, agenda-item of terugblik.' };
+    default:
+      return { id, type: 'tekst', titel: '', tekst: '' };
+  }
+}
+
+/* De voorbeeldeditie: de standaard indeling, ingevuld met de onderwerpen uit
+   het voorstel voor de eerste nieuwsbrief. */
+function voorbeeldState() {
+  const s = defaultState();
+  s.meta = {
+    titel: 'CONO Databericht',
+    ondertitel: 'Data, AI en stamdata — uitgelegd zonder moeilijke woorden',
+    editie: 'Editie 1 — probeersel',
+    datum: todayNL()
+  };
+  s.voorwoord = {
+    tekst: 'Data, AI, stamdata, IAM — het klinkt al snel als een taal die je eerst moet leren voordat je mee kunt praten. Dat is precies wat we met dit Databericht willen omdraaien.\n\nElke editie pakken we een paar onderwerpen beet en leggen we ze uit in gewone taal, met voorbeelden die je herkent van buiten je werk. Geen moeilijk woord zonder uitleg, geen uitleg zonder voorbeeld. En heb je zelf een vraag? Onderaan staat hoe je hem kwijt kunt — er staat een beloning op.',
+    auteur: 'Team Data & Informatie'
+  };
+  s.sections = [
+    { id: uid(), type: 'kopvandemaand',
+      kop: 'Luistert je telefoon met je mee om je gerichte advertenties te tonen?',
+      term: 'Baader-Meinhof-fenomeen',
+      uitleg: 'Je praat met een collega over een nieuwe fiets, en een uur later staat je tijdlijn vol fietsreclame. Toeval? Voor dat gevoel hoeft je telefoon helemaal niet mee te luisteren. Zodra iets je aandacht heeft, valt het je namelijk overal op — dat heet het Baader-Meinhof-fenomeen. Die reclames stonden er waarschijnlijk altijd al.\n\nEn er is een tweede reden: ze hebben allang genoeg gegevens om je die fietsreclame gericht te tonen. Wat je zoekt, waar je bent, wat je eerder kocht, wat je leeftijdsgenoten kopen. Meeluisteren is niet nodig — het is gewoon niet meer nodig.',
+      brug: 'En bij ons? Hebben wij eigenlijk alle gegevens die we nodig hebben om de vragen te beantwoorden die we onszelf stellen?' },
+
+    { id: uid(), type: 'iam',
+      titel: '1Password: één wachtwoord voor alles — is dat nou wel veilig?',
+      uitleg: 'Het voelt tegenstrijdig: al je wachtwoorden achter één wachtwoord zetten. Toch is het een stuk veiliger dan wat de meeste mensen nu doen, namelijk overal ongeveer hetzelfde wachtwoord gebruiken. Lekt er dan ergens één, dan liggen ze in feite allemaal op straat.\n\nMet een wachtwoordkluis krijgt elke site een eigen, lang en volstrekt willekeurig wachtwoord — zo eentje die je zelf nooit zou verzinnen en ook niet hoeft te onthouden. Jij onthoudt er nog precies één: die van de kluis zelf.',
+      tip: 'Nog geen kluis in gebruik? Vraag ernaar bij IT — het inrichten kost je ongeveer vijf minuten.' },
+
+    { id: uid(), type: 'stamdata',
+      term: 'Geitenkaas',
+      definitie: 'Kaas gemaakt van geitenmelk.',
+      constatering: 'Klinkt logisch. Maar wist je dat deze definitie nergens in ons systeem is vastgelegd? Iedereen wéét wat het is — en precies daarom schrijft niemand het op. Dat gaat goed, tot er iemand nieuw begint, tot twee afdelingen er nét iets anders onder blijken te verstaan, of tot een systeem de vraag stelt.' },
+
+    { id: uid(), type: 'aianalytics',
+      titel: 'Een artikel uit 2017 dat inmiddels gewoon je dagelijks leven beschrijft',
+      bron: 'Bron: artikel uit 2017 over de mogelijkheden van AI',
+      link: '',
+      uitleg: 'Dit artikel uit 2017 (!) liet destijds zien wat er allemaal mogelijk zou worden met AI. Het las toen als toekomstmuziek.\n\nBijna tien jaar later is het dat niet meer: spraakassistenten, automatische vertalingen, foto\'s die zichzelf sorteren, chatbots die je e-mail voorschrijven. Stuk voor stuk technieken uit dat artikel die inmiddels zo gewoon zijn dat we ze niet eens meer "AI" noemen.' },
+
+    { id: uid(), type: 'successen', items: [
+      { id: uid(), tekst: 'Lactaat herkennen met AI', toelichting: '' },
+      { id: uid(), tekst: 'Hoeveel droogt een kaas nu werkelijk in — en verschilt dat per oplegger?', toelichting: '' },
+      { id: uid(), tekst: 'Bestuursverslag (onderdeel van het jaarverslag) opgesteld met hulp van AI', toelichting: '' },
+      { id: uid(), tekst: 'Wat is het statistische verband tussen de zuivelmarkt en de melkprijs van RFC?', toelichting: '' }
+    ] },
+
+    { id: uid(), type: 'jargonjudo',
+      term: 'Causaal verband',
+      prikkel: 'Verbod op ijs vanwege toename aantal verdrinkingen',
+      observatie: 'Er is een duidelijke correlatie tussen de hoeveelheid ijs die verkocht wordt en het aantal verdrinkingen in zwembaden en buitenwater. Meer ijs, meer verdrinkingen — de cijfers liegen niet.',
+      ontknoping: 'Maar er is geen causaal verband. Als het warm is, wordt er véél gezwommen én veel ijs gegeten. Het weer veroorzaakt allebei; het ijs duwt niemand het water in. Twee dingen die samen bewegen, hoeven elkaar dus niet te veroorzaken.',
+      striplink: 'Zie de strip op de volgende pagina.' },
+
+    { id: uid(), type: 'actietips',
+      tekst: 'Heb je recent nog gekeken tot welke rapporten jij eigenlijk toegang hebt? Gebruik je ze allemaal? En wist je dat je binnen de meeste rapporten kunt filteren of inzoomen, zodat de cijfers precies over jouw afdeling of jouw periode gaan?',
+      actie: 'Neem deze maand vijf minuten om je eigen rapportenlijst door te lopen.' },
+
+    { id: uid(), type: 'vraagvandemaand',
+      vraag: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
+      waar: 'Mail je vraag naar het data-team.',
+      beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' }
+  ];
+  s.strip = {
+    titel: 'JargonJudo: causaal verband',
+    teaser: 'Boer Bert wil het ijs verbieden om levens te redden. Data-Daan heeft een ander idee.'
+  };
+  s.footer = { contact: 'Data-team — data@cono.nl', volgende: 'De volgende editie verschijnt over een maand.' };
+  return s;
+}
+
+let state = loadLocal(STORAGE_KEY) || voorbeeldState();
+
+/* ---------------------------- DOM references ---------------------------- */
+const els = {
+  titel: document.getElementById('f-titel'),
+  ondertitel: document.getElementById('f-ondertitel'),
+  editie: document.getElementById('f-editie'),
+  datum: document.getElementById('f-datum'),
+  voorwoordTekst: document.getElementById('f-voorwoord-tekst'),
+  voorwoordAuteur: document.getElementById('f-voorwoord-auteur'),
+  stripTitel: document.getElementById('f-strip-titel'),
+  stripTeaser: document.getElementById('f-strip-teaser'),
+  contact: document.getElementById('f-contact'),
+  volgende: document.getElementById('f-volgende'),
+  sectionsList: document.getElementById('sections-list'),
+  newSectionType: document.getElementById('new-section-type'),
+  previewSheet: document.getElementById('preview-sheet'),
+  status: document.getElementById('status-text')
+};
+
+/* ------------------------------ Persistentie ----------------------------- */
+const persist = debounce(() => {
+  saveLocal(STORAGE_KEY, state);
+  showStatus(els.status, 'Opgeslagen ✓', 1500);
+}, 300);
+
+function herteken() {
+  persist();
+  renderSectionsEditor();
+  renderPreview();
+}
+
+/* --------------------------- Formulier -> state --------------------------- */
+function fillStaticFields() {
+  els.titel.value = state.meta.titel;
+  els.ondertitel.value = state.meta.ondertitel;
+  els.editie.value = state.meta.editie;
+  els.datum.value = state.meta.datum;
+  els.voorwoordTekst.value = state.voorwoord.tekst;
+  els.voorwoordAuteur.value = state.voorwoord.auteur;
+  els.stripTitel.value = state.strip.titel;
+  els.stripTeaser.value = state.strip.teaser;
+  els.contact.value = state.footer.contact;
+  els.volgende.value = state.footer.volgende;
+}
+
+function bindStatic(el, setter) {
+  el.addEventListener('input', () => {
+    setter(el.value);
+    persist();
+    renderPreview();
+  });
+}
+
+function attachStaticBindings() {
+  bindStatic(els.titel, v => state.meta.titel = v);
+  bindStatic(els.ondertitel, v => state.meta.ondertitel = v);
+  bindStatic(els.editie, v => state.meta.editie = v);
+  bindStatic(els.datum, v => state.meta.datum = v);
+  bindStatic(els.voorwoordTekst, v => state.voorwoord.tekst = v);
+  bindStatic(els.voorwoordAuteur, v => state.voorwoord.auteur = v);
+  bindStatic(els.stripTitel, v => state.strip.titel = v);
+  bindStatic(els.stripTeaser, v => state.strip.teaser = v);
+  bindStatic(els.contact, v => state.footer.contact = v);
+  bindStatic(els.volgende, v => state.footer.volgende = v);
+}
+
+/* ------------------------------ Secties editor ---------------------------- */
+function veld(label, field, value, rows, hint) {
+  const input = rows
+    ? `<textarea data-field="${field}" rows="${rows}">${escapeHtml(value)}</textarea>`
+    : `<input data-field="${field}" value="${escapeHtml(value)}">`;
+  return `<div class="field"><label>${label}</label>${input}${hint ? `<small class="hint">${hint}</small>` : ''}</div>`;
+}
+
+function sectionFieldsHTML(sec) {
+  switch (sec.type) {
+    /* --- Vaste rubrieken --- */
+    case 'kopvandemaand':
+      return veld('Prikkelende kop of vraag', 'kop', sec.kop, 2)
+        + veld('Begrip (optioneel)', 'term', sec.term, 0, 'Bijv. het fenomeen of de term achter het verhaal.')
+        + veld('Uitleg in gewone taal', 'uitleg', sec.uitleg, 6)
+        + veld('Brug naar CONO', 'brug', sec.brug, 2, 'De vraag die dit verhaal oproept over onze eigen gegevens.');
+    case 'iam':
+      return veld('Titel', 'titel', sec.titel, 2)
+        + veld('Uitleg', 'uitleg', sec.uitleg, 5)
+        + veld('Tip / eerste stap (optioneel)', 'tip', sec.tip, 2);
+    case 'stamdata':
+      return veld('Term', 'term', sec.term, 0)
+        + veld('Definitie', 'definitie', sec.definitie, 2)
+        + veld('De constatering', 'constatering', sec.constatering, 4, 'Wat is er wél of juist niet vastgelegd — en waarom maakt dat uit?');
+    case 'aianalytics':
+      return veld('Titel', 'titel', sec.titel, 2)
+        + veld('Bron', 'bron', sec.bron, 0)
+        + veld('Link (optioneel)', 'link', sec.link, 0, 'Volledige link, bijv. https://...')
+        + veld('Uitleg', 'uitleg', sec.uitleg, 5);
+    case 'successen':
+      return `<div id="items-${sec.id}">${(sec.items || []).map(it => itemFieldsHTML(sec.id, it)).join('')}</div>
+        <button type="button" class="btn btn-icon" data-action="add-item" data-section="${sec.id}">+ Succes toevoegen</button>`;
+    case 'jargonjudo':
+      return veld('Het moeilijke woord', 'term', sec.term, 0)
+        + veld('Prikkelende (foute) kop', 'prikkel', sec.prikkel, 2, 'Een conclusie die logisch klinkt maar niet klopt.')
+        + veld('1. Wat je ziet', 'observatie', sec.observatie, 3)
+        + veld('2. Hoe het écht zit', 'ontknoping', sec.ontknoping, 4)
+        + veld('Verwijzing naar de strip (optioneel)', 'striplink', sec.striplink, 0);
+    case 'actietips':
+      return veld('Tekst', 'tekst', sec.tekst, 5)
+        + veld('Concrete actie (optioneel)', 'actie', sec.actie, 2);
+    case 'vraagvandemaand':
+      return veld('De oproep', 'vraag', sec.vraag, 2)
+        + veld('Waar kan de vraag heen?', 'waar', sec.waar, 2)
+        + veld('Beloning (optioneel)', 'beloning', sec.beloning, 2);
+
+    /* --- Vrije blokken --- */
+    case 'wistjedat':
+      return veld('Titel', 'titel', sec.titel, 0)
+        + veld('Emoji', 'emoji', sec.emoji, 0)
+        + veld('Bron (artikel / paper)', 'bron', sec.bron, 0)
+        + veld('Citaat of opvallend feit', 'citaat', sec.citaat, 2)
+        + veld('Speelse uitleg / koppeling naar onderwerp', 'uitleg', sec.uitleg, 3);
+    case 'onderwerp':
+      return veld('Titel van het onderwerp', 'titel', sec.titel, 0)
+        + veld('Icoon (emoji)', 'icoon', sec.icoon, 0)
+        + veld('Uitleg in simpele taal', 'uitleg', sec.uitleg, 3)
+        + veld('Waarom dit belangrijk is', 'waarom', sec.waarom, 2)
+        + veld('Actiepunt (optioneel)', 'actie', sec.actie, 0);
+    case 'cijfer':
+      return veld('Titel van dit blok', 'titel', sec.titel, 0)
+        + `<div id="tiles-${sec.id}">${sec.tiles.map(t => tileFieldsHTML(sec.id, t)).join('')}</div>
+           <button type="button" class="btn btn-icon" data-action="add-tile" data-section="${sec.id}">+ Cijfer toevoegen</button>`;
+    case 'quote':
+      return veld('Naam', 'naam', sec.naam, 0)
+        + veld('Functie / afdeling', 'functie', sec.functie, 0)
+        + veld('Quote', 'quote', sec.quote, 3);
+    case 'tekst':
+      return veld('Titel', 'titel', sec.titel, 0)
+        + veld('Tekst', 'tekst', sec.tekst, 4);
+    default:
+      return '';
+  }
+}
+
+function tileFieldsHTML(sectionId, tile) {
+  return `
+    <div class="section-card" style="background:#fff;">
+      <div class="section-card-head">
+        <span class="section-type-label" style="color:var(--cono-green-dark);">Cijfer</span>
+        <button type="button" class="btn-danger" data-action="delete-tile" data-section="${sectionId}" data-tile="${tile.id}">✕</button>
+      </div>
+      <div class="field"><label>Getal</label><input data-tile-field="getal" data-tile="${tile.id}" value="${escapeHtml(tile.getal)}"></div>
+      <div class="field"><label>Label</label><input data-tile-field="label" data-tile="${tile.id}" value="${escapeHtml(tile.label)}"></div>
+      <div class="field"><label>Toelichting</label><input data-tile-field="toelichting" data-tile="${tile.id}" value="${escapeHtml(tile.toelichting)}"></div>
+    </div>`;
+}
+
+function itemFieldsHTML(sectionId, item) {
+  return `
+    <div class="section-card" style="background:#fff;">
+      <div class="section-card-head">
+        <span class="section-type-label" style="color:var(--cono-green-dark);">Succes</span>
+        <button type="button" class="btn-danger" data-action="delete-item" data-section="${sectionId}" data-item="${item.id}">✕</button>
+      </div>
+      <div class="field"><label>Titel</label><input data-item-field="tekst" data-item="${item.id}" value="${escapeHtml(item.tekst)}"></div>
+      <div class="field"><label>Toelichting (optioneel)</label><input data-item-field="toelichting" data-item="${item.id}" value="${escapeHtml(item.toelichting)}"></div>
+    </div>`;
+}
+
+function renderSectionsEditor() {
+  if (state.sections.length === 0) {
+    els.sectionsList.innerHTML = `<p class="empty-state">Nog geen secties. Klik op "Standaard indeling" voor de vaste rubrieken, of kies hieronder los een blok.</p>`;
+    return;
+  }
+  els.sectionsList.innerHTML = state.sections.map((sec, i) => `
+    <div class="section-card" data-section-row="${sec.id}">
+      <div class="section-card-head">
+        <span class="section-type-label">${sectionLabel(sec.type)}</span>
+        <div class="section-actions">
+          <button type="button" class="btn-icon" data-action="move-up" data-section="${sec.id}" ${i === 0 ? 'disabled' : ''} title="Naar boven">↑</button>
+          <button type="button" class="btn-icon" data-action="move-down" data-section="${sec.id}" ${i === state.sections.length - 1 ? 'disabled' : ''} title="Naar beneden">↓</button>
+          <button type="button" class="btn-danger" data-action="delete-section" data-section="${sec.id}" title="Verwijderen">✕</button>
+        </div>
+      </div>
+      ${sectionFieldsHTML(sec)}
+    </div>
+  `).join('');
+}
+
+function findSection(id) { return state.sections.find(s => s.id === id); }
+
+els.sectionsList.addEventListener('input', (e) => {
+  const target = e.target;
+  const row = target.closest('[data-section-row]');
+  if (!row) return;
+  const sec = findSection(row.dataset.sectionRow);
+  if (!sec) return;
+
+  if (target.dataset.field) {
+    sec[target.dataset.field] = target.value;
+  } else if (target.dataset.tileField) {
+    const tile = sec.tiles.find(t => t.id === target.dataset.tile);
+    if (tile) tile[target.dataset.tileField] = target.value;
+  } else if (target.dataset.itemField) {
+    const item = sec.items.find(it => it.id === target.dataset.item);
+    if (item) item[target.dataset.itemField] = target.value;
+  } else {
+    return;
+  }
+  persist();
+  renderPreview();
+});
+
+els.sectionsList.addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-action]');
+  if (!btn) return;
+  const action = btn.dataset.action;
+  const sec = findSection(btn.dataset.section);
+  const idx = state.sections.indexOf(sec);
+  if (!sec) return;
+
+  if (action === 'move-up' && idx > 0) {
+    [state.sections[idx - 1], state.sections[idx]] = [state.sections[idx], state.sections[idx - 1]];
+  } else if (action === 'move-down' && idx < state.sections.length - 1) {
+    [state.sections[idx + 1], state.sections[idx]] = [state.sections[idx], state.sections[idx + 1]];
+  } else if (action === 'delete-section') {
+    if (!confirm('Deze sectie verwijderen?')) return;
+    state.sections.splice(idx, 1);
+  } else if (action === 'add-tile') {
+    sec.tiles.push({ id: uid(), getal: '0', label: 'Nieuw cijfer', toelichting: '' });
+  } else if (action === 'delete-tile') {
+    const tIdx = sec.tiles.findIndex(t => t.id === btn.dataset.tile);
+    if (tIdx > -1) sec.tiles.splice(tIdx, 1);
+  } else if (action === 'add-item') {
+    sec.items.push({ id: uid(), tekst: 'Nieuw project of nieuwe vraag', toelichting: '' });
+  } else if (action === 'delete-item') {
+    const iIdx = sec.items.findIndex(it => it.id === btn.dataset.item);
+    if (iIdx > -1) sec.items.splice(iIdx, 1);
+  } else {
+    return;
+  }
+  herteken();
+});
+
+document.getElementById('btn-add-section').addEventListener('click', () => {
+  state.sections.push(nieuwSectie(els.newSectionType.value));
+  herteken();
+});
+
+document.getElementById('btn-standaard').addEventListener('click', () => {
+  if (state.sections.length && !confirm('Dit vervangt de huidige secties door de acht vaste rubrieken. Doorgaan?')) return;
+  state.sections = STANDAARD_VOLGORDE.map(nieuwSectie);
+  herteken();
+});
+
+/* --------------------------------- Preview -------------------------------- */
+function rubriekWrapper(type, binnenkant, extraClass) {
+  const meta = RUBRIEK_META[type];
+  return `
+    <div class="nl-section">
+      <div class="rubriek rubriek--${meta.kleur}${extraClass ? ' ' + extraClass : ''}">
+        <div class="rubriek-label">
+          <span>${meta.icoon}</span> ${escapeHtml(meta.label)}
+          ${meta.subtitel ? `<span class="rubriek-subtitel">${escapeHtml(meta.subtitel)}</span>` : ''}
+        </div>
+        <div class="rubriek-body">${binnenkant}</div>
+      </div>
+    </div>`;
+}
+
+function sectionPreviewHTML(sec) {
+  switch (sec.type) {
+    /* --- Vaste rubrieken --- */
+    case 'kopvandemaand':
+      return rubriekWrapper(sec.type, `
+        <h3 class="rubriek-kop">${escapeHtml(sec.kop)}</h3>
+        ${sec.term ? `<span class="term-chip">${escapeHtml(sec.term)}</span>` : ''}
+        ${textToParagraphs(sec.uitleg)}
+        ${sec.brug ? `<div class="rubriek-brug">👉 ${escapeHtml(sec.brug)}</div>` : ''}`);
+
+    case 'iam':
+      return rubriekWrapper(sec.type, `
+        <h3 class="rubriek-kop">${escapeHtml(sec.titel)}</h3>
+        ${textToParagraphs(sec.uitleg)}
+        ${sec.tip ? `<div class="rubriek-tip">💡 ${escapeHtml(sec.tip)}</div>` : ''}`);
+
+    case 'stamdata':
+      return rubriekWrapper(sec.type, `
+        <div class="woordenboek">
+          <span class="woord">${escapeHtml(sec.term)}</span>
+          <span class="definitie">${escapeHtml(sec.definitie)}</span>
+        </div>
+        ${textToParagraphs(sec.constatering)}`);
+
+    case 'aianalytics': {
+      const url = safeUrl(sec.link);
+      return rubriekWrapper(sec.type, `
+        <h3 class="rubriek-kop">${escapeHtml(sec.titel)}</h3>
+        ${sec.bron ? `<div class="bron-regel">📄 ${escapeHtml(sec.bron)}</div>` : ''}
+        ${textToParagraphs(sec.uitleg)}
+        ${url ? `<a class="bron-link" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>` : ''}`);
+    }
+
+    case 'successen':
+      return rubriekWrapper(sec.type, `
+        <ul class="successen-lijst">
+          ${(sec.items || []).map(it => `
+            <li><strong>${escapeHtml(it.tekst)}</strong>
+              ${it.toelichting ? `<span class="toelichting">${escapeHtml(it.toelichting)}</span>` : ''}
+            </li>`).join('')}
+        </ul>`);
+
+    case 'jargonjudo':
+      return rubriekWrapper(sec.type, `
+        <div class="jargon-term">${escapeHtml(sec.term)}</div>
+        <div class="jargon-prikkel">“${escapeHtml(sec.prikkel)}”</div>
+        <div class="jargon-stap"><span class="stap-nr">1</span><span>${escapeHtml(sec.observatie)}</span></div>
+        <div class="jargon-stap jargon-stap--pointe"><span class="stap-nr">2</span><span>${escapeHtml(sec.ontknoping)}</span></div>
+        ${sec.striplink ? `<div class="jargon-strip">📖 ${escapeHtml(sec.striplink)}</div>` : ''}`);
+
+    case 'actietips':
+      return rubriekWrapper(sec.type, `
+        ${textToParagraphs(sec.tekst)}
+        ${sec.actie ? `<span class="actie">👉 ${escapeHtml(sec.actie)}</span>` : ''}`);
+
+    case 'vraagvandemaand':
+      return rubriekWrapper(sec.type, `
+        <p class="vraag-tekst">${escapeHtml(sec.vraag)}</p>
+        ${sec.waar ? `<p>${escapeHtml(sec.waar)}</p>` : ''}
+        ${sec.beloning ? `<div class="beloning">🍪 ${escapeHtml(sec.beloning)}</div>` : ''}`, 'vraag-coupon');
+
+    /* --- Vrije blokken --- */
+    case 'wistjedat':
+      return `
+        <div class="nl-section">
+          <div class="nl-section-title"><span class="icon-badge">${escapeHtml(sec.emoji || '💡')}</span> ${escapeHtml(sec.titel)}</div>
+          <div class="card-wistjedat">
+            <span class="stempel">Wist je dat?</span>
+            <div class="bron">${escapeHtml(sec.bron)}</div>
+            <blockquote>${escapeHtml(sec.citaat)}</blockquote>
+            ${textToParagraphs(sec.uitleg)}
+          </div>
+        </div>`;
+    case 'onderwerp':
+      return `
+        <div class="nl-section">
+          <div class="nl-section-title"><span class="icon-badge">${escapeHtml(sec.icoon || '📘')}</span> ${escapeHtml(sec.titel)}</div>
+          <div class="card-onderwerp">
+            ${textToParagraphs(sec.uitleg)}
+            <div class="waarom"><strong>Waarom dit ertoe doet:</strong> ${escapeHtml(sec.waarom)}</div>
+            ${sec.actie ? `<span class="actie">👉 ${escapeHtml(sec.actie)}</span>` : ''}
+          </div>
+        </div>`;
+    case 'cijfer':
+      return `
+        <div class="nl-section">
+          <div class="nl-section-title"><span class="icon-badge">📊</span> ${escapeHtml(sec.titel)}</div>
+          <div class="cijfer-grid">
+            ${sec.tiles.map(t => `
+              <div class="cijfer-tile">
+                <div class="getal">${escapeHtml(t.getal)}</div>
+                <div class="label">${escapeHtml(t.label)}</div>
+                ${t.toelichting ? `<div class="toelichting">${escapeHtml(t.toelichting)}</div>` : ''}
+              </div>`).join('')}
+          </div>
+        </div>`;
+    case 'quote':
+      return `
+        <div class="nl-section">
+          <div class="card-quote">
+            “${escapeHtml(sec.quote)}”
+            <div class="naam">${escapeHtml(sec.naam)} <span class="functie">— ${escapeHtml(sec.functie)}</span></div>
+          </div>
+        </div>`;
+    case 'tekst':
+      return `
+        <div class="nl-section">
+          ${sec.titel ? `<div class="nl-section-title"><span class="icon-badge">📝</span> ${escapeHtml(sec.titel)}</div>` : ''}
+          <div class="card-tekst">${textToParagraphs(sec.tekst)}</div>
+        </div>`;
+    default:
+      return '';
+  }
+}
+
+function renderPreview() {
+  const m = state.meta, v = state.voorwoord, f = state.footer, st = state.strip;
+  els.previewSheet.innerHTML = `
+    <div class="nl-header">
+      <span class="eyebrow">${escapeHtml(m.editie || 'CONO Nieuwsbrief')}</span>
+      <h1>${escapeHtml(m.titel || 'CONO Databericht')}</h1>
+      <div class="subtitle">${escapeHtml(m.ondertitel)}</div>
+      <div class="meta-row"><span>📅 ${escapeHtml(m.datum)}</span></div>
+    </div>
+    <div class="nl-body">
+      ${v.tekst ? `
+      <div class="nl-intro">
+        ${textToParagraphs(v.tekst)}
+        ${v.auteur ? `<div class="auteur">— ${escapeHtml(v.auteur)}</div>` : ''}
+      </div>` : ''}
+
+      ${state.sections.length ? state.sections.map(sectionPreviewHTML).join('') : `<p class="empty-state">Voeg links secties toe om de nieuwsbrief te vullen.</p>`}
+
+      ${(st.titel || st.teaser) ? `
+      <div class="nl-strip-teaser">
+        <div class="txt">
+          <strong>📖 ${escapeHtml(st.titel || 'Strip van deze editie')}</strong>
+          ${escapeHtml(st.teaser)}
+        </div>
+        <span class="onderwerp-tag" style="background:#fff;color:var(--cono-green-dark);">zie de strip</span>
+      </div>` : ''}
+    </div>
+    <div class="nl-footer">
+      <span>✉️ ${escapeHtml(f.contact)}</span>
+      <span>${escapeHtml(f.volgende)}</span>
+    </div>
+  `;
+}
+
+/* --------------------------------- Toolbar -------------------------------- */
+document.getElementById('btn-nieuw').addEventListener('click', () => {
+  if (!confirm('Dit wist het huidige formulier en start een lege editie. Doorgaan?')) return;
+  state = defaultState();
+  fillStaticFields();
+  herteken();
+});
+
+document.getElementById('btn-voorbeeld').addEventListener('click', () => {
+  if (!confirm('Dit vervangt de huidige inhoud door de voorbeeldeditie. Doorgaan?')) return;
+  state = voorbeeldState();
+  fillStaticFields();
+  herteken();
+});
+
+document.getElementById('btn-export').addEventListener('click', () => {
+  const naam = (state.meta.editie || 'cono-nieuwsbrief').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  exporteerJSON(`${naam}.json`, state);
+});
+
+document.getElementById('input-import').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  readJSONFile(file, (data) => {
+    state = Object.assign(defaultState(), data);
+    fillStaticFields();
+    herteken();
+  }, () => alert('Dit bestand kon niet worden gelezen. Is het een geldig JSON-exportbestand?'));
+  e.target.value = '';
+});
+
+document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+/* ---------------------------------- Init ---------------------------------- */
+fillStaticFields();
+attachStaticBindings();
+renderSectionsEditor();
+renderPreview();
+
+})();
+(function () {
+/* Gedeelde hulpfuncties voor de nieuwsbrief- en stripbouwer. */
+
+function uid() {
+  return 'id-' + Math.random().toString(36).slice(2, 10);
+}
+
+function debounce(fn, wait) {
+  let t;
+  return function (...args) {
+    clearTimeout(t);
+    t = setTimeout(() => fn.apply(this, args), wait);
+  };
+}
+
+function escapeHtml(str) {
+  if (str === undefined || str === null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+// Zet platte tekst met enters om naar veilige <p>-blokken voor de preview.
+function textToParagraphs(str) {
+  if (!str) return '';
+  return String(str)
+    .split(/\n{2,}/)
+    .map(p => `<p>${escapeHtml(p).replace(/\n/g, '<br>')}</p>`)
+    .join('');
+}
+
+// Laat alleen echte web-links door, zodat een geïmporteerd bestand geen
+// javascript:-link in de nieuwsbrief kan zetten.
+function safeUrl(str) {
+  if (!str) return '';
+  const trimmed = String(str).trim();
+  try {
+    const parsed = new URL(trimmed, window.location.href);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+  } catch (e) {
+    return '';
+  }
+}
+
+function saveLocal(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch (e) {
+    console.warn('Opslaan mislukt:', e);
+    return false;
+  }
+}
+
+function loadLocal(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    console.warn('Laden mislukt:', e);
+    return null;
+  }
+}
+
+function downloadJSON(filename, data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* Een bestand opslaan. In een gewone browser (lokaal of op een webserver)
+   kan dat rechtstreeks. In de gedeelde online versie draait de pagina
+   afgeschermd en loopt opslaan via de host, die het de kijker eerst vraagt. */
+function bewaarBestand(filename, data, json, knop) {
+  const oorspronkelijk = knop.textContent;
+  const melding = (tekst) => {
+    knop.textContent = tekst;
+    setTimeout(() => { knop.textContent = oorspronkelijk; }, 2500);
+  };
+
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('downloads').then((downloads) => {
+      if (!downloads) {
+        melding('Opslaan kan hier niet — gebruik Kopiëren');
+        return;
+      }
+      return downloads.save({ filename, data: json }).then(
+        () => melding('✓ Opgeslagen'),
+        (fout) => {
+          if (fout && fout.code === 'declined') return;
+          melding('Opslaan lukte niet — gebruik Kopiëren');
+        }
+      );
+    });
+    return;
+  }
+
+  downloadJSON(filename, data);
+}
+
+/* Exporteren via een dialoog met zowel "kopiëren" als "opslaan": kopiëren
+   werkt overal, opslaan waar de omgeving dat toestaat. */
+function exporteerJSON(filename, data) {
+  const json = JSON.stringify(data, null, 2);
+  const vorigeFocus = document.activeElement;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'deel-overlay';
+  overlay.innerHTML = `
+    <div class="deel-kaart" role="dialog" aria-modal="true" aria-label="Exporteren">
+      <h3>Deze editie bewaren of delen</h3>
+      <p>Kopieer de tekst hieronder en bewaar 'm, of mail 'm naar een collega. Met <strong>Importeer JSON</strong> laadt diegene de editie precies zo weer in.</p>
+      <textarea readonly rows="8" class="deel-tekst"></textarea>
+      <div class="deel-knoppen">
+        <button type="button" class="btn btn-primary" data-deel="kopieer">📋 Kopieer naar klembord</button>
+        <button type="button" class="btn btn-ghost" data-deel="download">💾 Opslaan als bestand</button>
+        <button type="button" class="btn btn-ghost" data-deel="sluit">Sluiten</button>
+      </div>
+    </div>`;
+
+  const tekstvak = overlay.querySelector('.deel-tekst');
+  tekstvak.value = json;
+
+  function sluit() {
+    overlay.remove();
+    document.removeEventListener('keydown', opToets);
+    if (vorigeFocus && vorigeFocus.focus) vorigeFocus.focus();
+  }
+  function opToets(e) { if (e.key === 'Escape') sluit(); }
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) { sluit(); return; }
+    const knop = e.target.closest('button[data-deel]');
+    if (!knop) return;
+
+    if (knop.dataset.deel === 'sluit') {
+      sluit();
+    } else if (knop.dataset.deel === 'download') {
+      bewaarBestand(filename, data, json, knop);
+    } else {
+      tekstvak.select();
+      const klaar = () => { knop.textContent = '✓ Gekopieerd'; setTimeout(() => { knop.textContent = '📋 Kopieer naar klembord'; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(json).then(klaar, () => { knop.textContent = 'Kopiëren lukte niet — selecteer de tekst en gebruik Ctrl+C'; });
+      } else {
+        knop.textContent = 'Selecteer de tekst en gebruik Ctrl+C';
+      }
+    }
+  });
+
+  document.addEventListener('keydown', opToets);
+  document.body.appendChild(overlay);
+  tekstvak.focus();
+  tekstvak.select();
+}
+
+function readJSONFile(file, onLoaded, onError) {
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      onLoaded(data);
+    } catch (e) {
+      if (onError) onError(e);
+      else console.warn('Kon bestand niet lezen:', e);
+    }
+  };
+  reader.onerror = () => { if (onError) onError(reader.error); };
+  reader.readAsText(file);
+}
+
+function showStatus(el, message, revertAfterMs) {
+  if (!el) return;
+  el.textContent = message;
+  if (revertAfterMs) {
+    setTimeout(() => { el.textContent = 'Automatisch opgeslagen in deze browser.'; }, revertAfterMs);
+  }
+}
+
+function todayNL() {
+  const d = new Date();
+  const maanden = ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'];
+  return `${d.getDate()} ${maanden[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+/* CONO Strip maker — vaste 6-vaks huisstijl, wisselende inhoud per onderwerp. */
+
+const STORAGE_KEY = 'cono_strip_draft_v1';
+const PANEL_COUNT = 6;
+
+const SPREKERS = {
+  daan: { naam: 'Data-Daan', kleur: '#2f6fb0' },
+  bert: { naam: 'Boer Bert', kleur: '#345c34' },
+  verteller: { naam: 'Verteller', kleur: '#e0a730' },
+  geen: { naam: 'Geen (alleen beeld)', kleur: '#9c8b6b' }
+};
+
+const SCENES = {
+  kaasfabriek: 'Kaasfabriek',
+  kantoor: 'Kantoor',
+  vergaderzaal: 'Vergaderzaal',
+  wei: 'Buiten / wei',
+  strand: 'Strand / zwembad',
+  laptop: 'Laptop-close-up',
+  feest: 'Feestje'
+};
+
+/* Optioneel voorwerp dat het personage omhooghoudt. */
+const PROPS = {
+  geen: 'Geen',
+  ijsje: 'IJsje',
+  kaaswiel: 'Kaaswiel',
+  grafiek: 'Grafiekje',
+  vraagteken: 'Vraagteken',
+  sleutel: 'Sleutel'
+};
+
+function defaultPanel(i) {
+  const volgorde = ['kaasfabriek', 'kantoor', 'vergaderzaal', 'wei', 'laptop', 'feest'];
+  const sprekers = ['bert', 'daan', 'daan', 'bert', 'verteller', 'geen'];
+  return { id: uid(), scene: volgorde[i] || 'kantoor', spreker: sprekers[i] || 'geen', prop: 'geen', tekst: '' };
+}
+
+function defaultState() {
+  return {
+    titel: 'Data-Daan en Boer Bert',
+    onderwerp: 'Thema: nieuw onderwerp',
+    panels: Array.from({ length: PANEL_COUNT }, (_, i) => defaultPanel(i))
+  };
+}
+
+/* Voorbeeld: de JargonJudo-strip bij de rubriek "Causaal verband". */
+function voorbeeldState() {
+  return {
+    titel: 'JargonJudo: causaal verband',
+    onderwerp: 'Thema: correlatie is geen oorzaak',
+    panels: [
+      { id: uid(), scene: 'laptop', spreker: 'daan', prop: 'geen', tekst: 'Kijk nou! Hoe meer ijsjes er verkocht worden, hoe meer mensen er verdrinken.' },
+      { id: uid(), scene: 'kantoor', spreker: 'bert', prop: 'ijsje', tekst: 'Dat is ernstig, Daan. We moeten het ijs verbieden. Vandaag nog!' },
+      { id: uid(), scene: 'vergaderzaal', spreker: 'verteller', tekst: 'Het voorstel "IJsverbod redt levens" gaat naar de directie.' },
+      { id: uid(), scene: 'kantoor', spreker: 'daan', prop: 'vraagteken', tekst: 'Wacht eens... denk jij echt dat een hoorntje iemand het water in duwt?' },
+      { id: uid(), scene: 'strand', spreker: 'bert', prop: 'ijsje', tekst: 'Oh. Het is gewoon warm. Dus méér zwemmers én méér ijsjes.' },
+      { id: uid(), scene: 'strand', spreker: 'geen', tekst: 'Twee dingen die samen bewegen, veroorzaken elkaar niet. Geniet van je ijsje. 🍦' }
+    ]
+  };
+}
+
+let state = loadLocal(STORAGE_KEY) || voorbeeldState();
+
+const els = {
+  titel: document.getElementById('st-titel'),
+  onderwerp: document.getElementById('st-onderwerp'),
+  panelsEditor: document.getElementById('st-panels-editor'),
+  sheet: document.getElementById('st-sheet'),
+  status: document.getElementById('st-status')
+};
+
+const persist = debounce(() => {
+  saveLocal(STORAGE_KEY, state);
+  showStatus(els.status, 'Opgeslagen ✓', 1500);
+}, 300);
+
+/* ------------------------------- Editor UI -------------------------------- */
+function fillStaticFields() {
+  els.titel.value = state.titel;
+  els.onderwerp.value = state.onderwerp;
+}
+
+function attachStaticBindings() {
+  els.titel.addEventListener('input', () => { state.titel = els.titel.value; persist(); renderPreview(); });
+  els.onderwerp.addEventListener('input', () => { state.onderwerp = els.onderwerp.value; persist(); renderPreview(); });
+}
+
+function optionsHTML(map, selected) {
+  return Object.entries(map).map(([k, v]) =>
+    `<option value="${k}" ${k === selected ? 'selected' : ''}>${typeof v === 'string' ? v : v.naam}</option>`
+  ).join('');
+}
+
+function renderPanelsEditor() {
+  els.panelsEditor.innerHTML = state.panels.map((p, i) => `
+    <div class="section-card" data-panel-row="${p.id}">
+      <div class="section-card-head">
+        <span class="section-type-label">Vakje ${i + 1}</span>
+      </div>
+      <div class="field">
+        <label>Spreker</label>
+        <select data-field="spreker" data-panel="${p.id}">${optionsHTML(SPREKERS, p.spreker)}</select>
+      </div>
+      <div class="field">
+        <label>Decor</label>
+        <select data-field="scene" data-panel="${p.id}">${optionsHTML(SCENES, p.scene)}</select>
+      </div>
+      <div class="field">
+        <label>Voorwerp</label>
+        <select data-field="prop" data-panel="${p.id}">${optionsHTML(PROPS, p.prop || 'geen')}</select>
+      </div>
+      <div class="field">
+        <label>Tekst${p.spreker === 'geen' ? ' (optioneel bijschrift)' : ''}</label>
+        <textarea data-field="tekst" data-panel="${p.id}" rows="2" placeholder="Wat wordt hier gezegd of getoond?">${escapeHtml(p.tekst)}</textarea>
+      </div>
+    </div>
+  `).join('');
+}
+
+els.panelsEditor.addEventListener('input', (e) => {
+  const t = e.target;
+  const panel = state.panels.find(p => p.id === t.dataset.panel);
+  if (!panel || !t.dataset.field) return;
+  panel[t.dataset.field] = t.value;
+  persist();
+  renderPreview();
+});
+
+/* -------------------------------- SVG bouwers ------------------------------ */
+function wrapText(text, maxChars) {
+  const words = (text || '').split(/\s+/).filter(Boolean);
+  const lines = [];
+  let line = '';
+  words.forEach(w => {
+    const test = line ? line + ' ' + w : w;
+    if (test.length > maxChars && line) {
+      lines.push(line);
+      line = w;
+    } else {
+      line = test;
+    }
+  });
+  if (line) lines.push(line);
+  return lines.slice(0, 4);
+}
+
+function svgTextLines(lines, x, y, lineHeight, opts = {}) {
+  const anchor = opts.anchor || 'middle';
+  const fill = opts.fill || '#2c2013';
+  const weight = opts.weight || '600';
+  const size = opts.size || 13;
+  return `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="Nunito Sans, sans-serif" font-size="${size}" font-weight="${weight}" fill="${fill}">
+    ${lines.map((l, i) => `<tspan x="${x}" dy="${i === 0 ? 0 : lineHeight}">${escapeHtml(l)}</tspan>`).join('')}
+  </text>`;
+}
+
+/* --- Decors (400x300 viewBox) --- */
+function sceneSVG(scene) {
+  switch (scene) {
+    case 'kaasfabriek':
+      return `
+        <rect width="400" height="300" fill="#f4e6bf"/>
+        <rect x="0" y="150" width="400" height="150" fill="#e3d09a"/>
+        <rect x="30" y="60" width="150" height="110" fill="#d8cdb8"/>
+        <polygon points="30,60 105,20 180,60" fill="#b7a98a"/>
+        <rect x="70" y="100" width="30" height="70" fill="#8d7f63"/>
+        <circle cx="280" cy="210" r="55" fill="#e0a730"/>
+        <circle cx="280" cy="210" r="55" fill="none" stroke="#c68a1f" stroke-width="4"/>
+        <circle cx="260" cy="195" r="5" fill="#c68a1f"/>
+        <circle cx="300" cy="200" r="4" fill="#c68a1f"/>
+        <circle cx="285" cy="225" r="6" fill="#c68a1f"/>
+        <circle cx="255" cy="225" r="4" fill="#c68a1f"/>
+        <rect x="330" y="120" width="14" height="90" fill="#9c8b6b"/>
+        <rect x="322" y="100" width="30" height="24" fill="#c8262a"/>`;
+    case 'kantoor':
+      return `
+        <rect width="400" height="300" fill="#eef1e9"/>
+        <rect x="0" y="200" width="400" height="100" fill="#d9cba4"/>
+        <rect x="60" y="120" width="140" height="90" rx="6" fill="#345c34"/>
+        <rect x="72" y="132" width="116" height="60" fill="#eaf3e6"/>
+        <polyline points="82,180 105,150 125,165 150,135 178,150" fill="none" stroke="#c8262a" stroke-width="3"/>
+        <rect x="118" y="210" width="24" height="16" fill="#5c4f39"/>
+        <rect x="240" y="150" width="90" height="60" fill="#8d7f63"/>
+        <circle cx="330" cy="150" r="18" fill="#568a4f"/>
+        <rect x="322" y="150" width="16" height="40" fill="#8d7f63"/>`;
+    case 'vergaderzaal':
+      return `
+        <rect width="400" height="300" fill="#f7f0dd"/>
+        <rect x="130" y="34" width="150" height="84" fill="#fff" stroke="#345c34" stroke-width="4"/>
+        <polyline points="150,100 178,66 200,86 228,58 262,82" fill="none" stroke="#c8262a" stroke-width="3"/>
+        <rect x="28" y="148" width="8" height="34" rx="3" fill="#5c4f39"/>
+        <rect x="28" y="182" width="40" height="8" rx="2" fill="#5c4f39"/>
+        <rect x="60" y="190" width="7" height="18" fill="#5c4f39"/>
+        <rect x="364" y="148" width="8" height="34" rx="3" fill="#5c4f39"/>
+        <rect x="332" y="182" width="40" height="8" rx="2" fill="#5c4f39"/>
+        <rect x="333" y="190" width="7" height="18" fill="#5c4f39"/>
+        <ellipse cx="200" cy="218" rx="145" ry="45" fill="#b8955c"/>
+        <ellipse cx="200" cy="213" rx="145" ry="45" fill="#d8b87c"/>
+        <rect x="118" y="198" width="40" height="27" rx="3" fill="#fdfdfd" transform="rotate(-7 138 211)"/>
+        <rect x="246" y="208" width="40" height="27" rx="3" fill="#fdfdfd" transform="rotate(6 266 221)"/>
+        <circle cx="200" cy="236" r="9" fill="#fdfdfd" stroke="#b8955c" stroke-width="2"/>`;
+    case 'wei':
+      return `
+        <rect width="400" height="180" fill="#bcdcf0"/>
+        <circle cx="330" cy="60" r="30" fill="#f4d998"/>
+        <rect x="0" y="180" width="400" height="120" fill="#7fae5c"/>
+        <rect x="0" y="175" width="400" height="14" fill="#5c8f45"/>
+        <ellipse cx="110" cy="235" rx="38" ry="24" fill="#fdfdfd"/>
+        <circle cx="80" cy="222" r="8" fill="#2c2013"/>
+        <circle cx="120" cy="240" r="7" fill="#2c2013"/>
+        <circle cx="90" cy="245" r="5" fill="#2c2013"/>
+        <rect x="20" y="260" width="360" height="6" fill="#8d7f63"/>
+        <rect x="40" y="245" width="6" height="35" fill="#8d7f63"/>
+        <rect x="140" y="245" width="6" height="35" fill="#8d7f63"/>
+        <rect x="260" y="245" width="6" height="35" fill="#8d7f63"/>
+        <rect x="360" y="245" width="6" height="35" fill="#8d7f63"/>`;
+    case 'strand':
+      return `
+        <rect width="400" height="300" fill="#bcdcf0"/>
+        <circle cx="60" cy="50" r="26" fill="#f4d998"/>
+        <rect x="0" y="130" width="400" height="80" fill="#4f9fd0"/>
+        <path d="M 0 150 q 25 -10 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" fill="none" stroke="#bcdcf0" stroke-width="3"/>
+        <path d="M 0 180 q 25 -10 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" fill="none" stroke="#8ec4e4" stroke-width="3"/>
+        <rect x="0" y="205" width="400" height="95" fill="#f0dfae"/>
+        <rect x="132" y="220" width="84" height="28" rx="4" fill="#c8262a"/>
+        <rect x="132" y="229" width="84" height="8" fill="#fdfdfd"/>
+        <circle cx="108" cy="232" r="13" fill="#fdfdfd" stroke="#2c2013" stroke-width="2"/>
+        <ellipse cx="108" cy="232" rx="4.5" ry="13" fill="#c8262a"/>`;
+    case 'laptop':
+      return `
+        <rect width="400" height="300" fill="#2c2013"/>
+        <rect x="80" y="70" width="240" height="140" rx="6" fill="#1f1710"/>
+        <rect x="92" y="82" width="216" height="116" fill="#345c34"/>
+        <rect x="112" y="150" width="20" height="40" fill="#e0a730"/>
+        <rect x="142" y="130" width="20" height="60" fill="#f4d998"/>
+        <rect x="172" y="110" width="20" height="80" fill="#e0a730"/>
+        <rect x="202" y="140" width="20" height="50" fill="#f4d998"/>
+        <rect x="232" y="120" width="20" height="70" fill="#e0a730"/>
+        <polygon points="60,210 340,210 380,270 20,270" fill="#4a3c26"/>
+        <rect x="150" y="220" width="100" height="8" fill="#2c2013"/>`;
+    case 'feest':
+      return `
+        <rect width="400" height="300" fill="#f4d998"/>
+        <polygon points="0,0 30,0 15,30" fill="#c8262a"/>
+        <polygon points="60,0 90,0 75,30" fill="#345c34"/>
+        <polygon points="120,0 150,0 135,30" fill="#c8262a"/>
+        <polygon points="180,0 210,0 195,30" fill="#345c34"/>
+        <polygon points="240,0 270,0 255,30" fill="#c8262a"/>
+        <polygon points="300,0 330,0 315,30" fill="#345c34"/>
+        <polygon points="360,0 390,0 375,30" fill="#c8262a"/>
+        <circle cx="60" cy="80" r="6" fill="#c8262a"/>
+        <circle cx="340" cy="100" r="6" fill="#345c34"/>
+        <circle cx="100" cy="130" r="5" fill="#e0a730"/>
+        <circle cx="300" cy="60" r="5" fill="#c8262a"/>
+        <rect x="90" y="210" width="220" height="18" fill="#8d7f63"/>
+        <circle cx="150" cy="200" r="26" fill="#e0a730"/>
+        <circle cx="240" cy="205" r="20" fill="#f4d998" stroke="#e0a730" stroke-width="3"/>`;
+    default:
+      return `<rect width="400" height="300" fill="#eef1e9"/>`;
+  }
+}
+
+/* --- Personages --- */
+function daanAvatar(x, y, scale = 1) {
+  return `<g transform="translate(${x},${y}) scale(${scale})">
+    <rect x="-32" y="10" width="64" height="70" rx="14" fill="#2f6fb0"/>
+    <circle cx="0" cy="-6" r="28" fill="#f3cfa0"/>
+    <path d="M -26 -18 Q 0 -42 26 -18 Q 20 -30 0 -30 Q -20 -30 -26 -18 Z" fill="#4a3626"/>
+    <circle cx="-11" cy="-4" r="8" fill="none" stroke="#2c2013" stroke-width="2.5"/>
+    <circle cx="11" cy="-4" r="8" fill="none" stroke="#2c2013" stroke-width="2.5"/>
+    <line x1="-3" y1="-4" x2="3" y2="-4" stroke="#2c2013" stroke-width="2.5"/>
+    <path d="M -6 8 Q 0 12 6 8" fill="none" stroke="#8a5a3a" stroke-width="2"/>
+    <rect x="-22" y="40" width="30" height="22" rx="3" fill="#e8e8e8" stroke="#9c8b6b" stroke-width="2"/>
+    <polyline points="-18,58 -10,46 -3,52 6,40" fill="none" stroke="#c8262a" stroke-width="2"/>
+  </g>`;
+}
+
+function bertAvatar(x, y, scale = 1) {
+  return `<g transform="translate(${x},${y}) scale(${scale})">
+    <path d="M -34 80 L -26 10 Q 0 -2 26 10 L 34 80 Z" fill="#345c34"/>
+    <rect x="-14" y="20" width="28" height="34" fill="#f4d998" stroke="#24401f" stroke-width="2"/>
+    <circle cx="0" cy="-6" r="28" fill="#f3cfa0"/>
+    <path d="M -28 -14 Q 0 -34 28 -14 L 26 -22 Q 0 -36 -26 -22 Z" fill="#fdfdfd" stroke="#dcdcdc" stroke-width="1"/>
+    <circle cx="-11" cy="-6" r="4" fill="#2c2013"/>
+    <circle cx="11" cy="-6" r="4" fill="#2c2013"/>
+    <path d="M -14 8 Q 0 4 14 8 Q 0 16 -14 8 Z" fill="#7a5230"/>
+    <circle cx="34" cy="40" r="20" fill="#e0a730"/>
+    <circle cx="27" cy="33" r="3" fill="#c68a1f"/>
+    <circle cx="40" cy="45" r="3" fill="#c68a1f"/>
+  </g>`;
+}
+
+/* Voorwerpen, getekend rond hun eigen middelpunt (0,0). */
+function propSVG(type, x, y) {
+  let vorm = '';
+  switch (type) {
+    case 'ijsje':
+      vorm = `
+        <polygon points="-13,-2 13,-2 0,30" fill="#d9a441" stroke="#a8761f" stroke-width="2"/>
+        <circle cx="-6" cy="-8" r="11" fill="#f6c9d4" stroke="#d99bab" stroke-width="2"/>
+        <circle cx="7" cy="-10" r="11" fill="#fdf4e0" stroke="#d9c9a6" stroke-width="2"/>
+        <circle cx="0" cy="-20" r="10" fill="#a95f3d" stroke="#7f452a" stroke-width="2"/>`;
+      break;
+    case 'kaaswiel':
+      vorm = `
+        <circle cx="0" cy="0" r="20" fill="#e0a730" stroke="#a8761f" stroke-width="3"/>
+        <circle cx="-7" cy="-5" r="4" fill="#c68a1f"/>
+        <circle cx="6" cy="3" r="3" fill="#c68a1f"/>
+        <circle cx="-2" cy="9" r="3" fill="#c68a1f"/>`;
+      break;
+    case 'grafiek':
+      vorm = `
+        <rect x="-22" y="-18" width="44" height="36" rx="3" fill="#fdfdfd" stroke="#2c2013" stroke-width="3"/>
+        <polyline points="-16,10 -6,-4 2,4 14,-12" fill="none" stroke="#c8262a" stroke-width="3"/>
+        <line x1="-16" y1="12" x2="16" y2="12" stroke="#9c8b6b" stroke-width="2"/>`;
+      break;
+    case 'vraagteken':
+      vorm = `
+        <circle cx="0" cy="0" r="20" fill="#fdfdfd" stroke="#2c2013" stroke-width="3"/>
+        <text x="0" y="9" text-anchor="middle" font-family="Poppins, sans-serif" font-size="26" font-weight="800" fill="#c8262a">?</text>`;
+      break;
+    case 'sleutel':
+      vorm = `
+        <circle cx="-10" cy="0" r="10" fill="none" stroke="#e0a730" stroke-width="6"/>
+        <rect x="-2" y="-3" width="26" height="6" fill="#e0a730"/>
+        <rect x="14" y="3" width="5" height="8" fill="#e0a730"/>
+        <rect x="22" y="3" width="5" height="8" fill="#e0a730"/>`;
+      break;
+    default:
+      return '';
+  }
+  return `<g transform="translate(${x},${y})">${vorm}</g>`;
+}
+
+function speechBubble(text, side) {
+  const isLeft = side === 'left';
+  const bx = isLeft ? 16 : 172;
+  const bw = 212;
+  const by = 14;
+  const bh = 86;
+  const tailPoints = isLeft
+    ? `${bx + 46},${by + bh} ${bx + 70},${by + bh} ${bx + 40},${by + bh + 22}`
+    : `${bx + bw - 70},${by + bh} ${bx + bw - 46},${by + bh} ${bx + bw - 40},${by + bh + 22}`;
+  const lines = wrapText(text || '...', 24);
+  const textBlock = svgTextLines(lines, bx + bw / 2, by + 30, 17, { anchor: 'middle', size: 13.5 });
+  return `
+    <g>
+      <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="16" fill="#ffffff" stroke="#2c2013" stroke-width="3"/>
+      <polygon points="${tailPoints}" fill="#ffffff" stroke="#2c2013" stroke-width="3"/>
+      <polygon points="${tailPoints}" fill="#ffffff"/>
+      ${textBlock}
+    </g>`;
+}
+
+function captionBanner(text) {
+  const lines = wrapText(text || '...', 44);
+  return `
+    <g>
+      <rect x="0" y="0" width="400" height="${34 + (lines.length - 1) * 16}" fill="#e0a730"/>
+      ${svgTextLines(lines, 200, 22, 16, { anchor: 'middle', size: 14, fill: '#2c2013', weight: '800' })}
+    </g>`;
+}
+
+function captionBottom(text) {
+  const lines = wrapText(text, 46);
+  const h = 22 + (lines.length - 1) * 15;
+  return `
+    <g>
+      <rect x="0" y="${300 - h - 10}" width="400" height="${h + 10}" fill="rgba(44,32,19,0.82)"/>
+      ${svgTextLines(lines, 200, 300 - h + 8, 15, { anchor: 'middle', size: 12.5, fill: '#fff', weight: '600' })}
+    </g>`;
+}
+
+function renderPanelSVG(panel) {
+  const bg = sceneSVG(panel.scene);
+  let overlay = '';
+  let prop = '';
+  if (panel.spreker === 'daan') {
+    overlay = daanAvatar(80, 210, 1) + speechBubble(panel.tekst, 'left');
+    prop = propSVG(panel.prop, 160, 215);
+  } else if (panel.spreker === 'bert') {
+    overlay = bertAvatar(320, 210, 1) + speechBubble(panel.tekst, 'right');
+    prop = propSVG(panel.prop, 240, 215);
+  } else if (panel.spreker === 'verteller') {
+    overlay = captionBanner(panel.tekst);
+    prop = propSVG(panel.prop, 200, 180);
+  } else {
+    if (panel.tekst) overlay = captionBottom(panel.tekst);
+    prop = propSVG(panel.prop, 200, 180);
+  }
+  return `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">${bg}${prop}${overlay}</svg>`;
+}
+
+/* -------------------------------- Preview -------------------------------- */
+function renderPreview() {
+  els.sheet.innerHTML = `
+    <div class="strip-header">
+      <span class="strip-kicker">CONO Strip</span>
+      <h1>${escapeHtml(state.titel || 'Data-Daan en Boer Bert')}</h1>
+      ${state.onderwerp ? `<span class="onderwerp-tag">${escapeHtml(state.onderwerp)}</span>` : ''}
+    </div>
+    <div class="strip-grid">
+      ${state.panels.map((p, i) => `
+        <div class="strip-panel">
+          <span class="panel-number">${i + 1}</span>
+          ${renderPanelSVG(p)}
+        </div>
+      `).join('')}
+    </div>
+    <div class="legend-cast">
+      <span class="cast-item"><span class="swatch" style="background:${SPREKERS.daan.kleur}"></span> Data-Daan</span>
+      <span class="cast-item"><span class="swatch" style="background:${SPREKERS.bert.kleur}"></span> Boer Bert</span>
+      <span class="cast-item"><span class="swatch" style="background:${SPREKERS.verteller.kleur}"></span> Verteller</span>
+    </div>
+    <p class="strip-footer-note">Vast stripformaat van CONO Kaasmakers — vul per editie een nieuw onderwerp in via het formulier links.</p>
+  `;
+}
+
+/* --------------------------------- Toolbar -------------------------------- */
+document.getElementById('st-btn-nieuw').addEventListener('click', () => {
+  if (!confirm('Dit wist de huidige strip en start een lege versie. Doorgaan?')) return;
+  state = defaultState();
+  fillStaticFields();
+  renderPanelsEditor();
+  renderPreview();
+  persist();
+});
+
+document.getElementById('st-btn-voorbeeld').addEventListener('click', () => {
+  if (!confirm('Dit vervangt de huidige strip door een voorbeeld. Doorgaan?')) return;
+  state = voorbeeldState();
+  fillStaticFields();
+  renderPanelsEditor();
+  renderPreview();
+  persist();
+});
+
+document.getElementById('st-btn-export').addEventListener('click', () => {
+  const naam = (state.titel || 'cono-strip').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+  exporteerJSON(`${naam}.json`, state);
+});
+
+document.getElementById('st-input-import').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  readJSONFile(file, (data) => {
+    if (!data.panels || data.panels.length !== PANEL_COUNT) {
+      alert(`Dit bestand heeft geen geldige set van ${PANEL_COUNT} vakjes.`);
+      return;
+    }
+    state = data;
+    fillStaticFields();
+    renderPanelsEditor();
+    renderPreview();
+    persist();
+  }, () => alert('Dit bestand kon niet worden gelezen. Is het een geldig JSON-exportbestand?'));
+  e.target.value = '';
+});
+
+document.getElementById('st-btn-print').addEventListener('click', () => window.print());
+
+/* ---------------------------------- Init ---------------------------------- */
+fillStaticFields();
+attachStaticBindings();
+renderPanelsEditor();
+renderPreview();
+
+})();
+
+(function () {
+  var TAB_KEY = 'cono_actief_tabblad';
+  var panelen = {
+    nieuwsbrief: document.getElementById('paneel-nieuwsbrief'),
+    strip: document.getElementById('paneel-strip')
+  };
+  var knoppen = Array.prototype.slice.call(document.querySelectorAll('.tabknop'));
+
+  function toon(naam) {
+    if (!panelen[naam]) return;
+    Object.keys(panelen).forEach(function (sleutel) {
+      panelen[sleutel].hidden = (sleutel !== naam);
+    });
+    knoppen.forEach(function (knop) {
+      knop.setAttribute('aria-selected', String(knop.dataset.tab === naam));
+    });
+    try { localStorage.setItem(TAB_KEY, naam); } catch (e) { /* geen opslag beschikbaar */ }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.addEventListener('click', function (e) {
+    var trigger = e.target.closest('[data-tab]');
+    if (!trigger) return;
+    e.preventDefault();
+    toon(trigger.dataset.tab);
+  });
+
+  try {
+    var bewaard = localStorage.getItem(TAB_KEY);
+    if (bewaard && panelen[bewaard]) toon(bewaard);
+  } catch (e) { /* geen opslag beschikbaar */ }
+})();
+</script>

@@ -9,6 +9,28 @@ geen installatie of build-stap nodig — gewoon openen in de browser.
 Open `index.html` in een browser (dubbelklikken volstaat), of host de map als
 statische site (GitHub Pages, Netlify, een interne webserver, etc.).
 
+## Delen met collega's
+
+Er zijn drie manieren, van makkelijk naar netst:
+
+1. **Eén los bestand.** `dist/index.html` is de hele tool — nieuwsbrief én
+   strip, als twee tabbladen — in één bestand, zonder losse onderdelen. Je
+   kunt dat bestand mailen of op een gedeelde schijf zetten; dubbelklikken
+   is genoeg. Dit bestand wordt gegenereerd, dus pas het niet met de hand
+   aan; draai in plaats daarvan `node build-artifact.js` opnieuw nadat je
+   iets in de bronbestanden hebt veranderd.
+2. **Een online link.** Datzelfde bestand is gepubliceerd als deelbare
+   pagina, zodat collega's alleen een link nodig hebben.
+3. **GitHub Pages.** Zet in de repository-instellingen Pages aan op de
+   branch die je wilt tonen; de site staat dan op
+   `https://<gebruikersnaam>.github.io/Newsletter/` en werkt met de losse
+   pagina's uit deze map. Elke push werkt de site meteen bij.
+
+In een afgeschermde online omgeving mag een pagina zelf geen bestanden
+wegschrijven. Daarom biedt **Exporteer JSON** altijd óók "Kopieer naar
+klembord" aan: dat werkt overal, en de gekopieerde tekst kan de ontvanger
+via **Importeer JSON** weer inladen.
+
 ## Onderdelen
 
 - **`index.html`** — landingspagina met uitleg en links naar de twee tools.

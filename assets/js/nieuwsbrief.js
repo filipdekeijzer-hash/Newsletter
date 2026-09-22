@@ -575,7 +575,7 @@ function renderPreview() {
           <strong>📖 ${escapeHtml(st.titel || 'Strip van deze editie')}</strong>
           ${escapeHtml(st.teaser)}
         </div>
-        <span class="onderwerp-tag" style="background:#fff;color:var(--cono-green-dark);">zie strip.html</span>
+        <span class="onderwerp-tag" style="background:#fff;color:var(--cono-green-dark);">zie de strip</span>
       </div>` : ''}
     </div>
     <div class="nl-footer">
@@ -602,7 +602,7 @@ document.getElementById('btn-voorbeeld').addEventListener('click', () => {
 
 document.getElementById('btn-export').addEventListener('click', () => {
   const naam = (state.meta.editie || 'cono-nieuwsbrief').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  downloadJSON(`${naam}.json`, state);
+  exporteerJSON(`${naam}.json`, state);
 });
 
 document.getElementById('input-import').addEventListener('change', (e) => {

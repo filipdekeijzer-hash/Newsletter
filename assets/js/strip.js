@@ -63,11 +63,11 @@ function voorbeeldState() {
 let state = loadLocal(STORAGE_KEY) || voorbeeldState();
 
 const els = {
-  titel: document.getElementById('f-titel'),
-  onderwerp: document.getElementById('f-onderwerp'),
-  panelsEditor: document.getElementById('panels-editor'),
-  sheet: document.getElementById('strip-sheet'),
-  status: document.getElementById('status-text')
+  titel: document.getElementById('st-titel'),
+  onderwerp: document.getElementById('st-onderwerp'),
+  panelsEditor: document.getElementById('st-panels-editor'),
+  sheet: document.getElementById('st-sheet'),
+  status: document.getElementById('st-status')
 };
 
 const persist = debounce(() => {
@@ -418,7 +418,7 @@ function renderPreview() {
 }
 
 /* --------------------------------- Toolbar -------------------------------- */
-document.getElementById('btn-nieuw').addEventListener('click', () => {
+document.getElementById('st-btn-nieuw').addEventListener('click', () => {
   if (!confirm('Dit wist de huidige strip en start een lege versie. Doorgaan?')) return;
   state = defaultState();
   fillStaticFields();
@@ -427,7 +427,7 @@ document.getElementById('btn-nieuw').addEventListener('click', () => {
   persist();
 });
 
-document.getElementById('btn-voorbeeld').addEventListener('click', () => {
+document.getElementById('st-btn-voorbeeld').addEventListener('click', () => {
   if (!confirm('Dit vervangt de huidige strip door een voorbeeld. Doorgaan?')) return;
   state = voorbeeldState();
   fillStaticFields();
@@ -436,12 +436,12 @@ document.getElementById('btn-voorbeeld').addEventListener('click', () => {
   persist();
 });
 
-document.getElementById('btn-export').addEventListener('click', () => {
+document.getElementById('st-btn-export').addEventListener('click', () => {
   const naam = (state.titel || 'cono-strip').toLowerCase().replace(/[^a-z0-9]+/g, '-');
-  downloadJSON(`${naam}.json`, state);
+  exporteerJSON(`${naam}.json`, state);
 });
 
-document.getElementById('input-import').addEventListener('change', (e) => {
+document.getElementById('st-input-import').addEventListener('change', (e) => {
   const file = e.target.files[0];
   if (!file) return;
   readJSONFile(file, (data) => {
@@ -458,7 +458,7 @@ document.getElementById('input-import').addEventListener('change', (e) => {
   e.target.value = '';
 });
 
-document.getElementById('btn-print').addEventListener('click', () => window.print());
+document.getElementById('st-btn-print').addEventListener('click', () => window.print());
 
 /* ---------------------------------- Init ---------------------------------- */
 fillStaticFields();
