@@ -2,13 +2,33 @@
 
 const STORAGE_KEY = 'cono_nieuwsbrief_draft_v1';
 
-const SECTION_LABELS = {
+/* De vaste rubrieken die elke editie terugkeren. Per rubriek: het label dat
+   boven het blok komt, een icoon, de accentkleur en een eventuele ondertitel. */
+const RUBRIEK_META = {
+  kopvandemaand:   { label: 'Kop van de maand', icoon: '📰', kleur: 'rood',  subtitel: 'Wat moet je deze maand echt weten?' },
+  iam:             { label: 'IAM in beeld',     icoon: '🔑', kleur: 'groen', subtitel: 'Toegang & wachtwoorden' },
+  stamdata:        { label: 'Stamdata spotlight', icoon: '🔦', kleur: 'goud', subtitel: '' },
+  aianalytics:     { label: 'AI & Analytics',   icoon: '🤖', kleur: 'blauw', subtitel: 'buiten CONO' },
+  successen:       { label: 'CONO Successen',   icoon: '🏆', kleur: 'groen', subtitel: 'waar we zelf mee bezig zijn' },
+  jargonjudo:      { label: 'JargonJudo',       icoon: '🥋', kleur: 'rood',  subtitel: 'moeilijk woord in één beweging op de mat' },
+  actietips:       { label: 'Actie & Tips',     icoon: '✅', kleur: 'groen', subtitel: '' },
+  vraagvandemaand: { label: 'Vraag van de maand', icoon: '❓', kleur: 'goud', subtitel: '' }
+};
+
+const STANDAARD_VOLGORDE = ['kopvandemaand', 'iam', 'stamdata', 'aianalytics', 'successen', 'jargonjudo', 'actietips', 'vraagvandemaand'];
+
+const VRIJE_BLOK_LABELS = {
   wistjedat: '💡 Wist-je-dat',
   onderwerp: '📘 Onderwerp uitgelegd',
   cijfer: '📊 Cijfers & weetjes',
   quote: '💬 Quote van een collega',
   tekst: '📝 Tekstblok'
 };
+
+function sectionLabel(type) {
+  if (RUBRIEK_META[type]) return `${RUBRIEK_META[type].icoon} ${RUBRIEK_META[type].label}`;
+  return VRIJE_BLOK_LABELS[type] || type;
+}
 
 function defaultState() {
   return {
@@ -23,13 +43,10 @@ function defaultState() {
       auteur: 'Team Data & Informatie'
     },
     sections: [],
-    strip: {
-      titel: '',
-      teaser: ''
-    },
+    strip: { titel: '', teaser: '' },
     footer: {
       contact: 'Data-team — data@cono.nl',
-      volgende: 'De volgende editie verschijnt over twee maanden.'
+      volgende: 'De volgende editie verschijnt over een maand.'
     }
   };
 }
@@ -37,6 +54,37 @@ function defaultState() {
 function nieuwSectie(type) {
   const id = uid();
   switch (type) {
+    /* --- Vaste rubrieken --- */
+    case 'kopvandemaand':
+      return { id, type, kop: 'De prikkelende vraag van deze maand?', term: 'Het begrip erachter',
+        uitleg: 'Leg in gewone taal uit hoe het zit. Gebruik een voorbeeld dat iedereen van buiten het werk herkent.',
+        brug: 'En bij ons? Vertaal het door naar een vraag over data bij CONO.' };
+    case 'iam':
+      return { id, type, titel: 'Onderwerp rond toegang of wachtwoorden',
+        uitleg: 'Waarom dit speelt en hoe het werkt, in gewone taal.',
+        tip: 'Concrete tip of eerste stap.' };
+    case 'stamdata':
+      return { id, type, term: 'Term uit ons systeem', definitie: 'De definitie zoals iedereen hem zou opschrijven.',
+        constatering: 'De verrassing: wat is er wél of niet vastgelegd, en waarom maakt dat uit?' };
+    case 'aianalytics':
+      return { id, type, titel: 'Wat er buiten CONO gebeurt met AI of analytics',
+        bron: 'Bron: titel van het artikel', link: '',
+        uitleg: 'Wat het artikel laat zien en wat dat betekent nu we een paar jaar verder zijn.' };
+    case 'successen':
+      return { id, type, items: [
+        { id: uid(), tekst: 'Naam van het project of de vraag', toelichting: '' }
+      ] };
+    case 'jargonjudo':
+      return { id, type, term: 'Het moeilijke woord', prikkel: 'Een kop die niet klopt, maar wel logisch klinkt',
+        observatie: 'Wat je ziet in de cijfers.', ontknoping: 'Hoe het écht zit — en waarom de kop dus onzin is.',
+        striplink: 'Zie de strip op de volgende pagina.' };
+    case 'actietips':
+      return { id, type, tekst: 'Wat kan de lezer deze maand zelf doen?', actie: 'De concrete actie in één zin' };
+    case 'vraagvandemaand':
+      return { id, type, vraag: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
+        waar: 'Mail je vraag naar het data-team.', beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' };
+
+    /* --- Vrije blokken --- */
     case 'wistjedat':
       return { id, type, titel: 'Wist je dat...', emoji: '🧀', bron: 'Bron: naam van artikel of paper', citaat: 'Een pakkende zin of cijfer uit het artikel...', uitleg: 'Leg in gewone taal uit wat dit betekent voor CONO en waarom het leuk/interessant is als opstapje naar dit onderwerp.' };
     case 'onderwerp':
@@ -52,32 +100,71 @@ function nieuwSectie(type) {
   }
 }
 
+/* De voorbeeldeditie: de standaard indeling, ingevuld met de onderwerpen uit
+   het voorstel voor de eerste nieuwsbrief. */
 function voorbeeldState() {
   const s = defaultState();
-  s.meta = { titel: 'CONO Databericht', ondertitel: 'Samen slim met data — zonder moeilijke woorden', editie: 'Editie 1 — pilot', datum: todayNL() };
+  s.meta = {
+    titel: 'CONO Databericht',
+    ondertitel: 'Data, AI en stamdata — uitgelegd zonder moeilijke woorden',
+    editie: 'Editie 1 — probeersel',
+    datum: todayNL()
+  };
   s.voorwoord = {
-    tekst: 'Welkom bij de allereerste editie van het Databericht! Data klinkt al snel als iets ingewikkelds, maar eigenlijk werk je er elke dag al mee — denk aan de melklijsten, de planning of de kwaliteitscontroles. In deze nieuwsbrief laten we op een luchtige manier zien wat goed datamanagement voor jou en je collega\'s kan betekenen.',
+    tekst: 'Data, AI, stamdata, IAM — het klinkt al snel als een taal die je eerst moet leren voordat je mee kunt praten. Dat is precies wat we met dit Databericht willen omdraaien.\n\nElke editie pakken we een paar onderwerpen beet en leggen we ze uit in gewone taal, met voorbeelden die je herkent van buiten je werk. Geen moeilijk woord zonder uitleg, geen uitleg zonder voorbeeld. En heb je zelf een vraag? Onderaan staat hoe je hem kwijt kunt — er staat een beloning op.',
     auteur: 'Team Data & Informatie'
   };
   s.sections = [
-    { id: uid(), type: 'wistjedat', titel: 'Wist je dat...', emoji: '🧀', bron: 'Bron: "Van boerenerf tot big data", vaktijdschrift Zuivelzicht',
-      citaat: '"Eén verkeerd ingevoerd cijfer op de boerderij kan verderop in de keten wel twaalf keer worden overgetypt."',
-      uitleg: 'Een klein foutje bij de bron plant zich dus overal voort. Precies daarom hebben we het deze editie over datakwaliteit: hoe zorgen we er samen voor dat een getal maar één keer goed hoeft te worden ingevoerd?' },
-    { id: uid(), type: 'onderwerp', titel: 'Wat is datakwaliteit nou eigenlijk?', icoon: '✅',
-      uitleg: 'Datakwaliteit betekent gewoon: kloppen de gegevens die we vastleggen, en zijn ze compleet en actueel? Denk aan een leverdatum die klopt, of een partijnummer dat maar één keer voorkomt.',
-      waarom: 'Als de basisgegevens kloppen, hoeven collega\'s minder tijd te besteden aan uitzoeken en corrigeren — en kunnen we sneller de juiste beslissingen nemen.',
-      actie: 'Zie je een gegeven dat niet klopt? Meld het bij je teamleider of het data-team.' },
-    { id: uid(), type: 'cijfer', titel: 'Deze maand in cijfers', tiles: [
-        { id: uid(), getal: '3.240', label: 'Records gecontroleerd', toelichting: 'Automatisch gecheckt op fouten' },
-        { id: uid(), getal: '92%', label: 'Foutloos binnengekomen', toelichting: 'Een stijging van 6% t.o.v. vorige maand' },
-        { id: uid(), getal: '15 min', label: 'Tijd bespaard per rapport', toelichting: 'Dankzij minder handmatig zoekwerk' }
-      ] },
-    { id: uid(), type: 'quote', naam: 'Marieke, Kwaliteitscontrole', functie: 'Afdeling Kwaliteit',
-      quote: 'Sinds we scherper letten op invoer, hoef ik veel minder na te bellen om cijfers te checken. Dat scheelt mij zomaar een uur per week.' },
-    { id: uid(), type: 'tekst', titel: 'Doe mee', tekst: 'Heb je een idee, vraag of voorbeeld dat in de volgende editie mag? Stuur het door naar het data-team — elke bijdrage is welkom!' }
+    { id: uid(), type: 'kopvandemaand',
+      kop: 'Luistert je telefoon met je mee om je gerichte advertenties te tonen?',
+      term: 'Baader-Meinhof-fenomeen',
+      uitleg: 'Je praat met een collega over een nieuwe fiets, en een uur later staat je tijdlijn vol fietsreclame. Toeval? Voor dat gevoel hoeft je telefoon helemaal niet mee te luisteren. Zodra iets je aandacht heeft, valt het je namelijk overal op — dat heet het Baader-Meinhof-fenomeen. Die reclames stonden er waarschijnlijk altijd al.\n\nEn er is een tweede reden: ze hebben allang genoeg gegevens om je die fietsreclame gericht te tonen. Wat je zoekt, waar je bent, wat je eerder kocht, wat je leeftijdsgenoten kopen. Meeluisteren is niet nodig — het is gewoon niet meer nodig.',
+      brug: 'En bij ons? Hebben wij eigenlijk alle gegevens die we nodig hebben om de vragen te beantwoorden die we onszelf stellen?' },
+
+    { id: uid(), type: 'iam',
+      titel: '1Password: één wachtwoord voor alles — is dat nou wel veilig?',
+      uitleg: 'Het voelt tegenstrijdig: al je wachtwoorden achter één wachtwoord zetten. Toch is het een stuk veiliger dan wat de meeste mensen nu doen, namelijk overal ongeveer hetzelfde wachtwoord gebruiken. Lekt er dan ergens één, dan liggen ze in feite allemaal op straat.\n\nMet een wachtwoordkluis krijgt elke site een eigen, lang en volstrekt willekeurig wachtwoord — zo eentje die je zelf nooit zou verzinnen en ook niet hoeft te onthouden. Jij onthoudt er nog precies één: die van de kluis zelf.',
+      tip: 'Nog geen kluis in gebruik? Vraag ernaar bij IT — het inrichten kost je ongeveer vijf minuten.' },
+
+    { id: uid(), type: 'stamdata',
+      term: 'Geitenkaas',
+      definitie: 'Kaas gemaakt van geitenmelk.',
+      constatering: 'Klinkt logisch. Maar wist je dat deze definitie nergens in ons systeem is vastgelegd? Iedereen wéét wat het is — en precies daarom schrijft niemand het op. Dat gaat goed, tot er iemand nieuw begint, tot twee afdelingen er nét iets anders onder blijken te verstaan, of tot een systeem de vraag stelt.' },
+
+    { id: uid(), type: 'aianalytics',
+      titel: 'Een artikel uit 2017 dat inmiddels gewoon je dagelijks leven beschrijft',
+      bron: 'Bron: artikel uit 2017 over de mogelijkheden van AI',
+      link: '',
+      uitleg: 'Dit artikel uit 2017 (!) liet destijds zien wat er allemaal mogelijk zou worden met AI. Het las toen als toekomstmuziek.\n\nBijna tien jaar later is het dat niet meer: spraakassistenten, automatische vertalingen, foto\'s die zichzelf sorteren, chatbots die je e-mail voorschrijven. Stuk voor stuk technieken uit dat artikel die inmiddels zo gewoon zijn dat we ze niet eens meer "AI" noemen.' },
+
+    { id: uid(), type: 'successen', items: [
+      { id: uid(), tekst: 'Lactaat herkennen met AI', toelichting: '' },
+      { id: uid(), tekst: 'Hoeveel droogt een kaas nu werkelijk in — en verschilt dat per oplegger?', toelichting: '' },
+      { id: uid(), tekst: 'Bestuursverslag (onderdeel van het jaarverslag) opgesteld met hulp van AI', toelichting: '' },
+      { id: uid(), tekst: 'Wat is het statistische verband tussen de zuivelmarkt en de melkprijs van RFC?', toelichting: '' }
+    ] },
+
+    { id: uid(), type: 'jargonjudo',
+      term: 'Causaal verband',
+      prikkel: 'Verbod op ijs vanwege toename aantal verdrinkingen',
+      observatie: 'Er is een duidelijke correlatie tussen de hoeveelheid ijs die verkocht wordt en het aantal verdrinkingen in zwembaden en buitenwater. Meer ijs, meer verdrinkingen — de cijfers liegen niet.',
+      ontknoping: 'Maar er is geen causaal verband. Als het warm is, wordt er véél gezwommen én veel ijs gegeten. Het weer veroorzaakt allebei; het ijs duwt niemand het water in. Twee dingen die samen bewegen, hoeven elkaar dus niet te veroorzaken.',
+      striplink: 'Zie de strip op de volgende pagina.' },
+
+    { id: uid(), type: 'actietips',
+      tekst: 'Heb je recent nog gekeken tot welke rapporten jij eigenlijk toegang hebt? Gebruik je ze allemaal? En wist je dat je binnen de meeste rapporten kunt filteren of inzoomen, zodat de cijfers precies over jouw afdeling of jouw periode gaan?',
+      actie: 'Neem deze maand vijf minuten om je eigen rapportenlijst door te lopen.' },
+
+    { id: uid(), type: 'vraagvandemaand',
+      vraag: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
+      waar: 'Mail je vraag naar het data-team.',
+      beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' }
   ];
-  s.strip = { titel: 'Data-Daan en Boer Bert over datakwaliteit', teaser: 'Wat gebeurt er als één cijfertje verkeerd wordt getypt? Lees de strip en kom erachter!' };
-  s.footer = { contact: 'Data-team — data@cono.nl', volgende: 'De volgende editie verschijnt over twee maanden.' };
+  s.strip = {
+    titel: 'JargonJudo: causaal verband',
+    teaser: 'Boer Bert wil het ijs verbieden om levens te redden. Data-Daan heeft een ander idee.'
+  };
+  s.footer = { contact: 'Data-team — data@cono.nl', volgende: 'De volgende editie verschijnt over een maand.' };
   return s;
 }
 
@@ -107,6 +194,12 @@ const persist = debounce(() => {
   showStatus(els.status, 'Opgeslagen ✓', 1500);
 }, 300);
 
+function herteken() {
+  persist();
+  renderSectionsEditor();
+  renderPreview();
+}
+
 /* --------------------------- Formulier -> state --------------------------- */
 function fillStaticFields() {
   els.titel.value = state.meta.titel;
@@ -121,9 +214,9 @@ function fillStaticFields() {
   els.volgende.value = state.footer.volgende;
 }
 
-function bindStatic(el, getSet) {
+function bindStatic(el, setter) {
   el.addEventListener('input', () => {
-    getSet(el.value);
+    setter(el.value);
     persist();
     renderPreview();
   });
@@ -143,36 +236,75 @@ function attachStaticBindings() {
 }
 
 /* ------------------------------ Secties editor ---------------------------- */
+function veld(label, field, value, rows, hint) {
+  const input = rows
+    ? `<textarea data-field="${field}" rows="${rows}">${escapeHtml(value)}</textarea>`
+    : `<input data-field="${field}" value="${escapeHtml(value)}">`;
+  return `<div class="field"><label>${label}</label>${input}${hint ? `<small class="hint">${hint}</small>` : ''}</div>`;
+}
+
 function sectionFieldsHTML(sec) {
   switch (sec.type) {
+    /* --- Vaste rubrieken --- */
+    case 'kopvandemaand':
+      return veld('Prikkelende kop of vraag', 'kop', sec.kop, 2)
+        + veld('Begrip (optioneel)', 'term', sec.term, 0, 'Bijv. het fenomeen of de term achter het verhaal.')
+        + veld('Uitleg in gewone taal', 'uitleg', sec.uitleg, 6)
+        + veld('Brug naar CONO', 'brug', sec.brug, 2, 'De vraag die dit verhaal oproept over onze eigen gegevens.');
+    case 'iam':
+      return veld('Titel', 'titel', sec.titel, 2)
+        + veld('Uitleg', 'uitleg', sec.uitleg, 5)
+        + veld('Tip / eerste stap (optioneel)', 'tip', sec.tip, 2);
+    case 'stamdata':
+      return veld('Term', 'term', sec.term, 0)
+        + veld('Definitie', 'definitie', sec.definitie, 2)
+        + veld('De constatering', 'constatering', sec.constatering, 4, 'Wat is er wél of juist niet vastgelegd — en waarom maakt dat uit?');
+    case 'aianalytics':
+      return veld('Titel', 'titel', sec.titel, 2)
+        + veld('Bron', 'bron', sec.bron, 0)
+        + veld('Link (optioneel)', 'link', sec.link, 0, 'Volledige link, bijv. https://...')
+        + veld('Uitleg', 'uitleg', sec.uitleg, 5);
+    case 'successen':
+      return `<div id="items-${sec.id}">${(sec.items || []).map(it => itemFieldsHTML(sec.id, it)).join('')}</div>
+        <button type="button" class="btn btn-icon" data-action="add-item" data-section="${sec.id}">+ Succes toevoegen</button>`;
+    case 'jargonjudo':
+      return veld('Het moeilijke woord', 'term', sec.term, 0)
+        + veld('Prikkelende (foute) kop', 'prikkel', sec.prikkel, 2, 'Een conclusie die logisch klinkt maar niet klopt.')
+        + veld('1. Wat je ziet', 'observatie', sec.observatie, 3)
+        + veld('2. Hoe het écht zit', 'ontknoping', sec.ontknoping, 4)
+        + veld('Verwijzing naar de strip (optioneel)', 'striplink', sec.striplink, 0);
+    case 'actietips':
+      return veld('Tekst', 'tekst', sec.tekst, 5)
+        + veld('Concrete actie (optioneel)', 'actie', sec.actie, 2);
+    case 'vraagvandemaand':
+      return veld('De oproep', 'vraag', sec.vraag, 2)
+        + veld('Waar kan de vraag heen?', 'waar', sec.waar, 2)
+        + veld('Beloning (optioneel)', 'beloning', sec.beloning, 2);
+
+    /* --- Vrije blokken --- */
     case 'wistjedat':
-      return `
-        <div class="field"><label>Titel</label><input data-field="titel" value="${escapeHtml(sec.titel)}"></div>
-        <div class="field"><label>Emoji</label><input data-field="emoji" value="${escapeHtml(sec.emoji)}" maxlength="4" style="max-width:80px;"></div>
-        <div class="field"><label>Bron (artikel / paper)</label><input data-field="bron" value="${escapeHtml(sec.bron)}"></div>
-        <div class="field"><label>Citaat of opvallend feit</label><textarea data-field="citaat" rows="2">${escapeHtml(sec.citaat)}</textarea></div>
-        <div class="field"><label>Speelse uitleg / koppeling naar onderwerp</label><textarea data-field="uitleg" rows="3">${escapeHtml(sec.uitleg)}</textarea></div>`;
+      return veld('Titel', 'titel', sec.titel, 0)
+        + veld('Emoji', 'emoji', sec.emoji, 0)
+        + veld('Bron (artikel / paper)', 'bron', sec.bron, 0)
+        + veld('Citaat of opvallend feit', 'citaat', sec.citaat, 2)
+        + veld('Speelse uitleg / koppeling naar onderwerp', 'uitleg', sec.uitleg, 3);
     case 'onderwerp':
-      return `
-        <div class="field"><label>Titel van het onderwerp</label><input data-field="titel" value="${escapeHtml(sec.titel)}"></div>
-        <div class="field"><label>Icoon (emoji)</label><input data-field="icoon" value="${escapeHtml(sec.icoon)}" maxlength="4" style="max-width:80px;"></div>
-        <div class="field"><label>Uitleg in simpele taal</label><textarea data-field="uitleg" rows="3">${escapeHtml(sec.uitleg)}</textarea></div>
-        <div class="field"><label>Waarom dit belangrijk is</label><textarea data-field="waarom" rows="2">${escapeHtml(sec.waarom)}</textarea></div>
-        <div class="field"><label>Actiepunt (optioneel)</label><input data-field="actie" value="${escapeHtml(sec.actie)}"></div>`;
+      return veld('Titel van het onderwerp', 'titel', sec.titel, 0)
+        + veld('Icoon (emoji)', 'icoon', sec.icoon, 0)
+        + veld('Uitleg in simpele taal', 'uitleg', sec.uitleg, 3)
+        + veld('Waarom dit belangrijk is', 'waarom', sec.waarom, 2)
+        + veld('Actiepunt (optioneel)', 'actie', sec.actie, 0);
     case 'cijfer':
-      return `
-        <div class="field"><label>Titel van dit blok</label><input data-field="titel" value="${escapeHtml(sec.titel)}"></div>
-        <div id="tiles-${sec.id}">${sec.tiles.map(t => tileFieldsHTML(sec.id, t)).join('')}</div>
-        <button type="button" class="btn btn-icon" data-action="add-tile" data-section="${sec.id}">+ Cijfer toevoegen</button>`;
+      return veld('Titel van dit blok', 'titel', sec.titel, 0)
+        + `<div id="tiles-${sec.id}">${sec.tiles.map(t => tileFieldsHTML(sec.id, t)).join('')}</div>
+           <button type="button" class="btn btn-icon" data-action="add-tile" data-section="${sec.id}">+ Cijfer toevoegen</button>`;
     case 'quote':
-      return `
-        <div class="field"><label>Naam</label><input data-field="naam" value="${escapeHtml(sec.naam)}"></div>
-        <div class="field"><label>Functie / afdeling</label><input data-field="functie" value="${escapeHtml(sec.functie)}"></div>
-        <div class="field"><label>Quote</label><textarea data-field="quote" rows="3">${escapeHtml(sec.quote)}</textarea></div>`;
+      return veld('Naam', 'naam', sec.naam, 0)
+        + veld('Functie / afdeling', 'functie', sec.functie, 0)
+        + veld('Quote', 'quote', sec.quote, 3);
     case 'tekst':
-      return `
-        <div class="field"><label>Titel</label><input data-field="titel" value="${escapeHtml(sec.titel)}"></div>
-        <div class="field"><label>Tekst</label><textarea data-field="tekst" rows="4">${escapeHtml(sec.tekst)}</textarea></div>`;
+      return veld('Titel', 'titel', sec.titel, 0)
+        + veld('Tekst', 'tekst', sec.tekst, 4);
     default:
       return '';
   }
@@ -180,26 +312,38 @@ function sectionFieldsHTML(sec) {
 
 function tileFieldsHTML(sectionId, tile) {
   return `
-    <div class="section-card" style="background:#fff;" data-tile-row="${tile.id}">
+    <div class="section-card" style="background:#fff;">
       <div class="section-card-head">
         <span class="section-type-label" style="color:var(--cono-green-dark);">Cijfer</span>
         <button type="button" class="btn-danger" data-action="delete-tile" data-section="${sectionId}" data-tile="${tile.id}">✕</button>
       </div>
-      <div class="field"><label>Getal</label><input data-tile-field="getal" data-section="${sectionId}" data-tile="${tile.id}" value="${escapeHtml(tile.getal)}"></div>
-      <div class="field"><label>Label</label><input data-tile-field="label" data-section="${sectionId}" data-tile="${tile.id}" value="${escapeHtml(tile.label)}"></div>
-      <div class="field"><label>Toelichting</label><input data-tile-field="toelichting" data-section="${sectionId}" data-tile="${tile.id}" value="${escapeHtml(tile.toelichting)}"></div>
+      <div class="field"><label>Getal</label><input data-tile-field="getal" data-tile="${tile.id}" value="${escapeHtml(tile.getal)}"></div>
+      <div class="field"><label>Label</label><input data-tile-field="label" data-tile="${tile.id}" value="${escapeHtml(tile.label)}"></div>
+      <div class="field"><label>Toelichting</label><input data-tile-field="toelichting" data-tile="${tile.id}" value="${escapeHtml(tile.toelichting)}"></div>
+    </div>`;
+}
+
+function itemFieldsHTML(sectionId, item) {
+  return `
+    <div class="section-card" style="background:#fff;">
+      <div class="section-card-head">
+        <span class="section-type-label" style="color:var(--cono-green-dark);">Succes</span>
+        <button type="button" class="btn-danger" data-action="delete-item" data-section="${sectionId}" data-item="${item.id}">✕</button>
+      </div>
+      <div class="field"><label>Titel</label><input data-item-field="tekst" data-item="${item.id}" value="${escapeHtml(item.tekst)}"></div>
+      <div class="field"><label>Toelichting (optioneel)</label><input data-item-field="toelichting" data-item="${item.id}" value="${escapeHtml(item.toelichting)}"></div>
     </div>`;
 }
 
 function renderSectionsEditor() {
   if (state.sections.length === 0) {
-    els.sectionsList.innerHTML = `<p class="empty-state">Nog geen secties. Kies hierboven een type en klik op "Sectie toevoegen".</p>`;
+    els.sectionsList.innerHTML = `<p class="empty-state">Nog geen secties. Klik op "Standaard indeling" voor de vaste rubrieken, of kies hieronder los een blok.</p>`;
     return;
   }
   els.sectionsList.innerHTML = state.sections.map((sec, i) => `
     <div class="section-card" data-section-row="${sec.id}">
       <div class="section-card-head">
-        <span class="section-type-label">${SECTION_LABELS[sec.type] || sec.type}</span>
+        <span class="section-type-label">${sectionLabel(sec.type)}</span>
         <div class="section-actions">
           <button type="button" class="btn-icon" data-action="move-up" data-section="${sec.id}" ${i === 0 ? 'disabled' : ''} title="Naar boven">↑</button>
           <button type="button" class="btn-icon" data-action="move-down" data-section="${sec.id}" ${i === state.sections.length - 1 ? 'disabled' : ''} title="Naar beneden">↓</button>
@@ -222,55 +366,138 @@ els.sectionsList.addEventListener('input', (e) => {
 
   if (target.dataset.field) {
     sec[target.dataset.field] = target.value;
-    persist();
-    renderPreview();
   } else if (target.dataset.tileField) {
     const tile = sec.tiles.find(t => t.id === target.dataset.tile);
-    if (tile) {
-      tile[target.dataset.tileField] = target.value;
-      persist();
-      renderPreview();
-    }
+    if (tile) tile[target.dataset.tileField] = target.value;
+  } else if (target.dataset.itemField) {
+    const item = sec.items.find(it => it.id === target.dataset.item);
+    if (item) item[target.dataset.itemField] = target.value;
+  } else {
+    return;
   }
+  persist();
+  renderPreview();
 });
 
 els.sectionsList.addEventListener('click', (e) => {
   const btn = e.target.closest('button[data-action]');
   if (!btn) return;
   const action = btn.dataset.action;
-  const secId = btn.dataset.section;
-  const idx = state.sections.findIndex(s => s.id === secId);
-  if (idx === -1 && action !== 'add-tile') return;
+  const sec = findSection(btn.dataset.section);
+  const idx = state.sections.indexOf(sec);
+  if (!sec) return;
 
   if (action === 'move-up' && idx > 0) {
     [state.sections[idx - 1], state.sections[idx]] = [state.sections[idx], state.sections[idx - 1]];
   } else if (action === 'move-down' && idx < state.sections.length - 1) {
     [state.sections[idx + 1], state.sections[idx]] = [state.sections[idx], state.sections[idx + 1]];
   } else if (action === 'delete-section') {
-    if (confirm('Deze sectie verwijderen?')) state.sections.splice(idx, 1);
+    if (!confirm('Deze sectie verwijderen?')) return;
+    state.sections.splice(idx, 1);
   } else if (action === 'add-tile') {
-    const sec = findSection(secId);
     sec.tiles.push({ id: uid(), getal: '0', label: 'Nieuw cijfer', toelichting: '' });
   } else if (action === 'delete-tile') {
-    const sec = findSection(secId);
     const tIdx = sec.tiles.findIndex(t => t.id === btn.dataset.tile);
     if (tIdx > -1) sec.tiles.splice(tIdx, 1);
+  } else if (action === 'add-item') {
+    sec.items.push({ id: uid(), tekst: 'Nieuw project of nieuwe vraag', toelichting: '' });
+  } else if (action === 'delete-item') {
+    const iIdx = sec.items.findIndex(it => it.id === btn.dataset.item);
+    if (iIdx > -1) sec.items.splice(iIdx, 1);
+  } else {
+    return;
   }
-  persist();
-  renderSectionsEditor();
-  renderPreview();
+  herteken();
 });
 
 document.getElementById('btn-add-section').addEventListener('click', () => {
   state.sections.push(nieuwSectie(els.newSectionType.value));
-  persist();
-  renderSectionsEditor();
-  renderPreview();
+  herteken();
+});
+
+document.getElementById('btn-standaard').addEventListener('click', () => {
+  if (state.sections.length && !confirm('Dit vervangt de huidige secties door de acht vaste rubrieken. Doorgaan?')) return;
+  state.sections = STANDAARD_VOLGORDE.map(nieuwSectie);
+  herteken();
 });
 
 /* --------------------------------- Preview -------------------------------- */
+function rubriekWrapper(type, binnenkant, extraClass) {
+  const meta = RUBRIEK_META[type];
+  return `
+    <div class="nl-section">
+      <div class="rubriek rubriek--${meta.kleur}${extraClass ? ' ' + extraClass : ''}">
+        <div class="rubriek-label">
+          <span>${meta.icoon}</span> ${escapeHtml(meta.label)}
+          ${meta.subtitel ? `<span class="rubriek-subtitel">${escapeHtml(meta.subtitel)}</span>` : ''}
+        </div>
+        <div class="rubriek-body">${binnenkant}</div>
+      </div>
+    </div>`;
+}
+
 function sectionPreviewHTML(sec) {
   switch (sec.type) {
+    /* --- Vaste rubrieken --- */
+    case 'kopvandemaand':
+      return rubriekWrapper(sec.type, `
+        <h3 class="rubriek-kop">${escapeHtml(sec.kop)}</h3>
+        ${sec.term ? `<span class="term-chip">${escapeHtml(sec.term)}</span>` : ''}
+        ${textToParagraphs(sec.uitleg)}
+        ${sec.brug ? `<div class="rubriek-brug">👉 ${escapeHtml(sec.brug)}</div>` : ''}`);
+
+    case 'iam':
+      return rubriekWrapper(sec.type, `
+        <h3 class="rubriek-kop">${escapeHtml(sec.titel)}</h3>
+        ${textToParagraphs(sec.uitleg)}
+        ${sec.tip ? `<div class="rubriek-tip">💡 ${escapeHtml(sec.tip)}</div>` : ''}`);
+
+    case 'stamdata':
+      return rubriekWrapper(sec.type, `
+        <div class="woordenboek">
+          <span class="woord">${escapeHtml(sec.term)}</span>
+          <span class="definitie">${escapeHtml(sec.definitie)}</span>
+        </div>
+        ${textToParagraphs(sec.constatering)}`);
+
+    case 'aianalytics': {
+      const url = safeUrl(sec.link);
+      return rubriekWrapper(sec.type, `
+        <h3 class="rubriek-kop">${escapeHtml(sec.titel)}</h3>
+        ${sec.bron ? `<div class="bron-regel">📄 ${escapeHtml(sec.bron)}</div>` : ''}
+        ${textToParagraphs(sec.uitleg)}
+        ${url ? `<a class="bron-link" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>` : ''}`);
+    }
+
+    case 'successen':
+      return rubriekWrapper(sec.type, `
+        <ul class="successen-lijst">
+          ${(sec.items || []).map(it => `
+            <li><strong>${escapeHtml(it.tekst)}</strong>
+              ${it.toelichting ? `<span class="toelichting">${escapeHtml(it.toelichting)}</span>` : ''}
+            </li>`).join('')}
+        </ul>`);
+
+    case 'jargonjudo':
+      return rubriekWrapper(sec.type, `
+        <div class="jargon-term">${escapeHtml(sec.term)}</div>
+        <div class="jargon-prikkel">“${escapeHtml(sec.prikkel)}”</div>
+        <div class="jargon-stap"><span class="stap-nr">1</span><span>${escapeHtml(sec.observatie)}</span></div>
+        <div class="jargon-stap jargon-stap--pointe"><span class="stap-nr">2</span><span>${escapeHtml(sec.ontknoping)}</span></div>
+        ${sec.striplink ? `<div class="jargon-strip">📖 ${escapeHtml(sec.striplink)}</div>` : ''}`);
+
+    case 'actietips':
+      return rubriekWrapper(sec.type, `
+        ${textToParagraphs(sec.tekst)}
+        ${sec.actie ? `<span class="actie">👉 ${escapeHtml(sec.actie)}</span>` : ''}`);
+
+    case 'vraagvandemaand':
+      return rubriekWrapper(sec.type, `
+        <p class="vraag-tekst">${escapeHtml(sec.vraag)}</p>
+        ${sec.waar ? `<p>${escapeHtml(sec.waar)}</p>` : ''}
+        ${sec.beloning ? `<div class="beloning">🍪 ${escapeHtml(sec.beloning)}</div>` : ''}`, 'vraag-coupon');
+
+    /* --- Vrije blokken --- */
     case 'wistjedat':
       return `
         <div class="nl-section">
@@ -331,9 +558,7 @@ function renderPreview() {
       <span class="eyebrow">${escapeHtml(m.editie || 'CONO Nieuwsbrief')}</span>
       <h1>${escapeHtml(m.titel || 'CONO Databericht')}</h1>
       <div class="subtitle">${escapeHtml(m.ondertitel)}</div>
-      <div class="meta-row">
-        <span>📅 ${escapeHtml(m.datum)}</span>
-      </div>
+      <div class="meta-row"><span>📅 ${escapeHtml(m.datum)}</span></div>
     </div>
     <div class="nl-body">
       ${v.tekst ? `
@@ -365,18 +590,14 @@ document.getElementById('btn-nieuw').addEventListener('click', () => {
   if (!confirm('Dit wist het huidige formulier en start een lege editie. Doorgaan?')) return;
   state = defaultState();
   fillStaticFields();
-  renderSectionsEditor();
-  renderPreview();
-  persist();
+  herteken();
 });
 
 document.getElementById('btn-voorbeeld').addEventListener('click', () => {
-  if (!confirm('Dit vervangt de huidige inhoud door een voorbeeldeditie. Doorgaan?')) return;
+  if (!confirm('Dit vervangt de huidige inhoud door de voorbeeldeditie. Doorgaan?')) return;
   state = voorbeeldState();
   fillStaticFields();
-  renderSectionsEditor();
-  renderPreview();
-  persist();
+  herteken();
 });
 
 document.getElementById('btn-export').addEventListener('click', () => {
@@ -390,9 +611,7 @@ document.getElementById('input-import').addEventListener('change', (e) => {
   readJSONFile(file, (data) => {
     state = Object.assign(defaultState(), data);
     fillStaticFields();
-    renderSectionsEditor();
-    renderPreview();
-    persist();
+    herteken();
   }, () => alert('Dit bestand kon niet worden gelezen. Is het een geldig JSON-exportbestand?'));
   e.target.value = '';
 });

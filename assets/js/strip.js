@@ -15,14 +15,25 @@ const SCENES = {
   kantoor: 'Kantoor',
   vergaderzaal: 'Vergaderzaal',
   wei: 'Buiten / wei',
+  strand: 'Strand / zwembad',
   laptop: 'Laptop-close-up',
   feest: 'Feestje'
+};
+
+/* Optioneel voorwerp dat het personage omhooghoudt. */
+const PROPS = {
+  geen: 'Geen',
+  ijsje: 'IJsje',
+  kaaswiel: 'Kaaswiel',
+  grafiek: 'Grafiekje',
+  vraagteken: 'Vraagteken',
+  sleutel: 'Sleutel'
 };
 
 function defaultPanel(i) {
   const volgorde = ['kaasfabriek', 'kantoor', 'vergaderzaal', 'wei', 'laptop', 'feest'];
   const sprekers = ['bert', 'daan', 'daan', 'bert', 'verteller', 'geen'];
-  return { id: uid(), scene: volgorde[i] || 'kantoor', spreker: sprekers[i] || 'geen', tekst: '' };
+  return { id: uid(), scene: volgorde[i] || 'kantoor', spreker: sprekers[i] || 'geen', prop: 'geen', tekst: '' };
 }
 
 function defaultState() {
@@ -33,17 +44,18 @@ function defaultState() {
   };
 }
 
+/* Voorbeeld: de JargonJudo-strip bij de rubriek "Causaal verband". */
 function voorbeeldState() {
   return {
-    titel: 'Data-Daan en Boer Bert over datakwaliteit',
-    onderwerp: 'Thema: datakwaliteit',
+    titel: 'JargonJudo: causaal verband',
+    onderwerp: 'Thema: correlatie is geen oorzaak',
     panels: [
-      { id: uid(), scene: 'kaasfabriek', spreker: 'bert', tekst: 'Kijk Daan, dit wiel heeft nummer 482. Simpel toch?' },
-      { id: uid(), scene: 'laptop', spreker: 'daan', tekst: 'Hmm... in het systeem staat 428. Iemand heeft de cijfers omgedraaid!' },
-      { id: uid(), scene: 'kantoor', spreker: 'daan', tekst: 'Zo\'n foutje lijkt klein, maar verderop telt het systeem het drie keer over.' },
-      { id: uid(), scene: 'vergaderzaal', spreker: 'verteller', tekst: 'Twee weken later...' },
-      { id: uid(), scene: 'vergaderzaal', spreker: 'bert', tekst: 'Sinds we dubbel checken bij het invoeren, komt dit niet meer voor!' },
-      { id: uid(), scene: 'feest', spreker: 'geen', tekst: 'Eén klein moment van checken. Groot verschil verderop. 🧀' }
+      { id: uid(), scene: 'laptop', spreker: 'daan', prop: 'geen', tekst: 'Kijk nou! Hoe meer ijsjes er verkocht worden, hoe meer mensen er verdrinken.' },
+      { id: uid(), scene: 'kantoor', spreker: 'bert', prop: 'ijsje', tekst: 'Dat is ernstig, Daan. We moeten het ijs verbieden. Vandaag nog!' },
+      { id: uid(), scene: 'vergaderzaal', spreker: 'verteller', tekst: 'Het voorstel "IJsverbod redt levens" gaat naar de directie.' },
+      { id: uid(), scene: 'kantoor', spreker: 'daan', prop: 'vraagteken', tekst: 'Wacht eens... denk jij echt dat een hoorntje iemand het water in duwt?' },
+      { id: uid(), scene: 'strand', spreker: 'bert', prop: 'ijsje', tekst: 'Oh. Het is gewoon warm. Dus méér zwemmers én méér ijsjes.' },
+      { id: uid(), scene: 'strand', spreker: 'geen', tekst: 'Twee dingen die samen bewegen, veroorzaken elkaar niet. Geniet van je ijsje. 🍦' }
     ]
   };
 }
@@ -93,6 +105,10 @@ function renderPanelsEditor() {
       <div class="field">
         <label>Decor</label>
         <select data-field="scene" data-panel="${p.id}">${optionsHTML(SCENES, p.scene)}</select>
+      </div>
+      <div class="field">
+        <label>Voorwerp</label>
+        <select data-field="prop" data-panel="${p.id}">${optionsHTML(PROPS, p.prop || 'geen')}</select>
       </div>
       <div class="field">
         <label>Tekst${p.spreker === 'geen' ? ' (optioneel bijschrift)' : ''}</label>
@@ -171,13 +187,19 @@ function sceneSVG(scene) {
     case 'vergaderzaal':
       return `
         <rect width="400" height="300" fill="#f7f0dd"/>
-        <ellipse cx="200" cy="210" rx="140" ry="40" fill="#c9a86a"/>
-        <rect x="30" y="150" width="70" height="10" fill="#5c4f39"/>
-        <rect x="60" y="130" width="10" height="30" fill="#5c4f39"/>
-        <rect x="300" y="150" width="70" height="10" fill="#5c4f39"/>
-        <rect x="330" y="130" width="10" height="30" fill="#5c4f39"/>
-        <rect x="130" y="40" width="140" height="80" fill="#fff" stroke="#345c34" stroke-width="4"/>
-        <polyline points="150,100 175,70 195,90 220,60 250,85" fill="none" stroke="#c8262a" stroke-width="3"/>`;
+        <rect x="130" y="34" width="150" height="84" fill="#fff" stroke="#345c34" stroke-width="4"/>
+        <polyline points="150,100 178,66 200,86 228,58 262,82" fill="none" stroke="#c8262a" stroke-width="3"/>
+        <rect x="28" y="148" width="8" height="34" rx="3" fill="#5c4f39"/>
+        <rect x="28" y="182" width="40" height="8" rx="2" fill="#5c4f39"/>
+        <rect x="60" y="190" width="7" height="18" fill="#5c4f39"/>
+        <rect x="364" y="148" width="8" height="34" rx="3" fill="#5c4f39"/>
+        <rect x="332" y="182" width="40" height="8" rx="2" fill="#5c4f39"/>
+        <rect x="333" y="190" width="7" height="18" fill="#5c4f39"/>
+        <ellipse cx="200" cy="218" rx="145" ry="45" fill="#b8955c"/>
+        <ellipse cx="200" cy="213" rx="145" ry="45" fill="#d8b87c"/>
+        <rect x="118" y="198" width="40" height="27" rx="3" fill="#fdfdfd" transform="rotate(-7 138 211)"/>
+        <rect x="246" y="208" width="40" height="27" rx="3" fill="#fdfdfd" transform="rotate(6 266 221)"/>
+        <circle cx="200" cy="236" r="9" fill="#fdfdfd" stroke="#b8955c" stroke-width="2"/>`;
     case 'wei':
       return `
         <rect width="400" height="180" fill="#bcdcf0"/>
@@ -193,6 +215,18 @@ function sceneSVG(scene) {
         <rect x="140" y="245" width="6" height="35" fill="#8d7f63"/>
         <rect x="260" y="245" width="6" height="35" fill="#8d7f63"/>
         <rect x="360" y="245" width="6" height="35" fill="#8d7f63"/>`;
+    case 'strand':
+      return `
+        <rect width="400" height="300" fill="#bcdcf0"/>
+        <circle cx="60" cy="50" r="26" fill="#f4d998"/>
+        <rect x="0" y="130" width="400" height="80" fill="#4f9fd0"/>
+        <path d="M 0 150 q 25 -10 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" fill="none" stroke="#bcdcf0" stroke-width="3"/>
+        <path d="M 0 180 q 25 -10 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0 t 50 0" fill="none" stroke="#8ec4e4" stroke-width="3"/>
+        <rect x="0" y="205" width="400" height="95" fill="#f0dfae"/>
+        <rect x="132" y="220" width="84" height="28" rx="4" fill="#c8262a"/>
+        <rect x="132" y="229" width="84" height="8" fill="#fdfdfd"/>
+        <circle cx="108" cy="232" r="13" fill="#fdfdfd" stroke="#2c2013" stroke-width="2"/>
+        <ellipse cx="108" cy="232" rx="4.5" ry="13" fill="#c8262a"/>`;
     case 'laptop':
       return `
         <rect width="400" height="300" fill="#2c2013"/>
@@ -257,6 +291,48 @@ function bertAvatar(x, y, scale = 1) {
   </g>`;
 }
 
+/* Voorwerpen, getekend rond hun eigen middelpunt (0,0). */
+function propSVG(type, x, y) {
+  let vorm = '';
+  switch (type) {
+    case 'ijsje':
+      vorm = `
+        <polygon points="-13,-2 13,-2 0,30" fill="#d9a441" stroke="#a8761f" stroke-width="2"/>
+        <circle cx="-6" cy="-8" r="11" fill="#f6c9d4" stroke="#d99bab" stroke-width="2"/>
+        <circle cx="7" cy="-10" r="11" fill="#fdf4e0" stroke="#d9c9a6" stroke-width="2"/>
+        <circle cx="0" cy="-20" r="10" fill="#a95f3d" stroke="#7f452a" stroke-width="2"/>`;
+      break;
+    case 'kaaswiel':
+      vorm = `
+        <circle cx="0" cy="0" r="20" fill="#e0a730" stroke="#a8761f" stroke-width="3"/>
+        <circle cx="-7" cy="-5" r="4" fill="#c68a1f"/>
+        <circle cx="6" cy="3" r="3" fill="#c68a1f"/>
+        <circle cx="-2" cy="9" r="3" fill="#c68a1f"/>`;
+      break;
+    case 'grafiek':
+      vorm = `
+        <rect x="-22" y="-18" width="44" height="36" rx="3" fill="#fdfdfd" stroke="#2c2013" stroke-width="3"/>
+        <polyline points="-16,10 -6,-4 2,4 14,-12" fill="none" stroke="#c8262a" stroke-width="3"/>
+        <line x1="-16" y1="12" x2="16" y2="12" stroke="#9c8b6b" stroke-width="2"/>`;
+      break;
+    case 'vraagteken':
+      vorm = `
+        <circle cx="0" cy="0" r="20" fill="#fdfdfd" stroke="#2c2013" stroke-width="3"/>
+        <text x="0" y="9" text-anchor="middle" font-family="Poppins, sans-serif" font-size="26" font-weight="800" fill="#c8262a">?</text>`;
+      break;
+    case 'sleutel':
+      vorm = `
+        <circle cx="-10" cy="0" r="10" fill="none" stroke="#e0a730" stroke-width="6"/>
+        <rect x="-2" y="-3" width="26" height="6" fill="#e0a730"/>
+        <rect x="14" y="3" width="5" height="8" fill="#e0a730"/>
+        <rect x="22" y="3" width="5" height="8" fill="#e0a730"/>`;
+      break;
+    default:
+      return '';
+  }
+  return `<g transform="translate(${x},${y})">${vorm}</g>`;
+}
+
 function speechBubble(text, side) {
   const isLeft = side === 'left';
   const bx = isLeft ? 16 : 172;
@@ -299,16 +375,21 @@ function captionBottom(text) {
 function renderPanelSVG(panel) {
   const bg = sceneSVG(panel.scene);
   let overlay = '';
+  let prop = '';
   if (panel.spreker === 'daan') {
     overlay = daanAvatar(80, 210, 1) + speechBubble(panel.tekst, 'left');
+    prop = propSVG(panel.prop, 160, 215);
   } else if (panel.spreker === 'bert') {
     overlay = bertAvatar(320, 210, 1) + speechBubble(panel.tekst, 'right');
+    prop = propSVG(panel.prop, 240, 215);
   } else if (panel.spreker === 'verteller') {
     overlay = captionBanner(panel.tekst);
-  } else if (panel.tekst) {
-    overlay = captionBottom(panel.tekst);
+    prop = propSVG(panel.prop, 200, 180);
+  } else {
+    if (panel.tekst) overlay = captionBottom(panel.tekst);
+    prop = propSVG(panel.prop, 200, 180);
   }
-  return `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">${bg}${overlay}</svg>`;
+  return `<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">${bg}${prop}${overlay}</svg>`;
 }
 
 /* -------------------------------- Preview -------------------------------- */

@@ -1,37 +1,12 @@
 /* =========================================================================
    CONO Nieuwsbrief & Strip Bouwer — gedeelde stijlen
    -------------------------------------------------------------------------
-   Let op: de kleuren/tokens hieronder zijn een PLACEHOLDER huisstijl in de
-   sfeer van CONO Kaasmakers (kaas-goud, warm rood, weiland-groen, romig
-   crème). Er is geen officiële huisstijlgids of logo-bestand beschikbaar in
-   dit project. Vervang de tokens in :root hieronder door de echte CONO
-   kleuren/lettertypen/logo zodra die worden aangeleverd — de rest van de
-   app leest overal uit deze variabelen, dus dat is een centrale wijziging.
+   De kleuren en lettertypen staan NIET in dit bestand, maar in
+   assets/css/huisstijl.css. Dat is het enige bestand dat Interne
+   Communicatie hoeft aan te passen om alles in de echte CONO-huisstijl te
+   zetten. Gebruik hieronder dus altijd de var(--cono-...)-variabelen en
+   nooit losse kleurcodes.
    ========================================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap');
-
-:root {
-  /* --- Merk-tokens (PLACEHOLDER, vervang met officiële CONO huisstijl) --- */
-  --cono-red: #c8262a;
-  --cono-red-dark: #9c1c1f;
-  --cono-gold: #e0a730;
-  --cono-gold-light: #f4d998;
-  --cono-green: #345c34;
-  --cono-green-dark: #24401f;
-  --cono-cream: #fbf3e2;
-  --cono-cream-dark: #f1e3c4;
-  --cono-ink: #2c2013;
-
-  --font-heading: 'Poppins', 'Nunito Sans', system-ui, sans-serif;
-  --font-body: 'Nunito Sans', system-ui, sans-serif;
-
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --shadow-soft: 0 6px 20px rgba(44, 32, 19, 0.1);
-  --shadow-card: 0 2px 8px rgba(44, 32, 19, 0.08);
-}
 
 * { box-sizing: border-box; }
 
@@ -421,6 +396,192 @@ label {
 
 .card-tekst { background: #fff; }
 
+/* --- Vaste rubrieken (maandelijks terugkerend) --- */
+.rubriek {
+  border: 2px solid var(--cono-cream-dark);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  --accent: var(--cono-green);
+}
+.rubriek--rood { --accent: var(--cono-red); }
+.rubriek--groen { --accent: var(--cono-green); }
+.rubriek--goud { --accent: var(--cono-gold); }
+.rubriek--blauw { --accent: var(--cono-blue); }
+
+.rubriek-label {
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .5em .9em;
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  flex-wrap: wrap;
+}
+.rubriek--goud .rubriek-label { color: var(--cono-green-dark); }
+.rubriek-subtitel {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+  font-size: .78rem;
+  opacity: .9;
+}
+.rubriek-body { padding: 1em 1.2em; }
+.rubriek-body p { margin: 0 0 .7em; }
+.rubriek-body p:last-child { margin-bottom: 0; }
+.rubriek-kop {
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  color: var(--cono-green-dark);
+  margin: 0 0 .5em;
+}
+.term-chip {
+  display: inline-block;
+  background: var(--cono-cream);
+  border: 1px solid var(--accent);
+  color: var(--cono-green-dark);
+  font-weight: 700;
+  font-size: .78rem;
+  padding: .2em .7em;
+  border-radius: 999px;
+  margin-bottom: .6em;
+}
+.rubriek-brug {
+  margin-top: .7em;
+  padding: .6em .9em;
+  background: var(--cono-cream);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  color: var(--cono-green-dark);
+}
+.rubriek-tip {
+  margin-top: .7em;
+  font-size: .88rem;
+  background: var(--cono-gold-light);
+  border-radius: var(--radius-sm);
+  padding: .5em .8em;
+}
+.bron-regel {
+  font-size: .8rem;
+  font-style: italic;
+  color: #7a6b52;
+  margin-bottom: .5em;
+}
+.bron-link { font-size: .82rem; word-break: break-all; }
+
+/* Stamdata spotlight: woordenboek-notatie */
+.woordenboek {
+  background: var(--cono-cream);
+  border-radius: var(--radius-sm);
+  padding: .8em 1em;
+  margin-bottom: .7em;
+  border-bottom: 3px solid var(--cono-gold);
+}
+.woordenboek .woord {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--cono-green-dark);
+  display: block;
+}
+.woordenboek .definitie { font-style: italic; color: #5c4f39; }
+
+/* CONO Successen */
+.successen-lijst { list-style: none; margin: 0; padding: 0; }
+.successen-lijst li {
+  padding: .5em 0 .5em 1.8em;
+  position: relative;
+  border-bottom: 1px dashed var(--cono-cream-dark);
+}
+.successen-lijst li:last-child { border-bottom: none; }
+.successen-lijst li::before {
+  content: "🧀";
+  position: absolute;
+  left: 0;
+  top: .45em;
+}
+.successen-lijst .toelichting {
+  display: block;
+  font-size: .85rem;
+  color: #7a6b52;
+}
+
+/* JargonJudo */
+.jargon-term {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--cono-red);
+  margin-bottom: .2em;
+}
+.jargon-prikkel {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  background: var(--cono-ink);
+  color: #fff;
+  padding: .5em .9em;
+  border-radius: var(--radius-sm);
+  margin-bottom: .8em;
+  transform: rotate(-.6deg);
+}
+.jargon-stap {
+  display: flex;
+  gap: .7em;
+  align-items: flex-start;
+  margin-bottom: .6em;
+  font-size: .95rem;
+}
+.jargon-stap .stap-nr {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: var(--cono-cream-dark);
+  color: var(--cono-green-dark);
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: .8rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.jargon-stap--pointe .stap-nr { background: var(--cono-red); color: #fff; }
+.jargon-strip {
+  margin-top: .6em;
+  font-weight: 700;
+  font-size: .85rem;
+  color: var(--cono-green-dark);
+  background: var(--cono-cream);
+  border-radius: var(--radius-sm);
+  padding: .5em .8em;
+}
+
+/* Vraag van de maand */
+.vraag-coupon .rubriek-body {
+  background:
+    repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(224,167,48,.08) 12px, rgba(224,167,48,.08) 24px);
+}
+.vraag-tekst {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cono-green-dark);
+}
+.beloning {
+  margin-top: .6em;
+  display: inline-block;
+  background: var(--cono-gold);
+  color: var(--cono-green-dark);
+  font-weight: 800;
+  font-size: .85rem;
+  padding: .4em .9em;
+  border-radius: 999px;
+  border: 2px dashed var(--cono-green-dark);
+}
+
 .nl-strip-teaser {
   background: var(--cono-green);
   color: #fff;
@@ -592,4 +753,5 @@ footer.site-footer {
   .layout { display: block; padding: 0; }
   .sheet, .strip-sheet { box-shadow: none; max-width: 100%; border-radius: 0; }
   .preview-col { align-items: stretch; }
+  .nl-section, .rubriek, .strip-panel, .cijfer-tile { break-inside: avoid; page-break-inside: avoid; }
 }

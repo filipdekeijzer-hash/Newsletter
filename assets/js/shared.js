@@ -31,6 +31,19 @@ function textToParagraphs(str) {
     .join('');
 }
 
+// Laat alleen echte web-links door, zodat een geïmporteerd bestand geen
+// javascript:-link in de nieuwsbrief kan zetten.
+function safeUrl(str) {
+  if (!str) return '';
+  const trimmed = String(str).trim();
+  try {
+    const parsed = new URL(trimmed, window.location.href);
+    return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '';
+  } catch (e) {
+    return '';
+  }
+}
+
 function saveLocal(key, data) {
   try {
     localStorage.setItem(key, JSON.stringify(data));

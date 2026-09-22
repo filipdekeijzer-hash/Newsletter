@@ -20,11 +20,40 @@ statische site (GitHub Pages, Netlify, een interne webserver, etc.).
   vaste personages (Data-Daan en Boer Bert); per editie vul je alleen in wie
   wat zegt, in welk decor. Zo blijft de vormgeving herkenbaar, maar is elke
   strip inhoudelijk anders.
-- **`assets/css/style.css`** — alle styling, inclusief de CONO-kleurenset
-  (zie hieronder) en de print-opmaak.
+- **`assets/css/huisstijl.css`** — alléén de kleuren en lettertypen. Dit is
+  het enige bestand dat aangepast hoeft te worden voor de echte huisstijl
+  (zie hieronder).
+- **`assets/css/style.css`** — alle overige styling en de print-opmaak.
 - **`assets/js/shared.js`** — gedeelde hulpfuncties (opslaan, JSON in-/export).
 - **`assets/js/nieuwsbrief.js`**, **`assets/js/strip.js`** — logica van
   de twee bouwers.
+
+## De vaste indeling
+
+De knop **"Standaard indeling"** zet in één klik de acht rubrieken neer die
+elke editie terugkeren. Per editie vul je ze opnieuw:
+
+| Rubriek | Waarvoor |
+| --- | --- |
+| 📰 **Kop van de maand** | Wat moet je deze maand echt weten? Een herkenbaar voorbeeld van buiten het werk, met aan het eind de brug naar CONO. |
+| 🔑 **IAM in beeld** | Toegang en wachtwoorden, in gewone taal. |
+| 🔦 **Stamdata spotlight** | Eén term uit ons systeem, als woordenboek-notitie, met de constatering erachter. |
+| 🤖 **AI & Analytics (buiten CONO)** | Wat er buiten de deur gebeurt, met bronvermelding en eventueel een link. |
+| 🏆 **CONO Successen** | Lijstje van projecten en vragen waar we zelf mee bezig zijn. |
+| 🥋 **JargonJudo** | Een moeilijk woord in twee stappen op de mat: eerst de kop die logisch klinkt maar niet klopt, dan hoe het écht zit. Hier hoort de strip bij. |
+| ✅ **Actie & Tips** | De oproep: wat kan de lezer deze maand zelf doen? |
+| ❓ **Vraag van de maand** | Vraag insturen, inclusief de beloning. |
+
+Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je
+overslaat, of voeg 'm later weer toe. Daarnaast zijn er **vrije blokken**
+(wist-je-dat, onderwerp uitgelegd, cijfers, quote, tekst) voor wat buiten de
+vaste rubrieken valt.
+
+De knop **"Voorbeeld invullen"** laadt een volledig ingevulde proefeditie:
+de standaard indeling met de onderwerpen uit het eerste voorstel
+(telefoon die meeluistert / Baader-Meinhof, 1Password, geitenkaas,
+AI-artikel uit 2017, CONO-successen, causaal verband, rapporten-actie en
+de gevulde koeken).
 
 ## Werking
 
@@ -44,17 +73,21 @@ statische site (GitHub Pages, Netlify, een interne webserver, etc.).
 Er was bij het maken van dit sjabloon geen officiële CONO-huisstijlgids of
 logo-bestand beschikbaar. De huidige kleuren (kaas-goud, warm rood,
 weiland-groen, romig crème) en het "CK"-badge-logo zijn een sfeer-benadering,
-geen officiële huisstijl. Zodra de echte kleuren, het logo en eventuele
-lettertypen bekend zijn:
+geen officiële huisstijl.
 
-1. Open `assets/css/style.css`.
-2. Pas de variabelen bovenaan onder `:root` aan (`--cono-red`, `--cono-gold`,
-   `--cono-green`, `--cono-cream`, `--font-heading`, `--font-body`, ...).
-3. Vervang het `.logo-badge`-element (in elke HTML-pagina) door het echte
-   logo, bijvoorbeeld als `<img>`.
+Daarom staat álle kleur- en lettertype-informatie in één apart bestand:
+**`assets/css/huisstijl.css`**. Dat bestand kan zo doorgegeven worden aan
+Interne Communicatie of een vormgever:
 
-Omdat alle pagina's uit dezelfde CSS-variabelen putten, is dit een
-centrale wijziging.
+1. Pas in `assets/css/huisstijl.css` de variabelen onder `:root` aan
+   (`--cono-red`, `--cono-gold`, `--cono-green`, `--cono-blue`,
+   `--cono-cream`, `--font-heading`, `--font-body`, ...).
+2. Vervang het `.logo-badge`-element (in elke HTML-pagina) door het echte
+   logo, bijvoorbeeld als `<img src="assets/img/cono-logo.svg" alt="CONO">`.
+
+Verder hoeft er geen HTML of JavaScript aangeraakt te worden: de hele
+website — inclusief de figuurtjes en decors in de strip — leest zijn kleuren
+uit die variabelen.
 
 ## De strip: personages en decors
 
@@ -69,8 +102,14 @@ editie herkenbaar blijft:
 Daarnaast is er een **Verteller** (tekstbalk bovenaan, voor tijdsprongen of
 context) en de optie **Geen spreker** (alleen beeld, eventueel met een kort
 bijschrift). Per vakje kies je ook een decor (kaasfabriek, kantoor,
-vergaderzaal, buiten/wei, laptop-close-up, feestje) — dit zijn simpele
-vector-tekeningen (SVG) die met de brand-kleuren meekleuren.
+vergaderzaal, buiten/wei, strand/zwembad, laptop-close-up, feestje) en
+eventueel een voorwerp dat het personage omhooghoudt (ijsje, kaaswiel,
+grafiekje, vraagteken, sleutel) — dit zijn simpele vector-tekeningen (SVG)
+die met de huisstijl-kleuren meekleuren.
+
+De voorbeeldstrip hoort bij de rubriek JargonJudo: Boer Bert wil het ijs
+verbieden omdat meer ijsverkoop samenvalt met meer verdrinkingen — tot
+Data-Daan uitlegt dat het gewoon warm weer is.
 
 Dit is bewust een lichte, vectorstijl (geen foto's/AI-plaatjes) zodat het
 zelf aan te passen en uit te breiden is (nieuwe decors of personages

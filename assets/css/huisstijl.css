@@ -1,0 +1,50 @@
+/* =========================================================================
+   CONO HUISSTIJL — het enige bestand dat aangepast hoeft te worden om de
+   nieuwsbrief en de strip in de echte CONO-huisstijl te zetten.
+   -------------------------------------------------------------------------
+   Voor Interne Communicatie / vormgeving:
+
+   Alles in dit sjabloon (nieuwsbrief, strip, knoppen, tekeningen) leest zijn
+   kleuren en lettertypen uit de variabelen hieronder. Je hoeft dus géén
+   HTML of JavaScript aan te raken — pas hier de waarden aan en de hele
+   website verandert mee, inclusief de figuurtjes in de strip.
+
+   De huidige waarden zijn een PLACEHOLDER in de sfeer van kaas/zuivel
+   (goud, warm rood, weiland-groen, romig crème). Ze zijn NIET overgenomen
+   uit een officiële huisstijlgids — die was niet beschikbaar toen dit
+   sjabloon gemaakt werd.
+
+   Vervang daarnaast het logo: zoek in index.html, nieuwsbrief.html en
+   strip.html naar <span class="logo-badge">CK</span> en zet daar het echte
+   logo neer, bijvoorbeeld <img src="assets/img/cono-logo.svg" alt="CONO">.
+   ========================================================================= */
+
+/* Lettertypen — vervang door de huisstijl-fonts.
+   Staat het huisstijl-lettertype niet op Google Fonts? Zet het bestand dan
+   in assets/fonts/ en vervang deze regel door een @font-face-declaratie. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+  /* --- Hoofdkleuren --------------------------------------------------- */
+  --cono-red: #c8262a;        /* accentkleur: koppen, rubriek "Kop van de maand", JargonJudo */
+  --cono-red-dark: #9c1c1f;   /* donkere variant van het accent (hover, verlopen) */
+  --cono-gold: #e0a730;       /* kaas-goud: labels, stempels, rubriek "Stamdata spotlight" */
+  --cono-gold-light: #f4d998; /* lichte variant van goud (vlakken, cijfers) */
+  --cono-green: #345c34;      /* basiskleur: balken, knoppen, rubriek "CONO Successen" */
+  --cono-green-dark: #24401f; /* donkergroen: kopteksten en tekst op lichte vlakken */
+  --cono-blue: #2f6fb0;       /* techniek/AI: rubriek "AI & Analytics", shirt van Data-Daan */
+  --cono-cream: #fbf3e2;      /* zachte achtergrond van kaders */
+  --cono-cream-dark: #f1e3c4; /* paginakleur en randen */
+  --cono-ink: #2c2013;        /* standaard tekstkleur */
+
+  /* --- Typografie ----------------------------------------------------- */
+  --font-heading: 'Poppins', 'Nunito Sans', system-ui, sans-serif;
+  --font-body: 'Nunito Sans', system-ui, sans-serif;
+
+  /* --- Vormtaal (afrondingen en schaduwen) ---------------------------- */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-soft: 0 6px 20px rgba(44, 32, 19, 0.1);
+  --shadow-card: 0 2px 8px rgba(44, 32, 19, 0.08);
+}

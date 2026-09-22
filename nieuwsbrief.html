@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CONO Nieuwsbrief bouwer — Datamanagement</title>
+<link rel="stylesheet" href="assets/css/huisstijl.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -76,18 +77,31 @@
 
     <div class="panel">
       <h3><span class="emoji">🧩</span> Inhoud van deze editie</h3>
+      <button class="btn btn-ghost" id="btn-standaard" style="margin-bottom:.9em;">📋 Standaard indeling (8 vaste rubrieken)</button>
       <div id="sections-list"></div>
       <div class="add-section-row">
         <select id="new-section-type">
-          <option value="wistjedat">Wist-je-dat — speels voorbeeld uit een artikel</option>
-          <option value="onderwerp">Onderwerp uitgelegd — in simpele taal</option>
-          <option value="cijfer">Cijfers &amp; weetjes</option>
-          <option value="quote">Quote van een collega</option>
-          <option value="tekst">Los tekstblok</option>
+          <optgroup label="Vaste rubrieken">
+            <option value="kopvandemaand">📰 Kop van de maand</option>
+            <option value="iam">🔑 IAM in beeld</option>
+            <option value="stamdata">🔦 Stamdata spotlight</option>
+            <option value="aianalytics">🤖 AI &amp; Analytics (buiten CONO)</option>
+            <option value="successen">🏆 CONO Successen</option>
+            <option value="jargonjudo">🥋 JargonJudo</option>
+            <option value="actietips">✅ Actie &amp; Tips</option>
+            <option value="vraagvandemaand">❓ Vraag van de maand</option>
+          </optgroup>
+          <optgroup label="Vrije blokken">
+            <option value="wistjedat">💡 Wist-je-dat — voorbeeld uit een artikel</option>
+            <option value="onderwerp">📘 Onderwerp uitgelegd — in simpele taal</option>
+            <option value="cijfer">📊 Cijfers &amp; weetjes</option>
+            <option value="quote">💬 Quote van een collega</option>
+            <option value="tekst">📝 Los tekstblok</option>
+          </optgroup>
         </select>
         <button class="btn btn-secondary" id="btn-add-section">+ Sectie toevoegen</button>
       </div>
-      <small class="hint">Zet secties in de volgorde waarin ze in de nieuwsbrief moeten staan. Gebruik de pijltjes op elke kaart om te herschikken.</small>
+      <small class="hint">De acht vaste rubrieken keren elke editie terug. Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je overslaat. Met de pijltjes verander je de volgorde.</small>
     </div>
 
     <div class="panel">
