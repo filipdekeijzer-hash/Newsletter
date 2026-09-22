@@ -25,7 +25,8 @@ in de bouwer, zodat overnemen één op één gaat.
 | `2-iam-in-beeld.txt` | 🔑 IAM in beeld |
 | `3-stamdata-spotlight.txt` | 🔦 Stamdata spotlight |
 | `4-ai-en-analytics.txt` | 🤖 AI & Analytics (buiten CONO) |
-| `5-successen-en-jargonjudo.txt` | 🏆 CONO Successen + 🥋 JargonJudo + de strip |
+| `5-successen-en-jargonjudo.txt` | 🏆 CONO Successen + 🥋 JargonJudo |
+| `6-strip-uit-verhaal.txt` | De strip bij JargonJudo |
 
 Twee rubrieken hebben geen prompt, omdat ze niet per maand opnieuw bedacht
 hoeven te worden: **Actie & Tips** en **Vraag van de maand**. Die schrijf je
@@ -34,16 +35,18 @@ collega.
 
 ## De strip
 
-Prompt 5 levert naast de JargonJudo-tekst ook een script voor de zes vakjes
-van de strip, in dit formaat:
+Prompt 6 maakt de strip. Je vult je verhaal in, de LLM schrijft het draaiboek
+als JSON, en de strip maker tekent het.
 
-```
-3. SPREKER: Bert | EMOTIE: fel | TEKST: Dan verbieden we het ijs! Vandaag nog!
-```
+De makkelijkste weg is via de strip maker zelf: typ je verhaal in het vak
+"Strip uit een verhaal" en klik op "Prompt kopiëren" — dan staat deze prompt
+met jouw verhaal erin klaar. Het JSON-antwoord plak je terug en de strip
+verschijnt. In de gedeelde online versie kan de pagina het ook rechtstreeks
+aan Claude vragen.
 
-Die regels gebruik je als draaiboek in de strip maker: je zet per vakje de
-figuren neer, plaatst een ballon met die tekst en stelt houding en gezicht in
-op de aangegeven emotie. Het decor bouw je er zelf bij.
+De opbouw ligt vast op vier vakjes: situatie, complicatie, omslag, clou.
+Wat erin gebeurt verschilt per verhaal, en twee keer dezelfde vraag stellen
+levert twee verschillende strips op.
 
 ## Een opmerking over gebruik
 

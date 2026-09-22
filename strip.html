@@ -44,6 +44,27 @@
   <section class="editor-col">
 
     <div class="panel">
+      <h3><span class="emoji">🤖</span> Strip uit een verhaal</h3>
+      <div class="field">
+        <label for="st-verhaal">Jouw verhaal</label>
+        <textarea id="st-verhaal" rows="5" placeholder="Vertel in een paar zinnen wat er moet gebeuren. Bijvoorbeeld: Bert ziet dat meer ijsverkoop samenvalt met meer verdrinkingen en wil ijs verbieden; Daan legt uit dat het gewoon warm weer is."></textarea>
+      </div>
+      <div class="knoppenrij">
+        <button class="btn btn-primary" id="st-btn-claude" hidden>✨ Laat Claude de strip tekenen</button>
+        <button class="btn btn-secondary" id="st-btn-prompt">📋 Prompt kopiëren</button>
+      </div>
+      <details class="meer-opties" id="st-plak-blok">
+        <summary>Antwoord van de LLM plakken</summary>
+        <div class="field">
+          <textarea id="st-script" rows="6" placeholder="Plak hier het JSON-antwoord van ChatGPT, Claude of Copilot."></textarea>
+        </div>
+        <button class="btn btn-secondary" id="st-btn-bouw">Strip bouwen</button>
+      </details>
+      <p class="regie-melding" id="st-melding"></p>
+      <small class="hint">De LLM schrijft alleen het draaiboek — wie er in beeld staat, wat er gezegd wordt en met welk gezicht. Het tekenen en plaatsen doet deze pagina, zodat elke strip anders is maar de vormgeving hetzelfde blijft. Daarna kun je alles nog met de hand bijschuiven.</small>
+    </div>
+
+    <div class="panel">
       <h3><span class="emoji">✏️</span> Kop van de strip</h3>
       <div class="field">
         <label for="st-titel">Titel</label>
@@ -103,5 +124,6 @@
 
 <script src="assets/js/shared.js"></script>
 <script src="assets/js/stripmaker.js"></script>
+<script src="assets/js/regisseur.js"></script>
 </body>
 </html>

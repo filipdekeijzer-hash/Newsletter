@@ -1,0 +1,97 @@
+# ============================================================================
+# PROMPT 6 — DE STRIP
+# ----------------------------------------------------------------------------
+# WAT DEZE PROMPT DOET
+#   Laat een LLM het draaiboek voor de strip schrijven op basis van jouw
+#   verhaal. De LLM tekent niets: hij levert JSON die je in de strip maker
+#   plakt, waarna de pagina de strip tekent in de vaste CONO-vormgeving.
+#   Elk verhaal levert dus een andere strip op, met steeds dezelfde opbouw.
+#
+# ZO GEBRUIK JE DIT BESTAND
+#   Makkelijkste weg: open de strip maker, typ je verhaal in het vak
+#   "Strip uit een verhaal" en klik op "Prompt kopiëren". Dan wordt deze
+#   prompt met jouw verhaal erin voor je klaargezet.
+#
+#   Met de hand:
+#   1. Vul hieronder VERHAAL in.
+#   2. Kopieer alles vanaf de streep naar je LLM.
+#   3. Plak het JSON-antwoord in de strip maker, onder "Antwoord van de LLM
+#      plakken", en klik op "Strip bouwen".
+#   4. Niet tevreden? Vraag het nog eens — elke keer komt er iets anders uit.
+#
+# LET OP
+#   Sleutelwoorden als decor, emotie en gebaar moeten exact uit de lijsten
+#   hieronder komen; een woord dat er niet in staat wordt genegeerd en
+#   vervangen door "neutraal" of "kantoor".
+# ============================================================================
+
+
+VARIABELEN
+  VERHAAL = <vertel in een paar zinnen wat er moet gebeuren, wie erin zitten
+             en welk begrip wordt uitgelegd>
+
+# ----------------------------- KOPIEER VANAF HIER ---------------------------
+
+Je schrijft het draaiboek voor een strip in de interne nieuwsbrief van
+CONO Kaasmakers, een zuivelcoöperatie. De strip hoort bij de rubriek
+JargonJudo: een moeilijk begrip wordt uitgelegd met een grap. De lezers zijn
+collega's van alle afdelingen en zijn geen data-experts.
+
+HET VERHAAL VAN DEZE EDITIE:
+VERHAAL
+
+Je tekent niets. Je levert alleen een draaiboek als JSON, dat door een
+tekenprogramma wordt omgezet in de strip. Houd je exact aan onderstaand
+formaat en verzin geen extra velden.
+
+VASTE STRUCTUUR — altijd precies 4 vakjes, in deze opbouw:
+  1. de situatie: wat is er aan de hand
+  2. de complicatie: iemand trekt een logische maar foute conclusie
+  3. de omslag: iemand anders zet er een vraag of observatie tegenover
+  4. de clou: de korte zin die de lezer onthoudt
+
+REGELS
+- Nederlands, spreektaal, geen jargon zonder uitleg.
+- Per vakje maximaal 14 woorden tekst. Ze moeten in een ballon passen.
+- Niemand wordt voor gek gezet: wie het mis heeft, heeft een begrijpelijk punt.
+- Gebruik dezelfde personages in meerdere vakjes, zodat het één verhaal is.
+- Antwoord met UITSLUITEND de JSON, zonder uitleg eromheen.
+
+TOEGESTANE WAARDEN
+  decor:   kantoor, vergaderzaal, kaasfabriek, wei, boerderij, strand, thuis, buiten, feest
+  emotie:  neutraal, blij, verbaasd, verward, denkend, fel, geschrokken, verdrietig, trots, moe
+  gebaar:  neutraal, wijst, armen-omhoog, hand-op-kin, armen-over-elkaar, zwaait, handen-spreiden, wijst-omhoog
+  ballon:  spreek, denk, roep
+  haar:    kort, scheiding, stekels, krullen, staart, kaal, pet, muts
+
+FORMAAT
+{
+  "titel": "JargonJudo",
+  "ondertitel": "het begrip dat wordt uitgelegd",
+  "auteur": "Data-team CONO",
+  "personages": [
+    { "naam": "Daan", "haar": "kort", "bril": true, "shirt": "#3a7bbf" },
+    { "naam": "Bert", "haar": "muts", "snor": true, "shirt": "#f2efe4" }
+  ],
+  "vakjes": [
+    {
+      "decor": "kantoor",
+      "wie": ["Daan", "Bert"],
+      "spreker": "Daan",
+      "emotie": "verbaasd",
+      "gebaar": "wijst",
+      "ballon": "spreek",
+      "tekst": "Wat er gezegd wordt, maximaal 14 woorden.",
+      "bijschrift": ""
+    }
+  ]
+}
+
+Toelichting bij de velden:
+- "wie": één tot drie namen die in dat vakje in beeld staan.
+- "spreker": wie van hen praat. Laat weg als niemand praat.
+- "emotie" en "gebaar" gelden voor de spreker.
+- "bijschrift": alleen invullen voor een tijdsprong ("Twee weken later..."),
+  anders een lege tekst.
+- "personages": kleuren en kenmerken zijn optioneel; laat je ze weg, dan
+  krijgt de naam automatisch een vast uiterlijk.

@@ -52,6 +52,7 @@ const stripMain = herschrijfLinks(knipBlok(stripHtml, '<main class="layout">', '
 const gedeeld = lees('assets/js/shared.js');
 const nieuwsbriefJs = lees('assets/js/nieuwsbrief.js');
 const stripJs = lees('assets/js/stripmaker.js');
+const regisseurJs = lees('assets/js/regisseur.js');
 
 /* Elke tool krijgt zijn eigen scope, zodat gelijknamige functies en
    variabelen in de twee bestanden elkaar niet overschrijven. */
@@ -116,7 +117,7 @@ ${stripMain}
 
 <script>
 ${inScope(gedeeld, nieuwsbriefJs)}
-${inScope(gedeeld, stripJs)}
+${inScope(gedeeld, stripJs, regisseurJs)}
 
 (function () {
   var TAB_KEY = 'cono_actief_tabblad';

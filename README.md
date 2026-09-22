@@ -38,17 +38,19 @@ via **Importeer JSON** weer inladen.
   (voorwoord, "wist-je-dat" voorbeelden uit artikelen/papers, onderwerpen in
   simpele taal, cijfers, quotes, vrije tekst), rechts zie je direct de
   opgemaakte nieuwsbrief.
-- **`strip.html`** — de stripmaker. Vaste opmaak van 6 vakjes met twee
-  vaste personages (Data-Daan en Boer Bert); per editie vul je alleen in wie
-  wat zegt, in welk decor. Zo blijft de vormgeving herkenbaar, maar is elke
-  strip inhoudelijk anders.
+- **`strip.html`** — de strip maker. Je typt je verhaal in, een LLM schrijft
+  het draaiboek en de pagina tekent de strip. Daarna kun je alles nog met de
+  hand bijschuiven op de tekentafel.
 - **`assets/css/huisstijl.css`** — alléén de kleuren en lettertypen. Dit is
   het enige bestand dat aangepast hoeft te worden voor de echte huisstijl
   (zie hieronder).
 - **`assets/css/style.css`** — alle overige styling en de print-opmaak.
 - **`assets/js/shared.js`** — gedeelde hulpfuncties (opslaan, JSON in-/export).
-- **`assets/js/nieuwsbrief.js`**, **`assets/js/strip.js`** — logica van
-  de twee bouwers.
+- **`assets/js/nieuwsbrief.js`** — logica van de nieuwsbrief-bouwer.
+- **`assets/js/stripmaker.js`** — de tekentafel: tekenen, slepen, poseren.
+- **`assets/js/regisseur.js`** — vertaalt het draaiboek van de LLM naar een
+  complete strip (decors, plaatsing, houdingen, ballonnen).
+- **`prompts/`** — de vaste prompts per sectie, inclusief die voor de strip.
 
 ## De vaste indeling
 
@@ -113,17 +115,49 @@ uit die variabelen.
 
 ## Prompts per sectie
 
-In de map `prompts/` staan vijf vaste prompts, één per sectie, met de
+In de map `prompts/` staan zes vaste prompts, één per sectie, met de
 instructie als commentaar bovenaan en daaronder de variabelen die je elke
 maand vervangt. `prompts/README.md` legt uit welke prompt bij welke rubriek
-hoort. Prompt 5 levert naast de tekst ook een script voor de zes vakjes van
-de strip.
+hoort. Prompt 6 is die van de strip: die levert het draaiboek waar de strip
+maker de tekening van bouwt.
 
-## De strip maker: een tekentafel
+## De strip maker: van verhaal naar strip
 
-De strip maker werkt niet met sjablonen of keuzelijstjes, maar als een
-tekentafel. Een vakje is een leeg kader; alles wat erin staat zet je er zelf
-neer en versleep je met de muis.
+De snelste route loopt via het paneel **"Strip uit een verhaal"**. Je typt in
+een paar zinnen wat er moet gebeuren; een LLM schrijft daar het draaiboek bij
+en deze pagina tekent er de strip van.
+
+De LLM tekent dus niets. Hij levert alleen JSON: per vakje wie er in beeld
+staat, wie er praat, met welke uitdrukking en welk gebaar, in welk decor. De
+regisseur in `assets/js/regisseur.js` zet daar vervolgens de figuren neer,
+draait de armen in de juiste houding, hangt de ballon boven de spreker met de
+staart naar zijn hoofd, en bouwt het decor op. Daardoor is elke strip anders,
+terwijl de vormgeving en de opbouw (situatie → complicatie → omslag → clou)
+elke keer hetzelfde zijn.
+
+Twee manieren:
+
+1. **Kopiëren en plakken** (werkt overal): klik op "Prompt kopiëren", plak de
+   prompt in ChatGPT, Claude of Copilot, en plak het JSON-antwoord terug onder
+   "Antwoord van de LLM plakken". Dezelfde prompt staat in
+   `prompts/6-strip-uit-verhaal.txt`.
+2. **Rechtstreeks** (alleen in de gedeelde online versie): de knop "Laat
+   Claude de strip tekenen" vraagt het draaiboek meteen op. Bevalt het
+   resultaat niet, klik dan nog eens — elke keer komt er iets anders uit.
+
+Namen die je gebruikt krijgen automatisch een vast uiterlijk, zodat dezelfde
+persoon er in elk vakje hetzelfde uitziet. Wil je een personage precies
+vastleggen (bijvoorbeeld Bert met kaasmakersmuts en snor), dan kan dat in het
+`personages`-deel van het draaiboek.
+
+Na het bouwen kun je alles nog met de hand bijschuiven — dat is de tekentafel
+hieronder.
+
+## De tekentafel: alles met de hand
+
+Wil je zelf tekenen, of het resultaat van de regisseur bijschaven, dan werkt
+de pagina als een tekentafel. Een vakje is een leeg kader; alles wat erin
+staat zet je er zelf neer en versleep je met de muis.
 
 **Wat je kunt plaatsen**
 

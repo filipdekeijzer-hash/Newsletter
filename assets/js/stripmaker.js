@@ -1057,6 +1057,92 @@ document.getElementById('st-btn-print').addEventListener('click', () => {
 });
 
 /* ========================================================================
+   REGIE — strip uit een verhaal
+   ===================================================================== */
+
+function melding(tekst, soort) {
+  const el = document.getElementById('st-melding');
+  el.textContent = tekst || '';
+  el.className = 'regie-melding' + (soort ? ' is-' + soort : '');
+}
+
+/* LLM's zetten hun antwoord vaak tussen ```-hekjes of met een zin ervoor. */
+function pluisJSON(tekst) {
+  const schoon = String(tekst || '').replace(/```[a-z]*\s*/gi, '').trim();
+  const van = schoon.indexOf('{');
+  const tot = schoon.lastIndexOf('}');
+  if (van === -1 || tot <= van) throw new Error('Geen JSON gevonden in dit antwoord.');
+  return JSON.parse(schoon.slice(van, tot + 1));
+}
+
+function toonUitScript(script) {
+  const nieuw = bouwUitScript(script);
+  bewaarStap();
+  state = nieuw;
+  selectie = { paneelId: allePanelen()[0].id };
+  tekenAlles();
+  bewaar();
+}
+
+document.getElementById('st-btn-prompt').addEventListener('click', () => {
+  const verhaal = document.getElementById('st-verhaal').value;
+  if (!verhaal.trim()) { melding('Schrijf eerst je verhaal hierboven.', 'fout'); return; }
+  const prompt = stripPrompt(verhaal);
+  const klaar = () => {
+    melding('Prompt gekopieerd. Plak hem in ChatGPT, Claude of Copilot en zet het antwoord hieronder terug.', 'goed');
+    document.getElementById('st-plak-blok').open = true;
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(prompt).then(klaar, () => {
+      document.getElementById('st-script').value = prompt;
+      document.getElementById('st-plak-blok').open = true;
+      melding('Kopiëren mocht niet. De prompt staat nu in het plakvak — knip hem daaruit.', 'fout');
+    });
+  } else {
+    document.getElementById('st-script').value = prompt;
+    document.getElementById('st-plak-blok').open = true;
+    melding('Kopiëren kan hier niet. De prompt staat in het plakvak.', 'fout');
+  }
+});
+
+document.getElementById('st-btn-bouw').addEventListener('click', () => {
+  const ruw = document.getElementById('st-script').value;
+  if (!ruw.trim()) { melding('Plak eerst het antwoord van de LLM.', 'fout'); return; }
+  try {
+    toonUitScript(pluisJSON(ruw));
+    melding('Strip gebouwd. Je kunt alles nu met de hand bijschuiven.', 'goed');
+  } catch (fout) {
+    melding('Dit lukte niet: ' + fout.message, 'fout');
+  }
+});
+
+/* In de gedeelde online versie kan de pagina Claude zelf om het draaiboek
+   vragen. Elders blijft alleen de kopieer-en-plak route over. */
+const claudeKnop = document.getElementById('st-btn-claude');
+if (window.claude && typeof window.claude.use === 'function') {
+  window.claude.use('sample').then((sample) => {
+    if (!sample) return;
+    claudeKnop.hidden = false;
+    claudeKnop.addEventListener('click', () => {
+      const verhaal = document.getElementById('st-verhaal').value;
+      if (!verhaal.trim()) { melding('Schrijf eerst je verhaal hierboven.', 'fout'); return; }
+      claudeKnop.disabled = true;
+      melding('Claude schrijft het draaiboek...');
+      sample.json(stripPrompt(verhaal), { modelTier: 'default' }).then((script) => {
+        try {
+          toonUitScript(script);
+          melding('Klaar. Niet tevreden? Klik nog eens — elke keer is anders.', 'goed');
+        } catch (fout) {
+          melding('Het draaiboek klopte niet: ' + fout.message, 'fout');
+        }
+      }, (fout) => {
+        melding(fout && fout.code === 'declined' ? 'Geannuleerd.' : 'Het lukte niet om het draaiboek op te halen.', 'fout');
+      }).then(() => { claudeKnop.disabled = false; });
+    });
+  });
+}
+
+/* ========================================================================
    START
    ===================================================================== */
 
