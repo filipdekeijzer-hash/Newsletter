@@ -41,9 +41,9 @@ van de strip, in dit formaat:
 3. SPREKER: Bert | EMOTIE: fel | TEKST: Dan verbieden we het ijs! Vandaag nog!
 ```
 
-Die regels neem je over in de strip maker: per vakje kies je de spreker en de
-uitdrukking uit de keuzelijsten en plak je de tekst. Decor en voorwerp kies je
-er zelf bij — die bepalen hoe het vakje eruitziet.
+Die regels gebruik je als draaiboek in de strip maker: je zet per vakje de
+figuren neer, plaatst een ballon met die tekst en stelt houding en gezicht in
+op de aangegeven emotie. Het decor bouw je er zelf bij.
 
 ## Een opmerking over gebruik
 

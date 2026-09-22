@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CONO Strip maker — Datamanagement</title>
+<title>CONO Strip maker — tekentafel</title>
 <link rel="stylesheet" href="assets/css/huisstijl.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -25,8 +25,9 @@
 </header>
 
 <div class="toolbar">
-  <button class="btn btn-ghost" id="st-btn-nieuw">🗒️ Nieuwe strip</button>
-  <button class="btn btn-ghost" id="st-btn-voorbeeld">✨ Voorbeeld invullen</button>
+  <button class="btn btn-ghost" id="st-btn-nieuw">🗒️ Lege strip</button>
+  <button class="btn btn-ghost" id="st-btn-voorbeeld">✨ Voorbeeld</button>
+  <button class="btn btn-ghost" id="st-btn-undo" title="Laatste wijziging terugdraaien (Ctrl+Z)">↩︎ Ongedaan</button>
   <label class="btn btn-ghost" style="margin:0;">
     📥 Importeer JSON
     <input type="file" id="st-input-import" accept="application/json" style="display:none;">
@@ -39,34 +40,60 @@
 
 <main class="layout">
 
-  <!-- ============================= EDITOR ============================= -->
+  <!-- ============================= TEKENTAFEL ============================= -->
   <section class="editor-col">
 
     <div class="panel">
-      <h3><span class="emoji">🎬</span> Basisgegevens</h3>
+      <h3><span class="emoji">✏️</span> Kop van de strip</h3>
       <div class="field">
-        <label for="st-titel">Titel van de strip</label>
-        <input id="st-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+        <label for="st-titel">Titel</label>
+        <input id="st-titel" placeholder="Bijv. JargonJudo">
       </div>
       <div class="field">
-        <label for="st-onderwerp">Onderwerp-label</label>
-        <input id="st-onderwerp" placeholder="Bijv. Thema: datakwaliteit">
-        <small class="hint">Kort label boven de strip, handig om edities uit elkaar te houden.</small>
+        <label for="st-onderwerp">Ondertitel</label>
+        <input id="st-onderwerp" placeholder="Bijv. causaal verband">
       </div>
-      <small class="hint">De vaste vormgeving (6 vakjes, personages Data-Daan &amp; Boer Bert) blijft elke editie hetzelfde — alleen de inhoud hieronder verandert per onderwerp.</small>
+      <div class="field">
+        <label for="st-auteur">Naamregel</label>
+        <input id="st-auteur" placeholder="Bijv. Data-team CONO">
+      </div>
     </div>
 
     <div class="panel">
-      <h3><span class="emoji">🖼️</span> De 6 vakjes</h3>
-      <div id="st-panels-editor"></div>
+      <h3><span class="emoji">➕</span> Toevoegen aan vakje <span id="st-actief-vakje" class="vakje-badge">1</span></h3>
+      <div class="knoppenrij">
+        <button class="btn btn-secondary" data-voeg-toe="figuur">🧍 Figuur</button>
+        <button class="btn btn-secondary" data-voeg-toe="ballon">💬 Ballon</button>
+        <button class="btn btn-secondary" data-voeg-toe="tekst">🏷️ Tekstblok</button>
+      </div>
+      <div class="field" style="margin-top:.8em;">
+        <label for="st-decor-keuze">Decorstuk</label>
+        <div class="knoppenrij">
+          <select id="st-decor-keuze"></select>
+          <button class="btn btn-secondary" data-voeg-toe="decor">Plaatsen</button>
+        </div>
+      </div>
+      <small class="hint">Klik een vakje aan om het actief te maken. Alles wat je plaatst kun je daarna vrij verslepen.</small>
+    </div>
+
+    <div class="panel" id="st-eigenschappen-paneel">
+      <h3><span class="emoji">🎛️</span> Geselecteerd</h3>
+      <div id="st-eigenschappen"></div>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">🗂️</span> Indeling</h3>
+      <div id="st-indeling"></div>
+      <button class="btn btn-ghost" id="st-rij-toevoegen" style="margin-top:.6em;">+ Rij toevoegen</button>
+      <small class="hint">Een krantenstrip is meestal één rij van drie of vier vakjes. Versleep de breedte met de knoppen − en +.</small>
     </div>
 
   </section>
 
-  <!-- ============================= PREVIEW ============================= -->
+  <!-- ============================= HET VEL ============================= -->
   <section class="preview-col">
     <article class="strip-sheet" id="st-sheet">
-      <!-- wordt gevuld door strip.js -->
+      <!-- wordt gevuld door stripmaker.js -->
     </article>
   </section>
 
@@ -75,6 +102,6 @@
 <footer class="site-footer">CONO Strip maker — intern sjabloon, gemaakt voor het datamanagement-project.</footer>
 
 <script src="assets/js/shared.js"></script>
-<script src="assets/js/strip.js"></script>
+<script src="assets/js/stripmaker.js"></script>
 </body>
 </html>

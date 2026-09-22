@@ -51,7 +51,7 @@ const stripMain = herschrijfLinks(knipBlok(stripHtml, '<main class="layout">', '
 
 const gedeeld = lees('assets/js/shared.js');
 const nieuwsbriefJs = lees('assets/js/nieuwsbrief.js');
-const stripJs = lees('assets/js/strip.js');
+const stripJs = lees('assets/js/stripmaker.js');
 
 /* Elke tool krijgt zijn eigen scope, zodat gelijknamige functies en
    variabelen in de twee bestanden elkaar niet overschrijven. */

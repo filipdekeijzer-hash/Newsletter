@@ -22,7 +22,7 @@
 /* Lettertypen — vervang door de huisstijl-fonts.
    Staat het huisstijl-lettertype niet op Google Fonts? Zet het bestand dan
    in assets/fonts/ en vervang deze regel door een @font-face-declaratie. */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Nunito+Sans:wght@400;600;700;800&family=Bangers&family=Comic+Neue:wght@700&display=swap');
 
 :root {
   /* --- Hoofdkleuren --------------------------------------------------- */
@@ -40,6 +40,9 @@
   /* --- Typografie ----------------------------------------------------- */
   --font-heading: 'Poppins', 'Nunito Sans', system-ui, sans-serif;
   --font-body: 'Nunito Sans', system-ui, sans-serif;
+  /* Stripbelettering: de kop boven de strip en de tekst in de ballonnen. */
+  --font-strip-titel: 'Bangers', 'Poppins', sans-serif;
+  --font-strip-letter: 'Comic Neue', 'Nunito Sans', sans-serif;
 
   /* --- Vormtaal (afrondingen en schaduwen) ---------------------------- */
   --radius-sm: 8px;

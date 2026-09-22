@@ -119,42 +119,43 @@ maand vervangt. `prompts/README.md` legt uit welke prompt bij welke rubriek
 hoort. Prompt 5 levert naast de tekst ook een script voor de zes vakjes van
 de strip.
 
-## De strip: personages en decors
+## De strip maker: een tekentafel
 
-De strip gebruikt twee vaste, eenvoudig getekende personages zodat elke
-editie herkenbaar blijft:
+De strip maker werkt niet met sjablonen of keuzelijstjes, maar als een
+tekentafel. Een vakje is een leeg kader; alles wat erin staat zet je er zelf
+neer en versleep je met de muis.
 
-- **Data-Daan** — het datateam, herkenbaar aan het blauwe shirt en het
-  tablet/grafiekje.
-- **Boer Bert** — de praktijk op de vloer/boerderij, herkenbaar aan de
-  groene overall en het kaaswiel.
+**Wat je kunt plaatsen**
 
-Daarnaast is er een **Verteller** (tekstbalk bovenaan, voor tijdsprongen of
-context) en de optie **Geen spreker** (alleen beeld, eventueel met een kort
-bijschrift).
+- **Figuren.** Een poppetje met scharnieren. Je stelt per arm de schouder- en
+  elleboogstand in, kantelt het hoofd en spreidt de benen. Het gezicht wordt
+  opgebouwd uit losse waarden: wenkbrauwhoek en -hoogte, hoever de ogen open
+  staan, waar de pupillen naartoe kijken, en de breedte, kromming en opening
+  van de mond. Daarnaast kies je vrij de kleur van huid, shirt, broek en haar,
+  een kapsel of hoofddeksel, en bril, snor, baard of blosjes. Er zijn dus geen
+  vaste personages: je maakt ze zelf, en je kunt er zoveel in een vakje zetten
+  als je wilt.
+- **Decorstukken.** Twintig vormen (huis, schuur, boom, hek, koe, kaaswiel,
+  melkbus, kaasvat, tafel, bureau, laptop, beeldscherm, whiteboard, plant,
+  zon, wolk en meer), elk met eigen kleuren, grootte en spiegeling.
+- **Ballonnen.** Spreken, denken of roepen. De staart heeft een eigen
+  handvat: sleep het bolletje naar degene die praat.
+- **Tekstblokken** voor "later die dag..." of het slotzinnetje.
 
-Per vakje stel je in:
+**De indeling** bepaal je zelf: rijen toevoegen, vakjes toevoegen of
+weghalen, en per vakje de breedte instellen. Een klassieke krantenstrip is
+één rij van drie of vier vakjes, maar een zondagse pagina met meerdere rijen
+kan net zo goed. Per vakje stel je de kleur van lucht en grond in, de hoogte
+van de horizon, en of er rasterpuntjes in de lucht komen.
 
-- **In beeld** — alleen Daan, alleen Bert, allebei (dan staan ze tegenover
-  elkaar) of niemand.
-- **Wie praat** — en dus waar de ballon naartoe wijst.
-- **Uitdrukking** — neutraal, blij, verbaasd, denkend, fel of geschrokken.
-  Dit verandert de ogen, de wenkbrauwen, de mond én de houding van de armen.
-- **Ballon** — spreekballon, denkballon (wolk) of roepballon (kartelrand).
-- **Decor** — kaasfabriek, kantoor, vergaderzaal, wei, strand, scherm met
-  grafiek of feestje.
-- **Voorwerp** — ijsje, kaaswiel, grafiekje, vraagteken, sleutel of ordner,
-  dat het sprekende personage vasthoudt.
+**Handig tijdens het tekenen**
 
-Alles is met de hand getekende SVG met een doorlopende inktlijn, zodat
-personages, decors en ballonnen dezelfde beeldtaal delen en alles meekleurt
-met de huisstijl.
+- Klik een vakje aan om het actief te maken; nieuwe onderdelen komen daarin.
+- Pijltjestoetsen verschuiven het geselecteerde onderdeel (met Shift grotere
+  stappen), Delete verwijdert het, Ctrl+Z draait de laatste stap terug.
+- Met "Naar voren" en "Naar achter" bepaal je wat voor of achter wat staat.
+- "Dupliceren" maakt een kopie — handig om dezelfde figuur in het volgende
+  vakje opnieuw te gebruiken met een andere houding.
 
-De voorbeeldstrip hoort bij de rubriek JargonJudo: Boer Bert wil het ijs
-verbieden omdat meer ijsverkoop samenvalt met meer verdrinkingen — tot
-Data-Daan uitlegt dat het gewoon warm weer is.
-
-Dit is bewust vectorwerk (geen foto's of gegenereerde plaatjes) zodat het
-zelf aan te passen en uit te breiden is. Een nieuw decor voeg je toe in
-`sceneSVG()`, een nieuw voorwerp in `propSVG()`, een nieuwe uitdrukking in
-`gezichtSVG()` plus `ARMEN` — allemaal in `assets/js/strip.js`.
+De tekeningen zijn SVG met een doorlopende inktlijn, dus ze blijven scherp op
+papier en kleuren mee met de huisstijl.
