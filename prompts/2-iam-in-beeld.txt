@@ -32,7 +32,7 @@ Het onderwerp van deze maand is: ONDERWERP.
 Wat collega's ervan merken: WAT ER VERANDERT.
 
 Schrijf in het Nederlands. Regels waar je je strikt aan houdt:
-- De uitleg is precies drie zinnen. Niet vier.
+- De uitleg is precies drie zinnen, samen maximaal 60 woorden. Niet vier.
 - Je gebruikt verplicht één simpele analogie die iedereen begrijpt: een slot,
   een sleutelbos, een portier, een pasje, een huis. De analogie moet echt
   kloppen, niet alleen leuk klinken.

@@ -43,7 +43,8 @@ function defaultState() {
       auteur: 'Team Data & Informatie'
     },
     sections: [],
-    strip: { titel: '', teaser: '' },
+    strip: { tonen: true, teaser: '' },
+    compact: 1,
     footer: {
       contact: 'Data-team — data@cono.nl',
       volgende: 'De volgende editie verschijnt over een maand.'
@@ -77,7 +78,7 @@ function nieuwSectie(type) {
     case 'jargonjudo':
       return { id, type, term: 'Het moeilijke woord', prikkel: 'Een kop die niet klopt, maar wel logisch klinkt',
         observatie: 'Wat je ziet in de cijfers.', ontknoping: 'Hoe het écht zit — en waarom de kop dus onzin is.',
-        striplink: 'Zie de strip op de volgende pagina.' };
+        striplink: 'Zie de strip onderaan deze pagina.' };
     case 'actietips':
       return { id, type, tekst: 'Wat kan de lezer deze maand zelf doen?', actie: 'De concrete actie in één zin' };
     case 'vraagvandemaand':
@@ -111,31 +112,31 @@ function voorbeeldState() {
     datum: todayNL()
   };
   s.voorwoord = {
-    tekst: 'Data, AI, stamdata, IAM — het klinkt al snel als een taal die je eerst moet leren voordat je mee kunt praten. Dat is precies wat we met dit Databericht willen omdraaien.\n\nElke editie pakken we een paar onderwerpen beet en leggen we ze uit in gewone taal, met voorbeelden die je herkent van buiten je werk. Geen moeilijk woord zonder uitleg, geen uitleg zonder voorbeeld. En heb je zelf een vraag? Onderaan staat hoe je hem kwijt kunt — er staat een beloning op.',
+    tekst: 'Data, AI, stamdata, IAM — het klinkt als een taal die je eerst moet leren voordat je mee kunt praten. Dat draaien we met dit Databericht om: elke editie een paar onderwerpen in gewone taal, met voorbeelden die je van buiten je werk herkent. Heb je zelf een vraag? Onderaan staat hoe je hem kwijt kunt.',
     auteur: 'Team Data & Informatie'
   };
   s.sections = [
     { id: uid(), type: 'kopvandemaand',
       kop: 'Luistert je telefoon met je mee om je gerichte advertenties te tonen?',
       term: 'Baader-Meinhof-fenomeen',
-      uitleg: 'Je praat met een collega over een nieuwe fiets, en een uur later staat je tijdlijn vol fietsreclame. Toeval? Voor dat gevoel hoeft je telefoon helemaal niet mee te luisteren. Zodra iets je aandacht heeft, valt het je namelijk overal op — dat heet het Baader-Meinhof-fenomeen. Die reclames stonden er waarschijnlijk altijd al.\n\nEn er is een tweede reden: ze hebben allang genoeg gegevens om je die fietsreclame gericht te tonen. Wat je zoekt, waar je bent, wat je eerder kocht, wat je leeftijdsgenoten kopen. Meeluisteren is niet nodig — het is gewoon niet meer nodig.',
+      uitleg: 'Je praat over een nieuwe fiets en een uur later staat je tijdlijn vol fietsreclame. Toeval? Je telefoon hoeft daar niet voor mee te luisteren: zodra iets je aandacht heeft, valt het je overal op. Dat heet het Baader-Meinhof-fenomeen. Bovendien hebben ze allang genoeg gegevens — wat je zoekt, waar je bent, wat je koopt — om die reclame gericht te tonen. Meeluisteren is niet nodig.',
       brug: 'En bij ons? Hebben wij eigenlijk alle gegevens die we nodig hebben om de vragen te beantwoorden die we onszelf stellen?' },
 
     { id: uid(), type: 'iam',
       titel: '1Password: één wachtwoord voor alles — is dat nou wel veilig?',
-      uitleg: 'Het voelt tegenstrijdig: al je wachtwoorden achter één wachtwoord zetten. Toch is het een stuk veiliger dan wat de meeste mensen nu doen, namelijk overal ongeveer hetzelfde wachtwoord gebruiken. Lekt er dan ergens één, dan liggen ze in feite allemaal op straat.\n\nMet een wachtwoordkluis krijgt elke site een eigen, lang en volstrekt willekeurig wachtwoord — zo eentje die je zelf nooit zou verzinnen en ook niet hoeft te onthouden. Jij onthoudt er nog precies één: die van de kluis zelf.',
+      uitleg: 'Alles achter één wachtwoord zetten voelt tegenstrijdig, maar het is veiliger dan wat de meesten nu doen: overal ongeveer hetzelfde wachtwoord. Lekt er dan één, dan liggen ze allemaal op straat. Met een kluis krijgt elke site een eigen, lang en willekeurig wachtwoord dat je niet hoeft te onthouden — jij onthoudt er nog precies één.',
       tip: 'Nog geen kluis in gebruik? Vraag ernaar bij IT — het inrichten kost je ongeveer vijf minuten.' },
 
     { id: uid(), type: 'stamdata',
       term: 'Geitenkaas',
       definitie: 'Kaas gemaakt van geitenmelk.',
-      constatering: 'Klinkt logisch. Maar wist je dat deze definitie nergens in ons systeem is vastgelegd? Iedereen wéét wat het is — en precies daarom schrijft niemand het op. Dat gaat goed, tot er iemand nieuw begint, tot twee afdelingen er nét iets anders onder blijken te verstaan, of tot een systeem de vraag stelt.' },
+      constatering: 'Klinkt logisch — maar deze definitie staat nergens in ons systeem. Iedereen wéét wat het is, en precies daarom schrijft niemand het op. Dat gaat goed tot iemand nieuw begint, of twee afdelingen er nét iets anders onder blijken te verstaan.' },
 
     { id: uid(), type: 'aianalytics',
       titel: 'Een artikel uit 2017 dat inmiddels gewoon je dagelijks leven beschrijft',
       bron: 'Bron: artikel uit 2017 over de mogelijkheden van AI',
       link: '',
-      uitleg: 'Dit artikel uit 2017 (!) liet destijds zien wat er allemaal mogelijk zou worden met AI. Het las toen als toekomstmuziek.\n\nBijna tien jaar later is het dat niet meer: spraakassistenten, automatische vertalingen, foto\'s die zichzelf sorteren, chatbots die je e-mail voorschrijven. Stuk voor stuk technieken uit dat artikel die inmiddels zo gewoon zijn dat we ze niet eens meer "AI" noemen.' },
+      uitleg: 'Dit artikel uit 2017 las destijds als toekomstmuziek. Bijna tien jaar later is het dat niet meer: spraakassistenten, automatische vertalingen, foto\'s die zichzelf sorteren, chatbots die je e-mail voorschrijven. Stuk voor stuk technieken uit dat artikel die zo gewoon zijn dat we ze niet eens meer "AI" noemen.' },
 
     { id: uid(), type: 'successen', items: [
       { id: uid(), tekst: 'Lactaat herkennen met AI', toelichting: '' },
@@ -149,10 +150,10 @@ function voorbeeldState() {
       prikkel: 'Verbod op ijs vanwege toename aantal verdrinkingen',
       observatie: 'Er is een duidelijke correlatie tussen de hoeveelheid ijs die verkocht wordt en het aantal verdrinkingen in zwembaden en buitenwater. Meer ijs, meer verdrinkingen — de cijfers liegen niet.',
       ontknoping: 'Maar er is geen causaal verband. Als het warm is, wordt er véél gezwommen én veel ijs gegeten. Het weer veroorzaakt allebei; het ijs duwt niemand het water in. Twee dingen die samen bewegen, hoeven elkaar dus niet te veroorzaken.',
-      striplink: 'Zie de strip op de volgende pagina.' },
+      striplink: 'Zie de strip onderaan deze pagina.' },
 
     { id: uid(), type: 'actietips',
-      tekst: 'Heb je recent nog gekeken tot welke rapporten jij eigenlijk toegang hebt? Gebruik je ze allemaal? En wist je dat je binnen de meeste rapporten kunt filteren of inzoomen, zodat de cijfers precies over jouw afdeling of jouw periode gaan?',
+      tekst: 'Heb je recent gekeken tot welke rapporten jij toegang hebt, en gebruik je ze allemaal? In de meeste rapporten kun je filteren of inzoomen, zodat de cijfers precies over jouw afdeling gaan.',
       actie: 'Neem deze maand vijf minuten om je eigen rapportenlijst door te lopen.' },
 
     { id: uid(), type: 'vraagvandemaand',
@@ -160,10 +161,7 @@ function voorbeeldState() {
       waar: 'Mail je vraag naar het data-team.',
       beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' }
   ];
-  s.strip = {
-    titel: 'JargonJudo: causaal verband',
-    teaser: 'Boer Bert wil het ijs verbieden om levens te redden. Data-Daan heeft een ander idee.'
-  };
+  s.strip = { tonen: true, teaser: 'JargonJudo: correlatie is nog geen oorzaak.' };
   s.footer = { contact: 'Data-team — data@cono.nl', volgende: 'De volgende editie verschijnt over een maand.' };
   return s;
 }
@@ -178,8 +176,9 @@ const els = {
   datum: document.getElementById('f-datum'),
   voorwoordTekst: document.getElementById('f-voorwoord-tekst'),
   voorwoordAuteur: document.getElementById('f-voorwoord-auteur'),
-  stripTitel: document.getElementById('f-strip-titel'),
+  stripTonen: document.getElementById('f-strip-tonen'),
   stripTeaser: document.getElementById('f-strip-teaser'),
+  compact: document.getElementById('f-compact'),
   contact: document.getElementById('f-contact'),
   volgende: document.getElementById('f-volgende'),
   sectionsList: document.getElementById('sections-list'),
@@ -208,8 +207,9 @@ function fillStaticFields() {
   els.datum.value = state.meta.datum;
   els.voorwoordTekst.value = state.voorwoord.tekst;
   els.voorwoordAuteur.value = state.voorwoord.auteur;
-  els.stripTitel.value = state.strip.titel;
+  els.stripTonen.checked = state.strip.tonen !== false;
   els.stripTeaser.value = state.strip.teaser;
+  els.compact.value = state.compact || 1;
   els.contact.value = state.footer.contact;
   els.volgende.value = state.footer.volgende;
 }
@@ -229,8 +229,15 @@ function attachStaticBindings() {
   bindStatic(els.datum, v => state.meta.datum = v);
   bindStatic(els.voorwoordTekst, v => state.voorwoord.tekst = v);
   bindStatic(els.voorwoordAuteur, v => state.voorwoord.auteur = v);
-  bindStatic(els.stripTitel, v => state.strip.titel = v);
   bindStatic(els.stripTeaser, v => state.strip.teaser = v);
+  els.stripTonen.addEventListener('change', () => {
+    state.strip.tonen = els.stripTonen.checked;
+    persist(); renderPreview();
+  });
+  els.compact.addEventListener('input', () => {
+    state.compact = parseFloat(els.compact.value);
+    persist(); pasCompactheidToe(); meetPaginas();
+  });
   bindStatic(els.contact, v => state.footer.contact = v);
   bindStatic(els.volgende, v => state.footer.volgende = v);
 }
@@ -551,6 +558,12 @@ function sectionPreviewHTML(sec) {
   }
 }
 
+let stripVoorVel = null;
+
+function haalStripOp() {
+  stripVoorVel = (typeof leesOpgeslagenStrip === 'function') ? leesOpgeslagenStrip() : null;
+}
+
 function renderPreview() {
   const m = state.meta, v = state.voorwoord, f = state.footer, st = state.strip;
   els.previewSheet.innerHTML = `
@@ -569,20 +582,84 @@ function renderPreview() {
 
       ${state.sections.length ? state.sections.map(sectionPreviewHTML).join('') : `<p class="empty-state">Voeg links secties toe om de nieuwsbrief te vullen.</p>`}
 
-      ${(st.titel || st.teaser) ? `
-      <div class="nl-strip-teaser">
-        <div class="txt">
-          <strong>📖 ${escapeHtml(st.titel || 'Strip van deze editie')}</strong>
-          ${escapeHtml(st.teaser)}
-        </div>
-        <span class="onderwerp-tag" style="background:#fff;color:var(--cono-green-dark);">zie de strip</span>
-      </div>` : ''}
+      ${st.tonen === false ? '' : `
+      <div class="nl-strip">
+        ${stripVoorVel ? tekenStripHTML(stripVoorVel) : '<p class="nl-strip-leeg">Nog geen strip gemaakt. Ga naar de Strip maker en kom daarna terug.</p>'}
+        ${st.teaser ? `<p class="strip-teaser">${escapeHtml(st.teaser)}</p>` : ''}
+      </div>`}
     </div>
     <div class="nl-footer">
       <span>✉️ ${escapeHtml(f.contact)}</span>
       <span>${escapeHtml(f.volgende)}</span>
     </div>
   `;
+  meetPaginas();
+}
+
+/* ------------------------------ Eén pagina -------------------------------- */
+/* A4 met 8 mm marge rondom: de verhouding van het bedrukte vlak. */
+const PAGINA_VERHOUDING = 281 / 194;
+
+/* Bij het afdrukken is één CSS-pixel precies 1/96 inch, dus de lettergrootte
+   in punten volgt rechtstreeks uit de ingestelde compactheid. */
+function puntGrootte(compact) {
+  return 13 * (compact || 1) * 0.75;
+}
+
+function pasCompactheidToe() {
+  els.previewSheet.style.setProperty('--compact', state.compact || 1);
+  const uitvoer = document.getElementById('compact-waarde');
+  if (uitvoer) {
+    uitvoer.textContent = Math.round((state.compact || 1) * 100) + '% · ' +
+      puntGrootte(state.compact).toFixed(1).replace('.', ',') + ' pt';
+  }
+}
+
+function meetPaginas() {
+  const meter = document.getElementById('pagina-meter');
+  if (!meter) return;
+  const vak = els.previewSheet.getBoundingClientRect();
+  if (!vak.width) return;
+  const paginaHoogte = vak.width * PAGINA_VERHOUDING;
+  const paginas = vak.height / paginaHoogte;
+  const pt = puntGrootte(state.compact);
+  const ptTekst = pt.toFixed(1).replace('.', ',') + ' pt';
+
+  if (paginas > 1.005) {
+    meter.textContent = `${paginas.toFixed(2).replace('.', ',')} pagina bij ${ptTekst}. Kort in, laat een rubriek weg of maak het compacter.`;
+    meter.className = 'pagina-meter is-fout';
+  } else if (pt < 8) {
+    meter.textContent = `Past op één pagina, maar de tekst wordt ${ptTekst} — te klein om prettig te lezen. Laat een paar rubrieken weg.`;
+    meter.className = 'pagina-meter is-waarschuwing';
+  } else {
+    meter.textContent = `Past op één pagina ✓ — tekst ${ptTekst}`;
+    meter.className = 'pagina-meter is-goed';
+  }
+  return paginas;
+}
+
+/* Zoekt in een paar stappen de grootste letter waarbij alles nog op één
+   pagina past. Meten is nodig omdat tekst in kolommen niet recht evenredig
+   meekrimpt. */
+function maakPassend() {
+  let schaal = 1;
+  for (let poging = 0; poging < 8; poging++) {
+    state.compact = schaal;
+    pasCompactheidToe();
+    const vak = els.previewSheet.getBoundingClientRect();
+    const paginas = vak.height / (vak.width * PAGINA_VERHOUDING);
+    if (paginas <= 1) break;
+    schaal = Math.max(0.5, schaal * Math.sqrt(1 / paginas) - 0.004);
+    if (schaal <= 0.5) { state.compact = 0.5; pasCompactheidToe(); break; }
+  }
+  els.compact.value = state.compact;
+  persist();
+  const paginas = meetPaginas();
+  const meter = document.getElementById('pagina-meter');
+  if (paginas > 1.005 && meter) {
+    meter.textContent = 'Past nog steeds niet, zelfs op de kleinste letter. Er moeten rubrieken af.';
+    meter.className = 'pagina-meter is-fout';
+  }
 }
 
 /* --------------------------------- Toolbar -------------------------------- */
@@ -611,6 +688,7 @@ document.getElementById('input-import').addEventListener('change', (e) => {
   readJSONFile(file, (data) => {
     state = Object.assign(defaultState(), data);
     fillStaticFields();
+    pasCompactheidToe();
     herteken();
   }, () => alert('Dit bestand kon niet worden gelezen. Is het een geldig JSON-exportbestand?'));
   e.target.value = '';
@@ -618,7 +696,19 @@ document.getElementById('input-import').addEventListener('change', (e) => {
 
 document.getElementById('btn-print').addEventListener('click', () => window.print());
 
+document.getElementById('btn-strip-ververs').addEventListener('click', () => {
+  haalStripOp();
+  renderPreview();
+});
+
+document.getElementById('btn-passend').addEventListener('click', maakPassend);
+
+/* De strip kan in het andere tabblad gewijzigd zijn. */
+window.__conoVerversNieuwsbrief = () => { haalStripOp(); renderPreview(); };
+
 /* ---------------------------------- Init ---------------------------------- */
+haalStripOp();
+pasCompactheidToe();
 fillStaticFields();
 attachStaticBindings();
 renderSectionsEditor();

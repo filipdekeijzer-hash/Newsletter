@@ -50,6 +50,7 @@ const stripToolbar = knipBlok(stripHtml, '<div class="toolbar">', '</div>', 'str
 const stripMain = herschrijfLinks(knipBlok(stripHtml, '<main class="layout">', '</main>', 'strip.html'));
 
 const gedeeld = lees('assets/js/shared.js');
+const tekenwerkJs = lees('assets/js/striptekening.js');
 const nieuwsbriefJs = lees('assets/js/nieuwsbrief.js');
 const stripJs = lees('assets/js/stripmaker.js');
 const regisseurJs = lees('assets/js/regisseur.js');
@@ -116,8 +117,8 @@ ${stripMain}
 <footer class="site-footer">Intern sjabloon voor het datamanagement-project bij CONO Kaasmakers. De kleuren zijn nog een voorlopige huisstijl.</footer>
 
 <script>
-${inScope(gedeeld, nieuwsbriefJs)}
-${inScope(gedeeld, stripJs, regisseurJs)}
+${inScope(gedeeld, tekenwerkJs, nieuwsbriefJs)}
+${inScope(gedeeld, tekenwerkJs, stripJs, regisseurJs)}
 
 (function () {
   var TAB_KEY = 'cono_actief_tabblad';
@@ -136,6 +137,8 @@ ${inScope(gedeeld, stripJs, regisseurJs)}
       knop.setAttribute('aria-selected', String(knop.dataset.tab === naam));
     });
     try { localStorage.setItem(TAB_KEY, naam); } catch (e) { /* geen opslag beschikbaar */ }
+    /* De nieuwsbrief tekent de strip mee, dus die moet de laatste versie ophalen. */
+    if (naam === 'nieuwsbrief' && window.__conoVerversNieuwsbrief) window.__conoVerversNieuwsbrief();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 

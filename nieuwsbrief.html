@@ -106,15 +106,24 @@
 
     <div class="panel">
       <h3><span class="emoji">📖</span> Strip van deze editie</h3>
+      <label class="schakel"><input type="checkbox" id="f-strip-tonen" checked> Strip in de nieuwsbrief opnemen</label>
       <div class="field">
-        <label for="f-strip-titel">Titel van de strip</label>
-        <input id="f-strip-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+        <label for="f-strip-teaser">Onderschrift (optioneel)</label>
+        <textarea id="f-strip-teaser" rows="2" placeholder="Eén zin onder de strip."></textarea>
       </div>
-      <div class="field">
-        <label for="f-strip-teaser">Teaser-tekst</label>
-        <textarea id="f-strip-teaser" rows="2" placeholder="Eén zin die nieuwsgierig maakt naar de strip."></textarea>
+      <button class="btn btn-ghost" id="btn-strip-ververs">🔄 Strip ophalen uit de strip maker</button>
+      <small class="hint">De strip die je in de <a href="strip.html">Strip maker</a> hebt gemaakt wordt hier op het vel getekend. Pas je hem daar aan, klik dan op ophalen.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">📄</span> Op één pagina</h3>
+      <p class="pagina-meter" id="pagina-meter">—</p>
+      <div class="regelaar">
+        <label>Compactheid<output id="compact-waarde">100%</output></label>
+        <input type="range" id="f-compact" min="0.5" max="1" step="0.01" value="1">
       </div>
-      <small class="hint">Maak de bijpassende strip op de pagina <a href="strip.html">Strip maker</a> en print die apart, of neem 'm erbij als los vel.</small>
+      <button class="btn btn-secondary" id="btn-passend">📐 Automatisch passend maken</button>
+      <small class="hint">De nieuwsbrief wordt in twee kolommen opgemaakt. Past het net niet, schuif dan de compactheid omlaag of kort een rubriek in.</small>
     </div>
 
     <div class="panel">
@@ -143,6 +152,7 @@
 <footer class="site-footer">CONO Nieuwsbrief bouwer — intern sjabloon, gemaakt voor het datamanagement-project.</footer>
 
 <script src="assets/js/shared.js"></script>
+<script src="assets/js/striptekening.js"></script>
 <script src="assets/js/nieuwsbrief.js"></script>
 </body>
 </html>

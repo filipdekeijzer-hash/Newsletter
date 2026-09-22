@@ -79,6 +79,31 @@ de standaard indeling met de onderwerpen uit het eerste voorstel
 AI-artikel uit 2017, CONO-successen, causaal verband, rapporten-actie en
 de gevulde koeken).
 
+## Alles op één pagina
+
+De nieuwsbrief is opgemaakt als één A4: twee kolommen, met de strip onderaan
+over de volle breedte. Het vel in beeld heeft exact de maten van het bedrukte
+vlak (194 × 281 mm bij 8 mm marge), dus wat je ziet is wat er uit de printer
+komt.
+
+Het paneel **"Op één pagina"** meet mee en zegt eerlijk hoe het ervoor staat:
+hoeveel pagina's het nu is, en hoe groot de tekst wordt afgedrukt. De knop
+**"Automatisch passend maken"** zoekt de grootste letter waarbij alles nog op
+één pagina past.
+
+Houd rekening met de ruimte die er werkelijk is. Met alle acht rubrieken én de
+strip kom je uit rond de 7 pt — dat past, maar leest niet prettig. Een paar
+rubrieken minder scheelt direct:
+
+| Inhoud | Lettergrootte |
+| --- | --- |
+| 8 rubrieken + strip | ~6,9 pt (te klein) |
+| 6 rubrieken + strip | ~7,4 pt |
+| 4 rubrieken + strip | ~7,8 pt |
+
+Vandaar het advies om een paar rubrieken vast te houden en de rest te laten
+rouleren, of de teksten kort te houden — de prompts vragen daar ook om.
+
 ## Werking
 
 - Alles wat je invult wordt automatisch opgeslagen in de browser

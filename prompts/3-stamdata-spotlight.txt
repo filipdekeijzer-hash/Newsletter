@@ -44,7 +44,7 @@ TERM: de term zelf.
 
 DEFINITIE: de definitie in één korte zin, zoals in een woordenboek.
 
-CONSTATERING: 3 tot 5 zinnen. Begin met de verrassing ("klinkt logisch, maar
+CONSTATERING: 3 zinnen, samen maximaal 55 woorden. Begin met de verrassing ("klinkt logisch, maar
 wist je dat..."), leg uit waarom juist de vanzelfsprekende dingen vaak nergens
 staan, en sluit af met een praktische tip die een collega morgen in zijn eigen
 werk kan toepassen. Die tip moet concreet zijn: iets opzoeken, iets melden,

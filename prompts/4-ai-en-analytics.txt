@@ -32,7 +32,8 @@ Het vertrekpunt: CONCEPT/ARTIKEL uit JAARTAL.
 Wat het toen beschreef: KERNBELOFTE.
 Bron: BRON.
 
-Schrijf in het Nederlands, één korte paragraaf van 5 tot 7 zinnen. Regels:
+Schrijf in het Nederlands, één paragraaf van 4 tot 5 zinnen en maximaal 75
+woorden — de hele nieuwsbrief moet op één pagina passen. Regels:
 - De focus ligt op de menselijke ervaring, niet op de techniek. Beschrijf wat
   mensen dóen en merken, niet hoe het werkt onder de motorkap.
 - Noem drie tot vier voorbeelden die iedereen dagelijks tegenkomt: iets op de

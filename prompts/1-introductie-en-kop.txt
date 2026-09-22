@@ -45,12 +45,13 @@ weleens af."
 BEGRIP: (optioneel) het begrip of fenomeen dat achter die kop zit, in twee of
 drie woorden. Laat leeg als er geen mooi begrip is.
 
-UITLEG: twee alinea's van elk 3 tot 5 zinnen die de kop beantwoorden. Begin
-met een voorbeeld dat iedereen van buiten het werk herkent — thuis, in de
-supermarkt, op de telefoon. Leg daarna uit hoe het zit.
+UITLEG: één alinea van 4 tot 6 zinnen die de kop beantwoordt. Begin met een
+voorbeeld dat iedereen van buiten het werk herkent — thuis, in de supermarkt,
+op de telefoon. Leg daarna uit hoe het zit. Houd het onder de 90 woorden: de
+hele nieuwsbrief moet op één pagina passen.
 
 BRUG: één zin die dit doortrekt naar CONO, geformuleerd als vraag aan de
 lezer. Niet belerend.
 
-VOORWOORD: twee korte alinea's die de hele editie aankondigen en de drie
-thema's noemen. Eindig met een uitnodiging om te reageren.
+VOORWOORD: één alinea van maximaal 60 woorden die de editie aankondigt en de
+drie thema's noemt. Eindig met een uitnodiging om te reageren.
