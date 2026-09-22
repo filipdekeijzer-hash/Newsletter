@@ -1,0 +1,56 @@
+# ============================================================================
+# PROMPT 1 — INTRODUCTIE EN KOP
+# ----------------------------------------------------------------------------
+# WAT DEZE PROMPT DOET
+#   Maakt de opening van de nieuwsbrief: een pakkende kop en een korte
+#   inleiding over de belangrijkste thema's van de maand. De toon is vrolijk
+#   en uitnodigend, alsof je een collega aanspreekt bij de koffieautomaat.
+#
+# ZO GEBRUIK JE DIT BESTAND
+#   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
+#   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "Kop van de maand" (en het voorwoord).
+#
+# De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
+# ============================================================================
+
+
+VARIABELEN
+  MAAND            = <bijv. maart 2026>
+  THEMA 1          = <het hoofdonderwerp van deze editie>
+  THEMA 2          = <tweede onderwerp>
+  THEMA 3          = <derde onderwerp>
+  AANLEIDING       = <optioneel: iets wat net gebeurd is en dit actueel maakt>
+
+# ----------------------------- KOPIEER VANAF HIER ---------------------------
+
+Je schrijft de opening van de interne nieuwsbrief "CONO Databericht" van
+CONO Kaasmakers, een zuivelcoöperatie. De lezers zijn collega's van alle
+afdelingen: van de productievloer tot kantoor. De meesten zijn geen
+data-experts en willen dat ook niet worden.
+
+Deze editie gaat over: THEMA 1, THEMA 2 en THEMA 3.
+Maand: MAAND. Aanleiding: AANLEIDING.
+
+Schrijf in het Nederlands. Houd de toon vrolijk en uitnodigend, alsof je een
+collega aanspreekt bij de koffieautomaat. Geen vakjargon, geen marketingtaal,
+geen uitroeptekens aan het eind van elke zin.
+
+Lever precies dit aan, met deze labels:
+
+KOP: een pakkende vraag of stelling van maximaal 12 woorden die nieuwsgierig
+maakt naar THEMA 1. Iets waarvan een collega denkt: "hé, dat vroeg ik me ook
+weleens af."
+
+BEGRIP: (optioneel) het begrip of fenomeen dat achter die kop zit, in twee of
+drie woorden. Laat leeg als er geen mooi begrip is.
+
+UITLEG: twee alinea's van elk 3 tot 5 zinnen die de kop beantwoorden. Begin
+met een voorbeeld dat iedereen van buiten het werk herkent — thuis, in de
+supermarkt, op de telefoon. Leg daarna uit hoe het zit.
+
+BRUG: één zin die dit doortrekt naar CONO, geformuleerd als vraag aan de
+lezer. Niet belerend.
+
+VOORWOORD: twee korte alinea's die de hele editie aankondigen en de drie
+thema's noemen. Eindig met een uitnodiging om te reageren.

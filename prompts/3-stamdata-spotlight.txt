@@ -1,0 +1,51 @@
+# ============================================================================
+# PROMPT 3 — STAMDATA SPOTLIGHT
+# ----------------------------------------------------------------------------
+# WAT DEZE PROMPT DOET
+#   Belicht één feit uit ons eigen systeem en presenteert dat als een
+#   interessant weetje. Het feit wordt altijd gekoppeld aan een praktische
+#   tip voor de dagelijkse werkzaamheden van de medewerkers.
+#
+# ZO GEBRUIK JE DIT BESTAND
+#   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
+#   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "Stamdata spotlight".
+#
+# De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
+# ============================================================================
+
+
+VARIABELEN
+  TERM             = <de term uit het systeem, bijv. Geitenkaas>
+  DEFINITIE        = <hoe iedereen het zou omschrijven, in één zin>
+  WAT OPVALT       = <wat er mis, onduidelijk of juist verrassend aan is>
+  GEVOLG           = <waar iemand tegenaan loopt als dit niet klopt>
+
+# ----------------------------- KOPIEER VANAF HIER ---------------------------
+
+Je schrijft de rubriek "Stamdata spotlight" voor de interne nieuwsbrief van
+CONO Kaasmakers. Stamdata zijn de vaste gegevens waar alle systemen mee
+werken: productnamen, codes, definities. De rubriek zet er elke maand één in
+de schijnwerpers.
+
+De term van deze maand: TERM.
+Zoals iedereen het zou omschrijven: DEFINITIE.
+Wat eraan opvalt: WAT OPVALT.
+Waar dat toe leidt: GEVOLG.
+
+Schrijf in het Nederlands. Presenteer dit als een interessant weetje, niet als
+een verwijt en niet als een probleemmelding. De toon is die van iemand die iets
+grappigs ontdekt heeft en het wil delen. Vermijd de woorden 'datakwaliteit' en
+'governance'.
+
+Lever precies dit aan, met deze labels:
+
+TERM: de term zelf.
+
+DEFINITIE: de definitie in één korte zin, zoals in een woordenboek.
+
+CONSTATERING: 3 tot 5 zinnen. Begin met de verrassing ("klinkt logisch, maar
+wist je dat..."), leg uit waarom juist de vanzelfsprekende dingen vaak nergens
+staan, en sluit af met een praktische tip die een collega morgen in zijn eigen
+werk kan toepassen. Die tip moet concreet zijn: iets opzoeken, iets melden,
+iets controleren — geen algemene oproep tot bewustzijn.

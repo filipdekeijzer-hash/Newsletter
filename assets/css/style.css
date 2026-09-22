@@ -218,6 +218,33 @@ label {
 }
 .section-card .section-actions { display: flex; gap: .3em; }
 
+.veld-paar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .6em;
+}
+@media (max-width: 520px) { .veld-paar { grid-template-columns: 1fr; } }
+
+.meer-opties {
+  border-top: 1px dashed var(--cono-cream-dark);
+  padding-top: .5em;
+  margin-top: .2em;
+}
+.meer-opties > summary {
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: .8rem;
+  color: var(--cono-green-dark);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  list-style: none;
+}
+.meer-opties > summary::before { content: "▸ "; }
+.meer-opties[open] > summary::before { content: "▾ "; }
+.meer-opties > summary::-webkit-details-marker { display: none; }
+.meer-opties[open] > summary { margin-bottom: .6em; }
+
 .add-section-row {
   display: flex;
   gap: .5em;

@@ -1,0 +1,50 @@
+# ============================================================================
+# PROMPT 2 — IAM IN BEELD
+# ----------------------------------------------------------------------------
+# WAT DEZE PROMPT DOET
+#   Maakt de technische uitleg over toegang en wachtwoorden. De LLM legt het
+#   onderwerp uit in drie zinnen en moet verplicht een simpele analogie
+#   gebruiken die iedereen begrijpt. Technische termen als 'encryptie' of
+#   'authenticatie' mogen niet zonder uitleg worden gebruikt.
+#
+# ZO GEBRUIK JE DIT BESTAND
+#   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
+#   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "IAM in beeld".
+#
+# De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
+# ============================================================================
+
+
+VARIABELEN
+  ONDERWERP        = <bijv. een nieuw beveiligingsprotocol, 2FA, een wachtwoordkluis>
+  WAT ER VERANDERT = <wat de collega hier concreet van merkt>
+  EERSTE STAP      = <wat iemand nu kan doen, of bij wie hij moet zijn>
+
+# ----------------------------- KOPIEER VANAF HIER ---------------------------
+
+Je schrijft de rubriek "IAM in beeld" voor de interne nieuwsbrief van CONO
+Kaasmakers. IAM gaat over toegang: wie mag bij welke gegevens, en hoe weet
+een systeem dat jij het bent. De lezers werken door de hele organisatie en
+zijn geen IT'ers.
+
+Het onderwerp van deze maand is: ONDERWERP.
+Wat collega's ervan merken: WAT ER VERANDERT.
+
+Schrijf in het Nederlands. Regels waar je je strikt aan houdt:
+- De uitleg is precies drie zinnen. Niet vier.
+- Je gebruikt verplicht één simpele analogie die iedereen begrijpt: een slot,
+  een sleutelbos, een portier, een pasje, een huis. De analogie moet echt
+  kloppen, niet alleen leuk klinken.
+- Je gebruikt geen enkele technische term zonder hem meteen in gewone woorden
+  uit te leggen. Woorden als 'encryptie', 'authenticatie', 'token' of
+  'protocol' zijn verboden tenzij je ze in dezelfde zin uitlegt.
+- Je maakt de lezer niet bang en je spreekt hem niet toe als een risico.
+
+Lever precies dit aan, met deze labels:
+
+TITEL: de vraag die collega's hier echt over hebben, maximaal 12 woorden.
+
+UITLEG: drie zinnen, met de analogie erin.
+
+TIP: één zin met de eerste stap: EERSTE STAP.

@@ -111,6 +111,14 @@ Verder hoeft er geen HTML of JavaScript aangeraakt te worden: de hele
 website — inclusief de figuurtjes en decors in de strip — leest zijn kleuren
 uit die variabelen.
 
+## Prompts per sectie
+
+In de map `prompts/` staan vijf vaste prompts, één per sectie, met de
+instructie als commentaar bovenaan en daaronder de variabelen die je elke
+maand vervangt. `prompts/README.md` legt uit welke prompt bij welke rubriek
+hoort. Prompt 5 levert naast de tekst ook een script voor de zes vakjes van
+de strip.
+
 ## De strip: personages en decors
 
 De strip gebruikt twee vaste, eenvoudig getekende personages zodat elke
@@ -123,17 +131,30 @@ editie herkenbaar blijft:
 
 Daarnaast is er een **Verteller** (tekstbalk bovenaan, voor tijdsprongen of
 context) en de optie **Geen spreker** (alleen beeld, eventueel met een kort
-bijschrift). Per vakje kies je ook een decor (kaasfabriek, kantoor,
-vergaderzaal, buiten/wei, strand/zwembad, laptop-close-up, feestje) en
-eventueel een voorwerp dat het personage omhooghoudt (ijsje, kaaswiel,
-grafiekje, vraagteken, sleutel) — dit zijn simpele vector-tekeningen (SVG)
-die met de huisstijl-kleuren meekleuren.
+bijschrift).
+
+Per vakje stel je in:
+
+- **In beeld** — alleen Daan, alleen Bert, allebei (dan staan ze tegenover
+  elkaar) of niemand.
+- **Wie praat** — en dus waar de ballon naartoe wijst.
+- **Uitdrukking** — neutraal, blij, verbaasd, denkend, fel of geschrokken.
+  Dit verandert de ogen, de wenkbrauwen, de mond én de houding van de armen.
+- **Ballon** — spreekballon, denkballon (wolk) of roepballon (kartelrand).
+- **Decor** — kaasfabriek, kantoor, vergaderzaal, wei, strand, scherm met
+  grafiek of feestje.
+- **Voorwerp** — ijsje, kaaswiel, grafiekje, vraagteken, sleutel of ordner,
+  dat het sprekende personage vasthoudt.
+
+Alles is met de hand getekende SVG met een doorlopende inktlijn, zodat
+personages, decors en ballonnen dezelfde beeldtaal delen en alles meekleurt
+met de huisstijl.
 
 De voorbeeldstrip hoort bij de rubriek JargonJudo: Boer Bert wil het ijs
 verbieden omdat meer ijsverkoop samenvalt met meer verdrinkingen — tot
 Data-Daan uitlegt dat het gewoon warm weer is.
 
-Dit is bewust een lichte, vectorstijl (geen foto's/AI-plaatjes) zodat het
-zelf aan te passen en uit te breiden is (nieuwe decors of personages
-toevoegen kan direct in `assets/js/strip.js`, bij `sceneSVG()` en de
-avatar-functies).
+Dit is bewust vectorwerk (geen foto's of gegenereerde plaatjes) zodat het
+zelf aan te passen en uit te breiden is. Een nieuw decor voeg je toe in
+`sceneSVG()`, een nieuw voorwerp in `propSVG()`, een nieuwe uitdrukking in
+`gezichtSVG()` plus `ARMEN` — allemaal in `assets/js/strip.js`.

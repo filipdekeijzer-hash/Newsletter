@@ -1,0 +1,50 @@
+# ============================================================================
+# PROMPT 4 — AI & ANALYTICS (BUITEN CONO)
+# ----------------------------------------------------------------------------
+# WAT DEZE PROMPT DOET
+#   Geeft de bredere context. Vertrekt vanuit een historisch concept of een
+#   oud artikel en legt uit hoe dat vandaag de dag in ons dagelijks leven is
+#   beland. De focus ligt op de menselijke ervaring, niet op de techniek.
+#
+# ZO GEBRUIK JE DIT BESTAND
+#   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
+#   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "AI & Analytics (buiten CONO)".
+#
+# De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
+# ============================================================================
+
+
+VARIABELEN
+  CONCEPT/ARTIKEL  = <het oude artikel of concept, bijv. een AI-artikel uit 2017>
+  JAARTAL          = <het jaar waarin het verscheen>
+  KERNBELOFTE      = <wat het toen voorspelde of beschreef>
+  BRON             = <titel van het artikel, tijdschrift of auteur>
+  LINK             = <optioneel: de url>
+
+# ----------------------------- KOPIEER VANAF HIER ---------------------------
+
+Je schrijft de rubriek "AI & Analytics (buiten CONO)" voor de interne
+nieuwsbrief van CONO Kaasmakers. Deze rubriek kijkt bewust buiten de
+organisatie: wat gebeurt er in de wereld, en wat merken wij daar al van?
+
+Het vertrekpunt: CONCEPT/ARTIKEL uit JAARTAL.
+Wat het toen beschreef: KERNBELOFTE.
+Bron: BRON.
+
+Schrijf in het Nederlands, één korte paragraaf van 5 tot 7 zinnen. Regels:
+- De focus ligt op de menselijke ervaring, niet op de techniek. Beschrijf wat
+  mensen dóen en merken, niet hoe het werkt onder de motorkap.
+- Noem drie tot vier voorbeelden die iedereen dagelijks tegenkomt: iets op de
+  telefoon, iets thuis, iets op het werk.
+- Eindig met de observatie dat we die dingen inmiddels niet eens meer 'AI'
+  noemen — ze zijn gewoon onderdeel van de dag geworden.
+- Geen toekomstvoorspellingen, geen waarschuwingen, geen hype.
+
+Lever precies dit aan, met deze labels:
+
+TITEL: maximaal 12 woorden, met het jaartal erin verwerkt.
+
+BRON: de bronvermelding in één regel.
+
+UITLEG: de paragraaf.
