@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONO Strip maker — Datamanagement</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="logo-badge">CK</span>
+    <span class="brand-text">
+      <span class="name">CONO Kaasmakers</span>
+      <span class="tag">Strip maker</span>
+    </span>
+  </a>
+  <nav class="topnav">
+    <a href="index.html">Home</a>
+    <a href="nieuwsbrief.html">Nieuwsbrief</a>
+    <a href="strip.html" class="active">Strip maker</a>
+  </nav>
+</header>
+
+<div class="toolbar">
+  <button class="btn btn-ghost" id="btn-nieuw">🗒️ Nieuwe strip</button>
+  <button class="btn btn-ghost" id="btn-voorbeeld">✨ Voorbeeld invullen</button>
+  <label class="btn btn-ghost" style="margin:0;">
+    📥 Importeer JSON
+    <input type="file" id="input-import" accept="application/json" style="display:none;">
+  </label>
+  <button class="btn btn-secondary" id="btn-export">📤 Exporteer JSON</button>
+  <button class="btn btn-primary" id="btn-print">🖨️ Print / Opslaan als PDF</button>
+  <span class="spacer"></span>
+  <span class="status" id="status-text">Automatisch opgeslagen in deze browser.</span>
+</div>
+
+<main class="layout">
+
+  <!-- ============================= EDITOR ============================= -->
+  <section class="editor-col">
+
+    <div class="panel">
+      <h3><span class="emoji">🎬</span> Basisgegevens</h3>
+      <div class="field">
+        <label for="f-titel">Titel van de strip</label>
+        <input id="f-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+      </div>
+      <div class="field">
+        <label for="f-onderwerp">Onderwerp-label</label>
+        <input id="f-onderwerp" placeholder="Bijv. Thema: datakwaliteit">
+        <small class="hint">Kort label boven de strip, handig om edities uit elkaar te houden.</small>
+      </div>
+      <small class="hint">De vaste vormgeving (6 vakjes, personages Data-Daan &amp; Boer Bert) blijft elke editie hetzelfde — alleen de inhoud hieronder verandert per onderwerp.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">🖼️</span> De 6 vakjes</h3>
+      <div id="panels-editor"></div>
+    </div>
+
+  </section>
+
+  <!-- ============================= PREVIEW ============================= -->
+  <section class="preview-col">
+    <article class="strip-sheet" id="strip-sheet">
+      <!-- wordt gevuld door strip.js -->
+    </article>
+  </section>
+
+</main>
+
+<footer class="site-footer">CONO Strip maker — intern sjabloon, gemaakt voor het datamanagement-project.</footer>
+
+<script src="assets/js/shared.js"></script>
+<script src="assets/js/strip.js"></script>
+</body>
+</html>

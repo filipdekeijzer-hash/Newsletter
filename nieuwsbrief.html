@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CONO Nieuwsbrief bouwer — Datamanagement</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">
+    <span class="logo-badge">CK</span>
+    <span class="brand-text">
+      <span class="name">CONO Kaasmakers</span>
+      <span class="tag">Nieuwsbrief bouwer</span>
+    </span>
+  </a>
+  <nav class="topnav">
+    <a href="index.html">Home</a>
+    <a href="nieuwsbrief.html" class="active">Nieuwsbrief</a>
+    <a href="strip.html">Strip maker</a>
+  </nav>
+</header>
+
+<div class="toolbar">
+  <button class="btn btn-ghost" id="btn-nieuw" title="Begin een nieuwe, lege editie">🗒️ Nieuwe editie</button>
+  <button class="btn btn-ghost" id="btn-voorbeeld" title="Vul het formulier met een voorbeeldeditie">✨ Voorbeeld invullen</button>
+  <label class="btn btn-ghost" style="margin:0;">
+    📥 Importeer JSON
+    <input type="file" id="input-import" accept="application/json" style="display:none;">
+  </label>
+  <button class="btn btn-secondary" id="btn-export">📤 Exporteer JSON</button>
+  <button class="btn btn-primary" id="btn-print">🖨️ Print / Opslaan als PDF</button>
+  <span class="spacer"></span>
+  <span class="status" id="status-text">Automatisch opgeslagen in deze browser.</span>
+</div>
+
+<main class="layout">
+
+  <!-- ============================= EDITOR ============================= -->
+  <section class="editor-col">
+
+    <div class="panel">
+      <h3><span class="emoji">🧾</span> Basisgegevens</h3>
+      <div class="field">
+        <label for="f-titel">Titel van de nieuwsbrief</label>
+        <input id="f-titel" placeholder="Bijv. CONO Databericht">
+      </div>
+      <div class="field">
+        <label for="f-ondertitel">Ondertitel / slogan</label>
+        <input id="f-ondertitel" placeholder="Bijv. Samen slim met data, zonder moeilijke woorden">
+        <small class="hint">Één zin die kort uitlegt waar deze editie over gaat.</small>
+      </div>
+      <div class="field">
+        <label for="f-editie">Editienummer</label>
+        <input id="f-editie" placeholder="Bijv. Editie 3 — najaar 2026">
+      </div>
+      <div class="field">
+        <label for="f-datum">Datum</label>
+        <input id="f-datum" placeholder="Bijv. 22 september 2026">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">👋</span> Voorwoord</h3>
+      <div class="field">
+        <label for="f-voorwoord-tekst">Welkomsttekst</label>
+        <textarea id="f-voorwoord-tekst" rows="4" placeholder="Korte, vriendelijke introductie van deze editie in gewone taal..."></textarea>
+      </div>
+      <div class="field">
+        <label for="f-voorwoord-auteur">Ondertekening</label>
+        <input id="f-voorwoord-auteur" placeholder="Bijv. Team Data &amp; Informatie">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">🧩</span> Inhoud van deze editie</h3>
+      <div id="sections-list"></div>
+      <div class="add-section-row">
+        <select id="new-section-type">
+          <option value="wistjedat">Wist-je-dat — speels voorbeeld uit een artikel</option>
+          <option value="onderwerp">Onderwerp uitgelegd — in simpele taal</option>
+          <option value="cijfer">Cijfers &amp; weetjes</option>
+          <option value="quote">Quote van een collega</option>
+          <option value="tekst">Los tekstblok</option>
+        </select>
+        <button class="btn btn-secondary" id="btn-add-section">+ Sectie toevoegen</button>
+      </div>
+      <small class="hint">Zet secties in de volgorde waarin ze in de nieuwsbrief moeten staan. Gebruik de pijltjes op elke kaart om te herschikken.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">📖</span> Strip van deze editie</h3>
+      <div class="field">
+        <label for="f-strip-titel">Titel van de strip</label>
+        <input id="f-strip-titel" placeholder="Bijv. Data-Daan en Boer Bert over datakwaliteit">
+      </div>
+      <div class="field">
+        <label for="f-strip-teaser">Teaser-tekst</label>
+        <textarea id="f-strip-teaser" rows="2" placeholder="Eén zin die nieuwsgierig maakt naar de strip."></textarea>
+      </div>
+      <small class="hint">Maak de bijpassende strip op de pagina <a href="strip.html">Strip maker</a> en print die apart, of neem 'm erbij als los vel.</small>
+    </div>
+
+    <div class="panel">
+      <h3><span class="emoji">📮</span> Afsluiting</h3>
+      <div class="field">
+        <label for="f-contact">Contactpersoon</label>
+        <input id="f-contact" placeholder="Bijv. Data-team — data@cono.nl">
+      </div>
+      <div class="field">
+        <label for="f-volgende">Volgende editie</label>
+        <input id="f-volgende" placeholder="Bijv. De volgende editie verschijnt in december">
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================= PREVIEW ============================= -->
+  <section class="preview-col">
+    <article class="sheet" id="preview-sheet">
+      <!-- wordt gevuld door nieuwsbrief.js -->
+    </article>
+  </section>
+
+</main>
+
+<footer class="site-footer">CONO Nieuwsbrief bouwer — intern sjabloon, gemaakt voor het datamanagement-project.</footer>
+
+<script src="assets/js/shared.js"></script>
+<script src="assets/js/nieuwsbrief.js"></script>
+</body>
+</html>
