@@ -43,6 +43,45 @@
   <section class="editor-col">
 
     <div class="panel">
+      <h3><span class="emoji">🤖</span> Laat de nieuwsbrief schrijven</h3>
+      <div class="field">
+        <label for="r-waarover">Waar gaat het deze maand over?</label>
+        <textarea id="r-waarover" rows="4" placeholder="Een paar zinnen volstaan. Bijvoorbeeld: we zijn bezig met nieuwe wachtwoordregels, er kwam een vraag over hoe een steekproef werkt, en het jaarverslag is deels met AI geschreven."></textarea>
+      </div>
+      <div class="veld-paar">
+        <div class="field">
+          <label for="r-maand">Maand</label>
+          <input id="r-maand" placeholder="Bijv. maart 2026">
+        </div>
+        <div class="field">
+          <label for="r-woord">Moeilijk woord (optioneel)</label>
+          <input id="r-woord" placeholder="Bijv. steekproef">
+        </div>
+      </div>
+      <div class="field">
+        <label for="r-successen">Successen deze maand (optioneel)</label>
+        <textarea id="r-successen" rows="3" placeholder="Eén per regel. Bijvoorbeeld: lactaat herkennen met AI"></textarea>
+      </div>
+      <details class="meer-opties" id="r-rubriek-blok">
+        <summary>Welke rubrieken deze editie?</summary>
+        <div id="r-rubrieken" class="rubriek-keuze"></div>
+      </details>
+      <div class="knoppenrij" style="margin-top:.8em;">
+        <button class="btn btn-primary" id="r-btn-claude" hidden>✨ Laat Claude het schrijven</button>
+        <button class="btn btn-secondary" id="r-btn-prompt">📋 Prompt kopiëren</button>
+      </div>
+      <details class="meer-opties" id="r-plak-blok">
+        <summary>Antwoord van de LLM plakken</summary>
+        <div class="field">
+          <textarea id="r-script" rows="6" placeholder="Plak hier het JSON-antwoord van ChatGPT, Claude of Copilot."></textarea>
+        </div>
+        <button class="btn btn-secondary" id="r-btn-vul">Nieuwsbrief vullen</button>
+      </details>
+      <p class="regie-melding" id="r-melding"></p>
+      <small class="hint">De LLM schrijft alleen de teksten en de koppen; de opmaak blijft van het sjabloon. Alles wat eruit komt kun je hieronder nog aanpassen.</small>
+    </div>
+
+    <div class="panel">
       <h3><span class="emoji">🧾</span> Basisgegevens</h3>
       <div class="field">
         <label for="f-titel">Titel van de nieuwsbrief</label>
@@ -83,12 +122,12 @@
         <select id="new-section-type">
           <optgroup label="Vaste rubrieken">
             <option value="kopvandemaand">📰 Kop van de maand</option>
-            <option value="iam">🔑 IAM in beeld</option>
-            <option value="stamdata">🔦 Stamdata spotlight</option>
-            <option value="aianalytics">🤖 AI &amp; Analytics (buiten CONO)</option>
-            <option value="successen">🏆 CONO Successen</option>
+            <option value="iam">🔑 Veilig inloggen</option>
+            <option value="stamdata">🔦 Uit ons systeem</option>
+            <option value="aianalytics">🤖 AI in het echte leven</option>
+            <option value="successen">🏆 Waar we trots op zijn</option>
             <option value="jargonjudo">🥋 JargonJudo</option>
-            <option value="actietips">✅ Actie &amp; Tips</option>
+            <option value="actietips">✅ Wat kun jij doen?</option>
             <option value="vraagvandemaand">❓ Vraag van de maand</option>
           </optgroup>
           <optgroup label="Vrije blokken">
@@ -154,5 +193,6 @@
 <script src="assets/js/shared.js"></script>
 <script src="assets/js/striptekening.js"></script>
 <script src="assets/js/nieuwsbrief.js"></script>
+<script src="assets/js/redactie.js"></script>
 </body>
 </html>

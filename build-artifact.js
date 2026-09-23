@@ -52,6 +52,7 @@ const stripMain = herschrijfLinks(knipBlok(stripHtml, '<main class="layout">', '
 const gedeeld = lees('assets/js/shared.js');
 const tekenwerkJs = lees('assets/js/striptekening.js');
 const nieuwsbriefJs = lees('assets/js/nieuwsbrief.js');
+const redactieJs = lees('assets/js/redactie.js');
 const stripJs = lees('assets/js/stripmaker.js');
 const regisseurJs = lees('assets/js/regisseur.js');
 
@@ -117,7 +118,7 @@ ${stripMain}
 <footer class="site-footer">Intern sjabloon voor het datamanagement-project bij CONO Kaasmakers. De kleuren zijn nog een voorlopige huisstijl.</footer>
 
 <script>
-${inScope(gedeeld, tekenwerkJs, nieuwsbriefJs)}
+${inScope(gedeeld, tekenwerkJs, nieuwsbriefJs, redactieJs)}
 ${inScope(gedeeld, tekenwerkJs, stripJs, regisseurJs)}
 
 (function () {

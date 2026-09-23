@@ -1,5 +1,5 @@
 # ============================================================================
-# PROMPT 3 — STAMDATA SPOTLIGHT
+# PROMPT 3 — UIT ONS SYSTEEM
 # ----------------------------------------------------------------------------
 # WAT DEZE PROMPT DOET
 #   Belicht één feit uit ons eigen systeem en presenteert dat als een
@@ -9,7 +9,7 @@
 # ZO GEBRUIK JE DIT BESTAND
 #   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
 #   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
-#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "Stamdata spotlight".
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "Uit ons systeem".
 #
 # De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
 # ============================================================================
@@ -23,10 +23,9 @@ VARIABELEN
 
 # ----------------------------- KOPIEER VANAF HIER ---------------------------
 
-Je schrijft de rubriek "Stamdata spotlight" voor de interne nieuwsbrief van
+Je schrijft de rubriek "Uit ons systeem" voor de interne nieuwsbrief van
 CONO Kaasmakers. Stamdata zijn de vaste gegevens waar alle systemen mee
-werken: productnamen, codes, definities. De rubriek zet er elke maand één in
-de schijnwerpers.
+werken: productnamen, codes, definities. De rubriek licht er elke maand één uit.
 
 De term van deze maand: TERM.
 Zoals iedereen het zou omschrijven: DEFINITIE.

@@ -60,13 +60,17 @@ elke editie terugkeren. Per editie vul je ze opnieuw:
 | Rubriek | Waarvoor |
 | --- | --- |
 | 📰 **Kop van de maand** | Wat moet je deze maand echt weten? Een herkenbaar voorbeeld van buiten het werk, met aan het eind de brug naar CONO. |
-| 🔑 **IAM in beeld** | Toegang en wachtwoorden, in gewone taal. |
-| 🔦 **Stamdata spotlight** | Eén term uit ons systeem, als woordenboek-notitie, met de constatering erachter. |
-| 🤖 **AI & Analytics (buiten CONO)** | Wat er buiten de deur gebeurt, met bronvermelding en eventueel een link. |
-| 🏆 **CONO Successen** | Lijstje van projecten en vragen waar we zelf mee bezig zijn. |
+| 🔑 **Veilig inloggen** | Wachtwoorden en toegang, in gewone taal. |
+| 🔦 **Uit ons systeem** | Eén term uit onze eigen systemen, als woordenboek-notitie, met de constatering erachter. |
+| 🤖 **AI in het echte leven** | Wat er buiten de deur gebeurt, met bronvermelding en eventueel een link. |
+| 🏆 **Waar we trots op zijn** | Lijstje van projecten en vragen waar we zelf mee bezig zijn. |
 | 🥋 **JargonJudo** | Een moeilijk woord in twee stappen op de mat: eerst de kop die logisch klinkt maar niet klopt, dan hoe het écht zit. Hier hoort de strip bij. |
-| ✅ **Actie & Tips** | De oproep: wat kan de lezer deze maand zelf doen? |
+| ✅ **Wat kun jij doen?** | De oproep: wat kan de lezer deze maand zelf doen? |
 | ❓ **Vraag van de maand** | Vraag insturen, inclusief de beloning. |
+
+**De koppen liggen niet vast.** Boven elke rubriek staat in de bouwer een veld
+"Kop van deze rubriek": daar zet je neer wat je wilt, in je eigen woorden. De
+namen hierboven zijn alleen het vertrekpunt.
 
 Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je
 overslaat, of voeg 'm later weer toe. Daarnaast zijn er **vrije blokken**
@@ -137,6 +141,23 @@ Interne Communicatie of een vormgever:
 Verder hoeft er geen HTML of JavaScript aangeraakt te worden: de hele
 website — inclusief de figuurtjes en decors in de strip — leest zijn kleuren
 uit die variabelen.
+
+## De nieuwsbrief laten schrijven
+
+Bovenaan de bouwer zit het paneel **"Laat de nieuwsbrief schrijven"**. Je vult
+in waar het deze maand over ging (een paar zinnen volstaat), eventueel de
+maand, een moeilijk woord en de successen, en je vinkt aan welke rubrieken
+mee moeten. Daarna:
+
+- **Prompt kopiëren** — plak hem in ChatGPT, Claude of Copilot en zet het
+  antwoord terug in het plakvak. Werkt overal.
+- **Laat Claude het schrijven** — alleen in de gedeelde online versie; dan
+  gaat het in één klik.
+
+De LLM schrijft de teksten én stelt per rubriek een kop in gewone taal voor.
+De opmaak blijft van het sjabloon, en alles is daarna nog met de hand aan te
+passen. `assets/js/redactie.js` bevat de prompt en de vertaling naar de
+rubrieken.
 
 ## Prompts per sectie
 

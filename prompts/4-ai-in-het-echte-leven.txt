@@ -1,5 +1,5 @@
 # ============================================================================
-# PROMPT 4 — AI & ANALYTICS (BUITEN CONO)
+# PROMPT 4 — AI IN HET ECHTE LEVEN
 # ----------------------------------------------------------------------------
 # WAT DEZE PROMPT DOET
 #   Geeft de bredere context. Vertrekt vanuit een historisch concept of een
@@ -9,7 +9,7 @@
 # ZO GEBRUIK JE DIT BESTAND
 #   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
 #   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
-#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "AI & Analytics (buiten CONO)".
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "AI in het echte leven".
 #
 # De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
 # ============================================================================
@@ -24,7 +24,7 @@ VARIABELEN
 
 # ----------------------------- KOPIEER VANAF HIER ---------------------------
 
-Je schrijft de rubriek "AI & Analytics (buiten CONO)" voor de interne
+Je schrijft de rubriek "AI in het echte leven" voor de interne
 nieuwsbrief van CONO Kaasmakers. Deze rubriek kijkt bewust buiten de
 organisatie: wat gebeurt er in de wereld, en wat merken wij daar al van?
 

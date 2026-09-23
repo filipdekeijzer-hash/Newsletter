@@ -1,8 +1,8 @@
 # ============================================================================
-# PROMPT 2 — IAM IN BEELD
+# PROMPT 2 — VEILIG INLOGGEN
 # ----------------------------------------------------------------------------
 # WAT DEZE PROMPT DOET
-#   Maakt de technische uitleg over toegang en wachtwoorden. De LLM legt het
+#   Maakt het stukje over inloggen, wachtwoorden en toegang. De LLM legt het
 #   onderwerp uit in drie zinnen en moet verplicht een simpele analogie
 #   gebruiken die iedereen begrijpt. Technische termen als 'encryptie' of
 #   'authenticatie' mogen niet zonder uitleg worden gebruikt.
@@ -10,7 +10,7 @@
 # ZO GEBRUIK JE DIT BESTAND
 #   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
 #   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
-#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "IAM in beeld".
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "Veilig inloggen".
 #
 # De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
 # ============================================================================
@@ -23,8 +23,8 @@ VARIABELEN
 
 # ----------------------------- KOPIEER VANAF HIER ---------------------------
 
-Je schrijft de rubriek "IAM in beeld" voor de interne nieuwsbrief van CONO
-Kaasmakers. IAM gaat over toegang: wie mag bij welke gegevens, en hoe weet
+Je schrijft de rubriek "Veilig inloggen" voor de interne nieuwsbrief van CONO
+Kaasmakers. Deze rubriek gaat over toegang: wie mag bij welke gegevens, en hoe weet
 een systeem dat jij het bent. De lezers werken door de hele organisatie en
 zijn geen IT'ers.
 

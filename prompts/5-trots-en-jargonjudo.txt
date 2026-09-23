@@ -1,5 +1,5 @@
 # ============================================================================
-# PROMPT 5 — CONO SUCCESSEN EN JARGONJUDO
+# PROMPT 5 — WAAR WE TROTS OP ZIJN EN JARGONJUDO
 # ----------------------------------------------------------------------------
 # WAT DEZE PROMPT DOET
 #   Twee slotstukken in één prompt. Eerst worden drie succesverhalen van de
@@ -10,7 +10,7 @@
 # ZO GEBRUIK JE DIT BESTAND
 #   1. Vul hieronder onder VARIABELEN de gegevens van deze maand in.
 #   2. Kopieer alles vanaf de streep "KOPIEER VANAF HIER" naar je LLM.
-#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "CONO Successen" en "JargonJudo" (plus de strip).
+#   3. Plak het antwoord in de nieuwsbriefbouwer, in de rubriek "Waar we trots op zijn" en "JargonJudo" (plus de strip).
 #
 # De prompt zelf blijft elke maand hetzelfde — alleen de variabelen wisselen.
 # ============================================================================
@@ -26,7 +26,7 @@ VARIABELEN
 # ----------------------------- KOPIEER VANAF HIER ---------------------------
 
 Je schrijft de twee slotstukken van de interne nieuwsbrief van CONO
-Kaasmakers: de rubriek "CONO Successen" en de rubriek "JargonJudo".
+Kaasmakers: de rubriek "Waar we trots op zijn" en de rubriek "JargonJudo".
 
 De successen van de afgelopen maand: SUCCES 1, SUCCES 2, SUCCES 3.
 Het moeilijke woord van deze maand: JARGONWOORD (kern: WAT HET BETEKENT).
