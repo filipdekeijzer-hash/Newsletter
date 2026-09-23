@@ -1,31 +1,29 @@
-/* CONO Nieuwsbrief — de redactie.
- *
- * Je typt in wat er deze maand speelde. Een LLM bepaalt zelf welke blokken
- * erin komen, schrijft de teksten en de koppen, en levert er meteen een
- * stripscript bij. Deze code zet dat om in de nieuwsbrief.
- *
- * Er valt dus niets te kiezen: geen rubrieken aanvinken, geen soort blok
- * uitzoeken. Wat eruit komt kun je daarna gewoon overschrijven.
- */
+# ============================================================================
+# DE HELE NIEUWSBRIEF
+# ----------------------------------------------------------------------------
+# Normaal heb je dit bestand niet nodig: in de bouwer vul je bovenaan in waar
+# het deze maand over ging en klik je op "Prompt kopiëren" — dan staat deze
+# tekst met jouw invulling erin klaar. Dit bestand is er voor wie hem liever
+# met de hand gebruikt, of wil zien wat er precies gevraagd wordt.
+#
+# Vervang de regel onder WAT ER DEZE MAAND SPEELDE door je eigen tekst,
+# kopieer alles vanaf de streep naar je LLM, en plak het JSON-antwoord terug
+# in de bouwer onder "Antwoord van de LLM plakken".
+# ============================================================================
 
-const TOEGESTANE_OPMAKEN = ['tekst', 'lijst', 'citaat', 'cijfers', 'woordenboek', 'stappen', 'oproep'];
-const TOEGESTANE_KLEUREN = ['rood', 'groen', 'goud', 'blauw'];
+# ----------------------------- KOPIEER VANAF HIER ---------------------------
 
-function redactiePrompt(invoer) {
-  const successen = String(invoer.successen || '').trim();
-  const woord = String(invoer.moeilijkWoord || '').trim();
-  const maand = String(invoer.maand || '').trim();
-
-  return `Je maakt de interne nieuwsbrief van CONO Kaasmakers, een
+Je maakt de interne nieuwsbrief van CONO Kaasmakers, een
 zuivelcoöperatie. De lezers zijn collega's van alle afdelingen: van de
 productievloer tot kantoor. De meesten zijn geen data-experts en willen dat
 ook niet worden.
 
 WAT ER DEZE MAAND SPEELDE
-${String(invoer.waarover || '').trim() || '(niets opgegeven — kies zelf iets passends bij een zuivelcoöperatie)'}
-${maand ? '\nMAAND: ' + maand : ''}
-${successen ? '\nSUCCESSEN (gebruik deze, verzin er niets bij):\n' + successen : ''}
-${woord ? '\nMOEILIJK WOORD OM UIT TE LEGGEN: ' + woord : ''}
+(vul hier in wat er deze maand speelde)
+
+MAAND: (maand)
+
+
 
 JIJ BEPAALT DE INDELING
 Kies zelf welke blokken erin komen en in welke volgorde, op basis van wat er
@@ -67,7 +65,7 @@ Alleen JSON, zonder uitleg eromheen:
 {
   "titel": "CONO Databericht",
   "ondertitel": "één zin over deze editie",
-  "editie": "bijv. Editie 4${maand ? ' — ' + maand : ''}",
+  "editie": "bijv. Editie 4 — (maand)",
   "voorwoord": "één alinea van hoogstens 60 woorden",
   "blokken": [
     {
@@ -109,48 +107,4 @@ Toegestane waarden:
           verdrietig, trots, moe
   gebaar: neutraal, wijst, armen-omhoog, hand-op-kin, armen-over-elkaar,
           zwaait, handen-spreiden, wijst-omhoog
-  ballon: spreek, denk, roep`;
-}
-
-/* ---------------------------------------------------------------------- */
-
-/* Zet het antwoord van de LLM om in blokken voor de bouwer. */
-function sectiesUitRedactie(antwoord) {
-  if (!antwoord || typeof antwoord !== 'object') throw new Error('Geen leesbaar antwoord gevonden.');
-  const lijst = Array.isArray(antwoord.blokken) ? antwoord.blokken : [];
-  if (!lijst.length) throw new Error('Het antwoord bevat geen "blokken".');
-
-  const secties = [];
-  lijst.forEach(bron => {
-    if (!bron || typeof bron !== 'object') return;
-    const opmaak = TOEGESTANE_OPMAKEN.indexOf(String(bron.opmaak)) > -1 ? String(bron.opmaak) : 'tekst';
-    const kleur = TOEGESTANE_KLEUREN.indexOf(String(bron.kleur)) > -1 ? String(bron.kleur) : 'groen';
-    const regels = Array.isArray(bron.regels) ? bron.regels : [];
-
-    const sec = nieuweSectie({
-      kop: String(bron.kop || 'Blok'),
-      ondertitel: String(bron.ondertitel || ''),
-      icoon: String(bron.icoon || '📄').slice(0, 3),
-      kleur: kleur,
-      opmaak: opmaak,
-      tekst: String(bron.tekst || ''),
-      slot: String(bron.slot || ''),
-      items: regels.slice(0, 8).map(r => nieuwItem(
-        String((r && (typeof r === 'string' ? r : r.tekst)) || ''),
-        String((r && r.bij) || '')
-      )).filter(it => it.tekst || it.bij)
-    });
-
-    if (!sec.tekst.trim() && !sec.items.length && !sec.slot.trim()) return;
-    secties.push(sec);
-  });
-
-  if (!secties.length) throw new Error('Geen bruikbare blokken in het antwoord.');
-  return {
-    titel: antwoord.titel ? String(antwoord.titel) : '',
-    ondertitel: antwoord.ondertitel ? String(antwoord.ondertitel) : '',
-    editie: antwoord.editie ? String(antwoord.editie) : '',
-    voorwoord: antwoord.voorwoord ? String(antwoord.voorwoord) : '',
-    secties: secties
-  };
-}
+  ballon: spreek, denk, roep

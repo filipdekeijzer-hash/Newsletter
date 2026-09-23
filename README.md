@@ -34,10 +34,9 @@ via **Importeer JSON** weer inladen.
 ## Onderdelen
 
 - **`index.html`** — landingspagina met uitleg en links naar de twee tools.
-- **`nieuwsbrief.html`** — de nieuwsbrief-bouwer. Links vul je secties in
-  (voorwoord, "wist-je-dat" voorbeelden uit artikelen/papers, onderwerpen in
-  simpele taal, cijfers, quotes, vrije tekst), rechts zie je direct de
-  opgemaakte nieuwsbrief.
+- **`nieuwsbrief.html`** — de nieuwsbrief-bouwer. Je typt in waar het deze
+  maand over ging, een LLM schrijft de blokken en de strip, en rechts staat
+  meteen de opgemaakte pagina.
 - **`strip.html`** — de strip maker. Je typt je verhaal in, een LLM schrijft
   het draaiboek en de pagina tekent de strip. Daarna kun je alles nog met de
   hand bijschuiven op de tekentafel.
@@ -47,41 +46,48 @@ via **Importeer JSON** weer inladen.
 - **`assets/css/style.css`** — alle overige styling en de print-opmaak.
 - **`assets/js/shared.js`** — gedeelde hulpfuncties (opslaan, JSON in-/export).
 - **`assets/js/nieuwsbrief.js`** — logica van de nieuwsbrief-bouwer.
+- **`assets/js/redactie.js`** — de prompt die de hele nieuwsbrief laat
+  schrijven, en de vertaling van het antwoord naar blokken.
 - **`assets/js/stripmaker.js`** — de tekentafel: tekenen, slepen, poseren.
 - **`assets/js/regisseur.js`** — vertaalt het draaiboek van de LLM naar een
   complete strip (decors, plaatsing, houdingen, ballonnen).
-- **`prompts/`** — de vaste prompts per sectie, inclusief die voor de strip.
+- **`prompts/`** — de twee prompts die de app gebruikt, gegenereerd uit de
+  app zelf.
 
-## De vaste indeling
+## Zo maak je een editie
 
-De knop **"Standaard indeling"** zet in één klik de acht rubrieken neer die
-elke editie terugkeren. Per editie vul je ze opnieuw:
+1. Typ bovenaan in waar het deze maand over ging. Een paar zinnen volstaat.
+2. Klik op **Schrijf de nieuwsbrief** (gedeelde online versie) of op
+   **Prompt kopiëren**, plak de prompt in ChatGPT of Claude en zet het
+   antwoord terug in het plakvak.
+3. Klaar. De nieuwsbrief staat er, met de strip, passend gemaakt op één A4.
 
-| Rubriek | Waarvoor |
+Meer is het niet. Er valt niets aan te vinken en niets uit te zoeken: de
+schrijver bepaalt zelf welke blokken erin komen, hoeveel het er zijn, welke
+kop ze krijgen en in welke vorm ze staan.
+
+## Vrije blokken
+
+Een nieuwsbrief bestaat uit blokken, en een blok is vrij. Er zijn geen vaste
+rubrieken meer met vaste velden. Elk blok heeft:
+
+- een **kop** en **ondertitel** die je zelf bepaalt;
+- een **icoon** en een **kleur** (rood, groen, goud of blauw);
+- een **vorm**, die alleen bepaalt hoe het eruitziet:
+
+| Vorm | Waarvoor |
 | --- | --- |
-| 📰 **Kop van de maand** | Wat moet je deze maand echt weten? Een herkenbaar voorbeeld van buiten het werk, met aan het eind de brug naar CONO. |
-| 🔑 **Veilig inloggen** | Wachtwoorden en toegang, in gewone taal. |
-| 🔦 **Uit ons systeem** | Eén term uit onze eigen systemen, als woordenboek-notitie, met de constatering erachter. |
-| 🤖 **AI in het echte leven** | Wat er buiten de deur gebeurt, met bronvermelding en eventueel een link. |
-| 🏆 **Waar we trots op zijn** | Lijstje van projecten en vragen waar we zelf mee bezig zijn. |
-| 🥋 **JargonJudo** | Een moeilijk woord in twee stappen op de mat: eerst de kop die logisch klinkt maar niet klopt, dan hoe het écht zit. Hier hoort de strip bij. |
-| ✅ **Wat kun jij doen?** | De oproep: wat kan de lezer deze maand zelf doen? |
-| ❓ **Vraag van de maand** | Vraag insturen, inclusief de beloning. |
+| **Tekst** | Gewone alinea's, met een afsluitende regel die eruit springt. |
+| **Lijst** | Opsomming, bijvoorbeeld waar je trots op bent. |
+| **Citaat** | Iemand aan het woord. |
+| **Cijfers** | Losse getallen als tegels. |
+| **Woordenboek** | Eén term met zijn definitie, en de constatering erachter. |
+| **Stappen** | Iets in twee of drie stappen uitleggen — een kop die logisch klinkt maar niet klopt, en dan hoe het zit. |
+| **Oproep** | Een vraag aan de lezer, met wat het oplevert. |
 
-**De koppen liggen niet vast.** Boven elke rubriek staat in de bouwer een veld
-"Kop van deze rubriek": daar zet je neer wat je wilt, in je eigen woorden. De
-namen hierboven zijn alleen het vertrekpunt.
-
-Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je
-overslaat, of voeg 'm later weer toe. Daarnaast zijn er **vrije blokken**
-(wist-je-dat, onderwerp uitgelegd, cijfers, quote, tekst) voor wat buiten de
-vaste rubrieken valt.
-
-De knop **"Voorbeeld invullen"** laadt een volledig ingevulde proefeditie:
-de standaard indeling met de onderwerpen uit het eerste voorstel
-(telefoon die meeluistert / Baader-Meinhof, 1Password, geitenkaas,
-AI-artikel uit 2017, CONO-successen, causaal verband, rapporten-actie en
-de gevulde koeken).
+Je kunt elk blok overschrijven, van kop tot kleur, of er zelf een toevoegen
+met **+ Blok toevoegen**. Edities van vóór deze versie worden bij het openen
+automatisch omgezet naar vrije blokken, dus oud werk blijft bruikbaar.
 
 ## Alles op één pagina
 
@@ -95,18 +101,10 @@ hoeveel pagina's het nu is, en hoe groot de tekst wordt afgedrukt. De knop
 **"Automatisch passend maken"** zoekt de grootste letter waarbij alles nog op
 één pagina past.
 
-Houd rekening met de ruimte die er werkelijk is. Met alle acht rubrieken én de
-strip kom je uit rond de 7 pt — dat past, maar leest niet prettig. Een paar
-rubrieken minder scheelt direct:
-
-| Inhoud | Lettergrootte |
-| --- | --- |
-| 8 rubrieken + strip | ~6,9 pt (te klein) |
-| 6 rubrieken + strip | ~7,4 pt |
-| 4 rubrieken + strip | ~7,8 pt |
-
-Vandaar het advies om een paar rubrieken vast te houden en de rest te laten
-rouleren, of de teksten kort te houden — de prompts vragen daar ook om.
+Na het schrijven maakt de bouwer het **automatisch passend**, dus daar hoef je
+niets voor te doen. Met vijf of zes blokken plus de strip kom je uit rond de
+9 pt: gewoon leesbaar. Schrijf je zelf veel langere stukken, dan zakt dat —
+de meter zegt het eerlijk en waarschuwt onder de 8 pt.
 
 ## Werking
 
@@ -142,30 +140,13 @@ Verder hoeft er geen HTML of JavaScript aangeraakt te worden: de hele
 website — inclusief de figuurtjes en decors in de strip — leest zijn kleuren
 uit die variabelen.
 
-## De nieuwsbrief laten schrijven
+## De prompts
 
-Bovenaan de bouwer zit het paneel **"Laat de nieuwsbrief schrijven"**. Je vult
-in waar het deze maand over ging (een paar zinnen volstaat), eventueel de
-maand, een moeilijk woord en de successen, en je vinkt aan welke rubrieken
-mee moeten. Daarna:
-
-- **Prompt kopiëren** — plak hem in ChatGPT, Claude of Copilot en zet het
-  antwoord terug in het plakvak. Werkt overal.
-- **Laat Claude het schrijven** — alleen in de gedeelde online versie; dan
-  gaat het in één klik.
-
-De LLM schrijft de teksten én stelt per rubriek een kop in gewone taal voor.
-De opmaak blijft van het sjabloon, en alles is daarna nog met de hand aan te
-passen. `assets/js/redactie.js` bevat de prompt en de vertaling naar de
-rubrieken.
-
-## Prompts per sectie
-
-In de map `prompts/` staan zes vaste prompts, één per sectie, met de
-instructie als commentaar bovenaan en daaronder de variabelen die je elke
-maand vervangt. `prompts/README.md` legt uit welke prompt bij welke rubriek
-hoort. Prompt 6 is die van de strip: die levert het draaiboek waar de strip
-maker de tekening van bouwt.
+In de map `prompts/` staan de twee prompts die de app gebruikt:
+`nieuwsbrief.txt` voor een hele editie en `strip.txt` voor alleen een strip.
+Ze worden uit de app zelf gegenereerd, zodat ze nooit uit elkaar lopen met wat
+de knoppen doen. Je hebt ze normaal niet nodig — de knoppen zetten de prompt
+met jouw invulling voor je klaar.
 
 ## De strip maker: van verhaal naar strip
 

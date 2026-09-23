@@ -1,34 +1,10 @@
 # ============================================================================
-# PROMPT 6 — DE STRIP
+# ALLEEN DE STRIP
 # ----------------------------------------------------------------------------
-# WAT DEZE PROMPT DOET
-#   Laat een LLM het draaiboek voor de strip schrijven op basis van jouw
-#   verhaal. De LLM tekent niets: hij levert JSON die je in de strip maker
-#   plakt, waarna de pagina de strip tekent in de vaste CONO-vormgeving.
-#   Elk verhaal levert dus een andere strip op, met steeds dezelfde opbouw.
-#
-# ZO GEBRUIK JE DIT BESTAND
-#   Makkelijkste weg: open de strip maker, typ je verhaal in het vak
-#   "Strip uit een verhaal" en klik op "Prompt kopiëren". Dan wordt deze
-#   prompt met jouw verhaal erin voor je klaargezet.
-#
-#   Met de hand:
-#   1. Vul hieronder VERHAAL in.
-#   2. Kopieer alles vanaf de streep naar je LLM.
-#   3. Plak het JSON-antwoord in de strip maker, onder "Antwoord van de LLM
-#      plakken", en klik op "Strip bouwen".
-#   4. Niet tevreden? Vraag het nog eens — elke keer komt er iets anders uit.
-#
-# LET OP
-#   Sleutelwoorden als decor, emotie en gebaar moeten exact uit de lijsten
-#   hieronder komen; een woord dat er niet in staat wordt genegeerd en
-#   vervangen door "neutraal" of "kantoor".
+# De prompt hierboven levert de strip al mee. Dit bestand is voor als je
+# alléén een nieuwe strip wilt, zonder de rest van de nieuwsbrief. In de strip
+# maker doet de knop "Prompt kopiëren" hetzelfde met jouw verhaal erin.
 # ============================================================================
-
-
-VARIABELEN
-  VERHAAL = <vertel in een paar zinnen wat er moet gebeuren, wie erin zitten
-             en welk begrip wordt uitgelegd>
 
 # ----------------------------- KOPIEER VANAF HIER ---------------------------
 
@@ -38,7 +14,7 @@ JargonJudo: een moeilijk begrip wordt uitgelegd met een grap. De lezers zijn
 collega's van alle afdelingen en zijn geen data-experts.
 
 HET VERHAAL VAN DEZE EDITIE:
-VERHAAL
+(vertel hier in een paar zinnen wat er moet gebeuren)
 
 Je tekent niets. Je levert alleen een draaiboek als JSON, dat door een
 tekenprogramma wordt omgezet in de strip. Houd je exact aan onderstaand

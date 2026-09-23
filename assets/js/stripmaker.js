@@ -697,3 +697,14 @@ tekenAlles();
 /* Meteen vastleggen, zodat de nieuwsbrief de strip kan ophalen zonder dat
    er eerst iets gewijzigd hoeft te worden. */
 saveLocal(STORAGE_KEY, state);
+
+/* De nieuwsbrief laat hier een stripscript tekenen, zodat één klik daar
+   zowel de tekst als de strip oplevert. */
+window.__conoBouwStrip = function (script) {
+  const nieuw = bouwUitScript(script);
+  bewaarStap();
+  state = nieuw;
+  selectie = { paneelId: allePanelen()[0].id };
+  tekenAlles();
+  saveLocal(STORAGE_KEY, state);
+};

@@ -906,12 +906,53 @@ label {
 }
 .schakel input { width: auto; accent-color: var(--cono-red); }
 
-.rubriek-keuze {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: .1em .8em;
+.uiterlijk {
+  display: flex;
+  align-items: center;
+  gap: .5em;
+  flex-wrap: wrap;
+  margin-bottom: .7em;
 }
-@media (max-width: 520px) { .rubriek-keuze { grid-template-columns: 1fr; } }
+.icoonveld {
+  width: 3.2em;
+  flex: none;
+  text-align: center;
+  padding: .3em;
+}
+.kleurstippen { display: flex; gap: .25em; }
+.kleurstip {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  padding: 0;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px var(--cono-cream-dark);
+  cursor: pointer;
+}
+.kleurstip.is-aan { box-shadow: 0 0 0 2px var(--cono-ink); }
+.kleurstip--rood { background: var(--cono-red); }
+.kleurstip--groen { background: var(--cono-green); }
+.kleurstip--goud { background: var(--cono-gold); }
+.kleurstip--blauw { background: var(--cono-blue); }
+
+.opmaakknoppen { display: flex; gap: .2em; flex-wrap: wrap; }
+.opmaakknop {
+  background: #fff;
+  border: 2px solid var(--cono-cream-dark);
+  color: #6f6252;
+  font-size: .72rem;
+  padding: .2em .5em;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+.opmaakknop.is-aan { background: var(--cono-green); border-color: var(--cono-green); color: #fff; }
+
+.item-regel {
+  display: flex;
+  gap: .35em;
+  margin-bottom: .35em;
+  align-items: center;
+}
+.item-regel input { flex: 1; min-width: 0; }
 
 .pagina-meter {
   font-size: .85rem;
@@ -1117,12 +1158,8 @@ footer.site-footer {
         <label for="r-successen">Successen deze maand (optioneel)</label>
         <textarea id="r-successen" rows="3" placeholder="Eén per regel. Bijvoorbeeld: lactaat herkennen met AI"></textarea>
       </div>
-      <details class="meer-opties" id="r-rubriek-blok">
-        <summary>Welke rubrieken deze editie?</summary>
-        <div id="r-rubrieken" class="rubriek-keuze"></div>
-      </details>
       <div class="knoppenrij" style="margin-top:.8em;">
-        <button class="btn btn-primary" id="r-btn-claude" hidden>✨ Laat Claude het schrijven</button>
+        <button class="btn btn-primary" id="r-btn-claude" hidden>✨ Schrijf de nieuwsbrief</button>
         <button class="btn btn-secondary" id="r-btn-prompt">📋 Prompt kopiëren</button>
       </div>
       <details class="meer-opties" id="r-plak-blok">
@@ -1133,7 +1170,7 @@ footer.site-footer {
         <button class="btn btn-secondary" id="r-btn-vul">Nieuwsbrief vullen</button>
       </details>
       <p class="regie-melding" id="r-melding"></p>
-      <small class="hint">De LLM schrijft alleen de teksten en de koppen; de opmaak blijft van het sjabloon. Alles wat eruit komt kun je hieronder nog aanpassen.</small>
+      <small class="hint">De schrijver bepaalt zelf welke blokken erin komen, geeft ze een kop in gewone taal en levert de strip er meteen bij. Alles is daarna nog met de hand te overschrijven.</small>
     </div>
 
     <div class="panel">
@@ -1170,32 +1207,10 @@ footer.site-footer {
     </div>
 
     <div class="panel">
-      <h3><span class="emoji">🧩</span> Inhoud van deze editie</h3>
-      <button class="btn btn-ghost" id="btn-standaard" style="margin-bottom:.9em;">📋 Standaard indeling (8 vaste rubrieken)</button>
+      <h3><span class="emoji">🧩</span> De blokken</h3>
       <div id="sections-list"></div>
-      <div class="add-section-row">
-        <select id="new-section-type">
-          <optgroup label="Vaste rubrieken">
-            <option value="kopvandemaand">📰 Kop van de maand</option>
-            <option value="iam">🔑 Veilig inloggen</option>
-            <option value="stamdata">🔦 Uit ons systeem</option>
-            <option value="aianalytics">🤖 AI in het echte leven</option>
-            <option value="successen">🏆 Waar we trots op zijn</option>
-            <option value="jargonjudo">🥋 JargonJudo</option>
-            <option value="actietips">✅ Wat kun jij doen?</option>
-            <option value="vraagvandemaand">❓ Vraag van de maand</option>
-          </optgroup>
-          <optgroup label="Vrije blokken">
-            <option value="wistjedat">💡 Wist-je-dat — voorbeeld uit een artikel</option>
-            <option value="onderwerp">📘 Onderwerp uitgelegd — in simpele taal</option>
-            <option value="cijfer">📊 Cijfers &amp; weetjes</option>
-            <option value="quote">💬 Quote van een collega</option>
-            <option value="tekst">📝 Los tekstblok</option>
-          </optgroup>
-        </select>
-        <button class="btn btn-secondary" id="btn-add-section">+ Sectie toevoegen</button>
-      </div>
-      <small class="hint">De acht vaste rubrieken keren elke editie terug. Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je overslaat. Met de pijltjes verander je de volgorde.</small>
+      <button class="btn btn-secondary" id="btn-add-section">+ Blok toevoegen</button>
+      <small class="hint">Elk blok is vrij: je bepaalt zelf de kop, de tekst en de vorm. Met de pijltjes verander je de volgorde.</small>
     </div>
 
     <div class="panel">
@@ -2030,47 +2045,113 @@ function leesOpgeslagenStrip() {
 
 const STORAGE_KEY = 'cono_nieuwsbrief_draft_v1';
 
-/* De vaste rubrieken die elke editie terugkeren. Per rubriek: het label dat
-   boven het blok komt, een icoon, de accentkleur en een eventuele ondertitel. */
-const RUBRIEK_META = {
-  kopvandemaand:   { label: 'Kop van de maand',     icoon: '📰', kleur: 'rood',  subtitel: 'wat je deze maand echt wilt weten' },
-  iam:             { label: 'Veilig inloggen',      icoon: '🔑', kleur: 'groen', subtitel: 'wachtwoorden en toegang' },
-  stamdata:        { label: 'Uit ons systeem',      icoon: '🔦', kleur: 'goud',  subtitel: 'wat leggen we eigenlijk vast?' },
-  aianalytics:     { label: 'AI in het echte leven', icoon: '🤖', kleur: 'blauw', subtitel: 'wat er buiten CONO gebeurt' },
-  successen:       { label: 'Waar we trots op zijn', icoon: '🏆', kleur: 'groen', subtitel: 'waar we zelf mee bezig zijn' },
-  jargonjudo:      { label: 'JargonJudo',           icoon: '🥋', kleur: 'rood',  subtitel: 'moeilijk woord in gewone taal' },
-  actietips:       { label: 'Wat kun jij doen?',    icoon: '✅', kleur: 'groen', subtitel: '' },
-  vraagvandemaand: { label: 'Vraag van de maand',   icoon: '❓', kleur: 'goud',  subtitel: '' }
+/* Een nieuwsbrief bestaat uit vrije blokken. Er zijn geen vaste soorten meer:
+   elk blok heeft een kop die je zelf bepaalt en een opmaak die alleen bepaalt
+   hóé het eruitziet, niet waar het over mag gaan. */
+
+const KLEUREN = ['rood', 'groen', 'goud', 'blauw'];
+
+/* De beschikbare opmaken, met de naam van het afsluitende regeltje en of er
+   een lijst bij hoort. De schrijver kiest deze; je hoeft er niet over na te
+   denken. */
+const OPMAKEN = {
+  tekst:       { naam: 'Tekst',        slotLabel: 'Afsluitende regel',      lijst: false, tekstLabel: 'Tekst' },
+  lijst:       { naam: 'Lijst',        slotLabel: 'Afsluitende regel',      lijst: true,  tekstLabel: 'Inleiding (mag leeg)' },
+  citaat:      { naam: 'Citaat',       slotLabel: 'Wie zegt het',           lijst: false, tekstLabel: 'Het citaat' },
+  cijfers:     { naam: 'Cijfers',      slotLabel: 'Afsluitende regel',      lijst: true,  tekstLabel: 'Inleiding (mag leeg)' },
+  woordenboek: { naam: 'Woordenboek',  slotLabel: 'Afsluitende regel',      lijst: true,  tekstLabel: 'De constatering' },
+  stappen:     { naam: 'Stappen',      slotLabel: 'Afsluitende regel',      lijst: true,  tekstLabel: 'De prikkelende kop' },
+  oproep:      { naam: 'Oproep',       slotLabel: 'Wat het oplevert',       lijst: true,  tekstLabel: 'De oproep' }
 };
 
-/* De kop van een rubriek mag per editie worden veranderd; staat er niets,
-   dan geldt de standaardnaam hierboven. */
-function rubriekKop(sec) {
-  const meta = RUBRIEK_META[sec.type] || {};
-  return {
-    label: (sec.label !== undefined && sec.label !== null) ? sec.label : (meta.label || ''),
-    subtitel: (sec.subtitel !== undefined && sec.subtitel !== null) ? sec.subtitel : (meta.subtitel || ''),
-    icoon: meta.icoon || '📄',
-    kleur: meta.kleur || 'groen'
-  };
+function opmaakVan(sec) {
+  return OPMAKEN[sec.opmaak] ? sec.opmaak : 'tekst';
 }
 
-const STANDAARD_VOLGORDE = ['kopvandemaand', 'iam', 'stamdata', 'aianalytics', 'successen', 'jargonjudo', 'actietips', 'vraagvandemaand'];
+function nieuweSectie(basis) {
+  return Object.assign({
+    id: uid(),
+    kop: 'Kop van dit blok',
+    ondertitel: '',
+    icoon: '📄',
+    kleur: 'groen',
+    opmaak: 'tekst',
+    tekst: '',
+    slot: '',
+    items: []
+  }, basis || {});
+}
 
-const VRIJE_BLOK_LABELS = {
-  wistjedat: '💡 Wist-je-dat',
-  onderwerp: '📘 Onderwerp uitgelegd',
-  cijfer: '📊 Cijfers & weetjes',
-  quote: '💬 Quote van een collega',
-  tekst: '📝 Tekstblok'
+function nieuwItem(tekst, bij) {
+  return { id: uid(), tekst: tekst || '', bij: bij || '' };
+}
+
+/* Edities van vóór de vrije blokken bevatten nog de oude vaste rubrieken.
+   Die worden bij het inladen omgezet, zodat niemand zijn werk kwijtraakt. */
+const OUDE_RUBRIEKEN = {
+  kopvandemaand:   { kop: 'Kop van de maand', icoon: '📰', kleur: 'rood', opmaak: 'tekst',
+                     tekst: ['uitleg'], slot: 'brug', chip: 'term' },
+  iam:             { kop: 'Veilig inloggen', icoon: '🔑', kleur: 'groen', opmaak: 'tekst',
+                     koptekst: 'titel', tekst: ['uitleg'], slot: 'tip' },
+  stamdata:        { kop: 'Uit ons systeem', icoon: '🔦', kleur: 'goud', opmaak: 'woordenboek',
+                     term: 'term', definitie: 'definitie', tekst: ['constatering'] },
+  aianalytics:     { kop: 'AI in het echte leven', icoon: '🤖', kleur: 'blauw', opmaak: 'tekst',
+                     koptekst: 'titel', tekst: ['bron', 'uitleg'] },
+  successen:       { kop: 'Waar we trots op zijn', icoon: '🏆', kleur: 'groen', opmaak: 'lijst' },
+  jargonjudo:      { kop: 'JargonJudo', icoon: '🥋', kleur: 'rood', opmaak: 'stappen',
+                     term: 'term', tekst: ['prikkel'], stappen: ['observatie', 'ontknoping'], slot: 'striplink' },
+  actietips:       { kop: 'Wat kun jij doen?', icoon: '✅', kleur: 'groen', opmaak: 'tekst',
+                     tekst: ['tekst'], slot: 'actie' },
+  vraagvandemaand: { kop: 'Vraag van de maand', icoon: '❓', kleur: 'goud', opmaak: 'oproep',
+                     tekst: ['vraag'], stappen: ['waar'], slot: 'beloning' },
+  wistjedat:       { kop: 'Wist je dat...', icoon: '💡', kleur: 'goud', opmaak: 'tekst',
+                     tekst: ['bron', 'citaat', 'uitleg'] },
+  onderwerp:       { kop: 'Onderwerp', icoon: '📘', kleur: 'groen', opmaak: 'tekst',
+                     koptekst: 'titel', tekst: ['uitleg', 'waarom'], slot: 'actie' },
+  cijfer:          { kop: 'Cijfers', icoon: '📊', kleur: 'groen', opmaak: 'cijfers' },
+  quote:           { kop: 'Aan het woord', icoon: '💬', kleur: 'groen', opmaak: 'citaat',
+                     tekst: ['quote'], slot: 'naam' },
+  tekst:           { kop: 'Tekstblok', icoon: '📝', kleur: 'groen', opmaak: 'tekst',
+                     koptekst: 'titel', tekst: ['tekst'] }
 };
 
-function sectionLabel(sec) {
-  if (RUBRIEK_META[sec.type]) {
-    const kop = rubriekKop(sec);
-    return `${kop.icoon} ${kop.label || RUBRIEK_META[sec.type].label}`;
+function migreerSectie(oud) {
+  if (!oud || !oud.type) return oud && oud.opmaak ? oud : null;
+  const regel = OUDE_RUBRIEKEN[oud.type];
+  if (!regel) return null;
+
+  const sec = nieuweSectie({
+    kop: oud.label || (regel.koptekst && oud[regel.koptekst]) || regel.kop,
+    ondertitel: oud.subtitel || '',
+    icoon: oud.icoon || oud.emoji || regel.icoon,
+    kleur: regel.kleur,
+    opmaak: regel.opmaak
+  });
+
+  const delen = (regel.tekst || []).map(v => oud[v]).filter(Boolean);
+  sec.tekst = delen.join('\n\n');
+  if (regel.slot && oud[regel.slot]) sec.slot = oud[regel.slot];
+  if (regel.chip && oud[regel.chip]) sec.ondertitel = sec.ondertitel || oud[regel.chip];
+
+  if (regel.opmaak === 'woordenboek') {
+    sec.items = [nieuwItem(oud[regel.term] || '', oud[regel.definitie] || '')];
+  } else if (regel.opmaak === 'stappen') {
+    sec.items = (regel.stappen || []).map(v => nieuwItem(oud[v] || '')).filter(i => i.tekst);
+    if (oud[regel.term]) sec.ondertitel = sec.ondertitel || oud[regel.term];
+  } else if (regel.opmaak === 'oproep') {
+    sec.items = (regel.stappen || []).map(v => nieuwItem(oud[v] || '')).filter(i => i.tekst);
+  } else if (regel.opmaak === 'lijst') {
+    sec.items = (oud.items || []).map(it => nieuwItem(it.tekst, it.toelichting));
+  } else if (regel.opmaak === 'cijfers') {
+    sec.items = (oud.tiles || []).map(t => nieuwItem(t.getal, t.label + (t.toelichting ? ' — ' + t.toelichting : '')));
   }
-  return VRIJE_BLOK_LABELS[sec.type] || sec.type;
+  return sec;
+}
+
+function migreerState(st) {
+  if (!st || !Array.isArray(st.sections)) return st;
+  st.sections = st.sections.map(sec => (sec && sec.type) ? migreerSectie(sec) : sec).filter(Boolean);
+  return st;
 }
 
 function defaultState() {
@@ -2095,121 +2176,69 @@ function defaultState() {
   };
 }
 
-function nieuwSectie(type) {
-  const id = uid();
-  switch (type) {
-    /* --- Vaste rubrieken --- */
-    case 'kopvandemaand':
-      return { id, type, kop: 'De prikkelende vraag van deze maand?', term: 'Het begrip erachter',
-        uitleg: 'Leg in gewone taal uit hoe het zit. Gebruik een voorbeeld dat iedereen van buiten het werk herkent.',
-        brug: 'En bij ons? Vertaal het door naar een vraag over data bij CONO.' };
-    case 'iam':
-      return { id, type, titel: 'Onderwerp rond toegang of wachtwoorden',
-        uitleg: 'Waarom dit speelt en hoe het werkt, in gewone taal.',
-        tip: 'Concrete tip of eerste stap.' };
-    case 'stamdata':
-      return { id, type, term: 'Term uit ons systeem', definitie: 'De definitie zoals iedereen hem zou opschrijven.',
-        constatering: 'De verrassing: wat is er wél of niet vastgelegd, en waarom maakt dat uit?' };
-    case 'aianalytics':
-      return { id, type, titel: 'Wat er buiten CONO gebeurt met AI of analytics',
-        bron: 'Bron: titel van het artikel', link: '',
-        uitleg: 'Wat het artikel laat zien en wat dat betekent nu we een paar jaar verder zijn.' };
-    case 'successen':
-      return { id, type, items: [
-        { id: uid(), tekst: 'Naam van het project of de vraag', toelichting: '' }
-      ] };
-    case 'jargonjudo':
-      return { id, type, term: 'Het moeilijke woord', prikkel: 'Een kop die niet klopt, maar wel logisch klinkt',
-        observatie: 'Wat je ziet in de cijfers.', ontknoping: 'Hoe het écht zit — en waarom de kop dus onzin is.',
-        striplink: 'Zie de strip onderaan deze pagina.' };
-    case 'actietips':
-      return { id, type, tekst: 'Wat kan de lezer deze maand zelf doen?', actie: 'De concrete actie in één zin' };
-    case 'vraagvandemaand':
-      return { id, type, vraag: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
-        waar: 'Mail je vraag naar het data-team.', beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' };
-
-    /* --- Vrije blokken --- */
-    case 'wistjedat':
-      return { id, type, titel: 'Wist je dat...', emoji: '🧀', bron: 'Bron: naam van artikel of paper', citaat: 'Een pakkende zin of cijfer uit het artikel...', uitleg: 'Leg in gewone taal uit wat dit betekent voor CONO en waarom het leuk/interessant is als opstapje naar dit onderwerp.' };
-    case 'onderwerp':
-      return { id, type, titel: 'Naam van het onderwerp', icoon: '🗂️', uitleg: 'Wat het onderwerp inhoudt, in simpele taal — alsof je het aan een collega uitlegt die er niets van weet.', waarom: 'Waarom dit voor CONO belangrijk is.', actie: 'Wat iemand nu concreet kan doen' };
-    case 'cijfer':
-      return { id, type, titel: 'Cijfers & weetjes', tiles: [ { id: uid(), getal: '87%', label: 'Korte omschrijving', toelichting: 'Extra duiding in één zin.' } ] };
-    case 'quote':
-      return { id, type, naam: 'Naam collega', functie: 'Functie / afdeling', quote: 'Wat deze collega zegt over data of dit onderwerp.' };
-    case 'tekst':
-      return { id, type, titel: 'Titel van dit blok', tekst: 'Vrije tekst voor bijvoorbeeld een oproep, agenda-item of terugblik.' };
-    default:
-      return { id, type: 'tekst', titel: '', tekst: '' };
-  }
-}
-
-/* De voorbeeldeditie: de standaard indeling, ingevuld met de onderwerpen uit
-   het voorstel voor de eerste nieuwsbrief. */
+/* Het voorbeeld laat zien wat eruit kan komen; alle blokken zijn vrij. */
 function voorbeeldState() {
   const s = defaultState();
   s.meta = {
     titel: 'CONO Databericht',
-    ondertitel: 'Data, AI en stamdata — uitgelegd zonder moeilijke woorden',
+    ondertitel: 'Data en AI, gewoon uitgelegd',
     editie: 'Editie 1 — probeersel',
     datum: todayNL()
   };
   s.voorwoord = {
-    tekst: 'Data, AI, stamdata, IAM — het klinkt als een taal die je eerst moet leren voordat je mee kunt praten. Dat draaien we met dit Databericht om: elke editie een paar onderwerpen in gewone taal, met voorbeelden die je van buiten je werk herkent. Heb je zelf een vraag? Onderaan staat hoe je hem kwijt kunt.',
+    tekst: 'Data en AI klinken als een taal die je eerst moet leren voordat je mee kunt praten. Dat draaien we hier om: elke editie een paar onderwerpen in gewone taal, met voorbeelden die je van buiten je werk herkent. Heb je zelf een vraag? Onderaan lees je waar die heen kan.',
     auteur: 'Team Data & Informatie'
   };
   s.sections = [
-    { id: uid(), type: 'kopvandemaand',
-      kop: 'Luistert je telefoon met je mee om je gerichte advertenties te tonen?',
-      term: 'Baader-Meinhof-fenomeen',
-      uitleg: 'Je praat over een nieuwe fiets en een uur later staat je tijdlijn vol fietsreclame. Toeval? Je telefoon hoeft daar niet voor mee te luisteren: zodra iets je aandacht heeft, valt het je overal op. Dat heet het Baader-Meinhof-fenomeen. Bovendien hebben ze allang genoeg gegevens — wat je zoekt, waar je bent, wat je koopt — om die reclame gericht te tonen. Meeluisteren is niet nodig.',
-      brug: 'En bij ons? Hebben wij eigenlijk alle gegevens die we nodig hebben om de vragen te beantwoorden die we onszelf stellen?' },
-
-    { id: uid(), type: 'iam',
-      titel: '1Password: één wachtwoord voor alles — is dat nou wel veilig?',
-      uitleg: 'Alles achter één wachtwoord zetten voelt tegenstrijdig, maar het is veiliger dan wat de meesten nu doen: overal ongeveer hetzelfde wachtwoord. Lekt er dan één, dan liggen ze allemaal op straat. Met een kluis krijgt elke site een eigen, lang en willekeurig wachtwoord dat je niet hoeft te onthouden — jij onthoudt er nog precies één.',
-      tip: 'Nog geen kluis in gebruik? Vraag ernaar bij IT — het inrichten kost je ongeveer vijf minuten.' },
-
-    { id: uid(), type: 'stamdata',
-      term: 'Geitenkaas',
-      definitie: 'Kaas gemaakt van geitenmelk.',
-      constatering: 'Klinkt logisch — maar deze definitie staat nergens in ons systeem. Iedereen wéét wat het is, en precies daarom schrijft niemand het op. Dat gaat goed tot iemand nieuw begint, of twee afdelingen er nét iets anders onder blijken te verstaan.' },
-
-    { id: uid(), type: 'aianalytics',
-      titel: 'Een artikel uit 2017 dat inmiddels gewoon je dagelijks leven beschrijft',
-      bron: 'Bron: artikel uit 2017 over de mogelijkheden van AI',
-      link: '',
-      uitleg: 'Dit artikel uit 2017 las destijds als toekomstmuziek. Bijna tien jaar later is het dat niet meer: spraakassistenten, automatische vertalingen, foto\'s die zichzelf sorteren, chatbots die je e-mail voorschrijven. Stuk voor stuk technieken uit dat artikel die zo gewoon zijn dat we ze niet eens meer "AI" noemen.' },
-
-    { id: uid(), type: 'successen', items: [
-      { id: uid(), tekst: 'Lactaat herkennen met AI', toelichting: '' },
-      { id: uid(), tekst: 'Hoeveel droogt een kaas nu werkelijk in — en verschilt dat per oplegger?', toelichting: '' },
-      { id: uid(), tekst: 'Bestuursverslag (onderdeel van het jaarverslag) opgesteld met hulp van AI', toelichting: '' },
-      { id: uid(), tekst: 'Wat is het statistische verband tussen de zuivelmarkt en de melkprijs van RFC?', toelichting: '' }
-    ] },
-
-    { id: uid(), type: 'jargonjudo',
-      term: 'Causaal verband',
-      prikkel: 'Verbod op ijs vanwege toename aantal verdrinkingen',
-      observatie: 'Er is een duidelijke correlatie tussen de hoeveelheid ijs die verkocht wordt en het aantal verdrinkingen in zwembaden en buitenwater. Meer ijs, meer verdrinkingen — de cijfers liegen niet.',
-      ontknoping: 'Maar er is geen causaal verband. Als het warm is, wordt er véél gezwommen én veel ijs gegeten. Het weer veroorzaakt allebei; het ijs duwt niemand het water in. Twee dingen die samen bewegen, hoeven elkaar dus niet te veroorzaken.',
-      striplink: 'Zie de strip onderaan deze pagina.' },
-
-    { id: uid(), type: 'actietips',
+    nieuweSectie({
+      kop: 'Kop van de maand', ondertitel: 'wat je deze maand wilt weten',
+      icoon: '📰', kleur: 'rood', opmaak: 'tekst',
+      tekst: 'Je praat over een nieuwe fiets en een uur later staat je tijdlijn vol fietsreclame. Toeval? Je telefoon hoeft daar niet voor mee te luisteren: zodra iets je aandacht heeft, valt het je overal op. Bovendien hebben ze allang genoeg gegevens — wat je zoekt, waar je bent, wat je koopt — om die reclame gericht te tonen.',
+      slot: 'En bij ons? Hebben wij de gegevens die we nodig hebben om onze eigen vragen te beantwoorden?'
+    }),
+    nieuweSectie({
+      kop: 'Uit ons systeem', ondertitel: 'wat leggen we eigenlijk vast?',
+      icoon: '🔦', kleur: 'goud', opmaak: 'woordenboek',
+      items: [nieuwItem('Geitenkaas', 'Kaas gemaakt van geitenmelk.')],
+      tekst: 'Klinkt logisch — maar deze omschrijving staat nergens vastgelegd. Iedereen wéét wat het is, en precies daarom schrijft niemand het op. Dat gaat goed tot iemand nieuw begint.'
+    }),
+    nieuweSectie({
+      kop: 'Waar we trots op zijn', ondertitel: 'deze maand',
+      icoon: '🏆', kleur: 'groen', opmaak: 'lijst',
+      items: [
+        nieuwItem('Lactaat herkennen met AI'),
+        nieuwItem('Bestuursverslag deels met AI geschreven'),
+        nieuwItem('Hoeveel droogt een kaas nu werkelijk in?')
+      ]
+    }),
+    nieuweSectie({
+      kop: 'JargonJudo', ondertitel: 'moeilijk woord in gewone taal',
+      icoon: '🥋', kleur: 'rood', opmaak: 'stappen',
+      tekst: 'Verbod op ijs vanwege toename aantal verdrinkingen',
+      items: [
+        nieuwItem('Er is een duidelijk verband: meer ijsverkoop, meer verdrinkingen. Dat staat gewoon in de cijfers.'),
+        nieuwItem('Maar het ijs duwt niemand het water in. Als het warm is wordt er véél gezwommen én veel ijs gegeten.')
+      ],
+      slot: 'Zie de strip onderaan deze pagina.'
+    }),
+    nieuweSectie({
+      kop: 'Wat kun jij doen?', icoon: '✅', kleur: 'groen', opmaak: 'tekst',
       tekst: 'Heb je recent gekeken tot welke rapporten jij toegang hebt, en gebruik je ze allemaal? In de meeste rapporten kun je filteren of inzoomen, zodat de cijfers precies over jouw afdeling gaan.',
-      actie: 'Neem deze maand vijf minuten om je eigen rapportenlijst door te lopen.' },
-
-    { id: uid(), type: 'vraagvandemaand',
-      vraag: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
-      waar: 'Mail je vraag naar het data-team.',
-      beloning: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.' }
+      slot: 'Neem deze maand vijf minuten om je eigen rapportenlijst door te lopen.'
+    }),
+    nieuweSectie({
+      kop: 'Vraag van de maand', icoon: '❓', kleur: 'goud', opmaak: 'oproep',
+      tekst: 'Heb je een vraag over data, rapporten of AI? Stel hem!',
+      items: [nieuwItem('Mail je vraag naar het data-team.')],
+      slot: 'De beste vraag krijgt gevulde koeken voor de hele afdeling.'
+    })
   ];
   s.strip = { tonen: true, teaser: 'JargonJudo: correlatie is nog geen oorzaak.' };
   s.footer = { contact: 'Data-team — data@cono.nl', volgende: 'De volgende editie verschijnt over een maand.' };
   return s;
 }
 
-let state = loadLocal(STORAGE_KEY) || voorbeeldState();
+let state = migreerState(loadLocal(STORAGE_KEY)) || voorbeeldState();
 
 /* ---------------------------- DOM references ---------------------------- */
 const els = {
@@ -2288,130 +2317,77 @@ function attachStaticBindings() {
 /* ------------------------------ Secties editor ---------------------------- */
 function veld(label, field, value, rows, hint) {
   const input = rows
-    ? `<textarea data-field="${field}" rows="${rows}">${escapeHtml(value)}</textarea>`
-    : `<input data-field="${field}" value="${escapeHtml(value)}">`;
+    ? `<textarea data-field="${field}" rows="${rows}">${escapeHtml(value || '')}</textarea>`
+    : `<input data-field="${field}" value="${escapeHtml(value || '')}">`;
   return `<div class="field"><label>${label}</label>${input}${hint ? `<small class="hint">${hint}</small>` : ''}</div>`;
 }
 
-/* Elke vaste rubriek begint met zijn eigen kop, die je mag overschrijven. */
-function kopVelden(sec) {
-  const kop = rubriekKop(sec);
-  return `<div class="veld-paar">
-      <div class="field"><label>Kop van deze rubriek</label><input data-field="label" value="${escapeHtml(kop.label)}"></div>
-      <div class="field"><label>Ondertitel</label><input data-field="subtitel" value="${escapeHtml(kop.subtitel)}"></div>
+/* Uiterlijk van een blok: kleurstipjes en opmaakknoppen. Eén klik, geen
+   uitklaplijst — en je hoeft er niets mee te doen als het al goed staat. */
+function uiterlijkRij(sec) {
+  const kleuren = KLEUREN.map(k =>
+    `<button type="button" class="kleurstip kleurstip--${k}${sec.kleur === k ? ' is-aan' : ''}"
+       data-actie="kleur" data-waarde="${k}" data-section="${sec.id}" title="${k}"></button>`).join('');
+  const opmaken = Object.entries(OPMAKEN).map(([sleutel, o]) =>
+    `<button type="button" class="opmaakknop${opmaakVan(sec) === sleutel ? ' is-aan' : ''}"
+       data-actie="opmaak" data-waarde="${sleutel}" data-section="${sec.id}">${o.naam}</button>`).join('');
+  return `<div class="uiterlijk">
+      <input class="icoonveld" data-field="icoon" value="${escapeHtml(sec.icoon || '')}" maxlength="3" title="Icoon">
+      <div class="kleurstippen">${kleuren}</div>
+      <div class="opmaakknoppen">${opmaken}</div>
+    </div>`;
+}
+
+function itemVelden(sec, item, i) {
+  const vorm = opmaakVan(sec);
+  const labels = {
+    cijfers: ['Getal', 'Waar het over gaat'],
+    woordenboek: ['Term', 'Wat het betekent'],
+    stappen: ['Stap ' + (i + 1), ''],
+    oproep: ['Regel', ''],
+    lijst: ['Regel', 'Toelichting (mag leeg)']
+  }[vorm] || ['Regel', 'Toelichting (mag leeg)'];
+
+  return `<div class="item-regel">
+      <input data-item-field="tekst" data-item="${item.id}" value="${escapeHtml(item.tekst)}" placeholder="${labels[0]}">
+      ${labels[1] ? `<input data-item-field="bij" data-item="${item.id}" value="${escapeHtml(item.bij)}" placeholder="${labels[1]}">` : ''}
+      <button type="button" class="btn-danger" data-actie="item-weg" data-section="${sec.id}" data-item="${item.id}">✕</button>
     </div>`;
 }
 
 function sectionFieldsHTML(sec) {
-  if (RUBRIEK_META[sec.type]) return kopVelden(sec) + rubriekVelden(sec);
-  return rubriekVelden(sec);
-}
+  const vorm = opmaakVan(sec);
+  const o = OPMAKEN[vorm];
+  const lijst = o.lijst
+    ? `<div class="field"><label>Regels</label>
+        ${(sec.items || []).map((it, i) => itemVelden(sec, it, i)).join('')}
+        <button type="button" class="btn btn-icon" data-actie="item-erbij" data-section="${sec.id}">+ Regel</button>
+      </div>`
+    : '';
 
-function rubriekVelden(sec) {
-  switch (sec.type) {
-    /* --- Vaste rubrieken --- */
-    case 'kopvandemaand':
-      return veld('Prikkelende kop of vraag', 'kop', sec.kop, 2)
-        + veld('Begrip (optioneel)', 'term', sec.term, 0, 'Bijv. het fenomeen of de term achter het verhaal.')
-        + veld('Uitleg in gewone taal', 'uitleg', sec.uitleg, 6)
-        + veld('Brug naar CONO', 'brug', sec.brug, 2, 'De vraag die dit verhaal oproept over onze eigen gegevens.');
-    case 'iam':
-      return veld('Titel', 'titel', sec.titel, 2)
-        + veld('Uitleg', 'uitleg', sec.uitleg, 5)
-        + veld('Tip / eerste stap (optioneel)', 'tip', sec.tip, 2);
-    case 'stamdata':
-      return veld('Term', 'term', sec.term, 0)
-        + veld('Definitie', 'definitie', sec.definitie, 2)
-        + veld('De constatering', 'constatering', sec.constatering, 4, 'Wat is er wél of juist niet vastgelegd — en waarom maakt dat uit?');
-    case 'aianalytics':
-      return veld('Titel', 'titel', sec.titel, 2)
-        + veld('Bron', 'bron', sec.bron, 0)
-        + veld('Link (optioneel)', 'link', sec.link, 0, 'Volledige link, bijv. https://...')
-        + veld('Uitleg', 'uitleg', sec.uitleg, 5);
-    case 'successen':
-      return `<div id="items-${sec.id}">${(sec.items || []).map(it => itemFieldsHTML(sec.id, it)).join('')}</div>
-        <button type="button" class="btn btn-icon" data-action="add-item" data-section="${sec.id}">+ Succes toevoegen</button>`;
-    case 'jargonjudo':
-      return veld('Het moeilijke woord', 'term', sec.term, 0)
-        + veld('Prikkelende (foute) kop', 'prikkel', sec.prikkel, 2, 'Een conclusie die logisch klinkt maar niet klopt.')
-        + veld('1. Wat je ziet', 'observatie', sec.observatie, 3)
-        + veld('2. Hoe het écht zit', 'ontknoping', sec.ontknoping, 4)
-        + veld('Verwijzing naar de strip (optioneel)', 'striplink', sec.striplink, 0);
-    case 'actietips':
-      return veld('Tekst', 'tekst', sec.tekst, 5)
-        + veld('Concrete actie (optioneel)', 'actie', sec.actie, 2);
-    case 'vraagvandemaand':
-      return veld('De oproep', 'vraag', sec.vraag, 2)
-        + veld('Waar kan de vraag heen?', 'waar', sec.waar, 2)
-        + veld('Beloning (optioneel)', 'beloning', sec.beloning, 2);
-
-    /* --- Vrije blokken --- */
-    case 'wistjedat':
-      return veld('Titel', 'titel', sec.titel, 0)
-        + veld('Emoji', 'emoji', sec.emoji, 0)
-        + veld('Bron (artikel / paper)', 'bron', sec.bron, 0)
-        + veld('Citaat of opvallend feit', 'citaat', sec.citaat, 2)
-        + veld('Speelse uitleg / koppeling naar onderwerp', 'uitleg', sec.uitleg, 3);
-    case 'onderwerp':
-      return veld('Titel van het onderwerp', 'titel', sec.titel, 0)
-        + veld('Icoon (emoji)', 'icoon', sec.icoon, 0)
-        + veld('Uitleg in simpele taal', 'uitleg', sec.uitleg, 3)
-        + veld('Waarom dit belangrijk is', 'waarom', sec.waarom, 2)
-        + veld('Actiepunt (optioneel)', 'actie', sec.actie, 0);
-    case 'cijfer':
-      return veld('Titel van dit blok', 'titel', sec.titel, 0)
-        + `<div id="tiles-${sec.id}">${sec.tiles.map(t => tileFieldsHTML(sec.id, t)).join('')}</div>
-           <button type="button" class="btn btn-icon" data-action="add-tile" data-section="${sec.id}">+ Cijfer toevoegen</button>`;
-    case 'quote':
-      return veld('Naam', 'naam', sec.naam, 0)
-        + veld('Functie / afdeling', 'functie', sec.functie, 0)
-        + veld('Quote', 'quote', sec.quote, 3);
-    case 'tekst':
-      return veld('Titel', 'titel', sec.titel, 0)
-        + veld('Tekst', 'tekst', sec.tekst, 4);
-    default:
-      return '';
-  }
-}
-
-function tileFieldsHTML(sectionId, tile) {
-  return `
-    <div class="section-card" style="background:#fff;">
-      <div class="section-card-head">
-        <span class="section-type-label" style="color:var(--cono-green-dark);">Cijfer</span>
-        <button type="button" class="btn-danger" data-action="delete-tile" data-section="${sectionId}" data-tile="${tile.id}">✕</button>
-      </div>
-      <div class="field"><label>Getal</label><input data-tile-field="getal" data-tile="${tile.id}" value="${escapeHtml(tile.getal)}"></div>
-      <div class="field"><label>Label</label><input data-tile-field="label" data-tile="${tile.id}" value="${escapeHtml(tile.label)}"></div>
-      <div class="field"><label>Toelichting</label><input data-tile-field="toelichting" data-tile="${tile.id}" value="${escapeHtml(tile.toelichting)}"></div>
-    </div>`;
-}
-
-function itemFieldsHTML(sectionId, item) {
-  return `
-    <div class="section-card" style="background:#fff;">
-      <div class="section-card-head">
-        <span class="section-type-label" style="color:var(--cono-green-dark);">Succes</span>
-        <button type="button" class="btn-danger" data-action="delete-item" data-section="${sectionId}" data-item="${item.id}">✕</button>
-      </div>
-      <div class="field"><label>Titel</label><input data-item-field="tekst" data-item="${item.id}" value="${escapeHtml(item.tekst)}"></div>
-      <div class="field"><label>Toelichting (optioneel)</label><input data-item-field="toelichting" data-item="${item.id}" value="${escapeHtml(item.toelichting)}"></div>
-    </div>`;
+  return uiterlijkRij(sec)
+    + `<div class="veld-paar">
+         ${veld('Kop', 'kop', sec.kop)}
+         ${veld('Ondertitel', 'ondertitel', sec.ondertitel)}
+       </div>`
+    + veld(o.tekstLabel, 'tekst', sec.tekst, 4)
+    + lijst
+    + veld(o.slotLabel, 'slot', sec.slot);
 }
 
 function renderSectionsEditor() {
   if (state.sections.length === 0) {
-    els.sectionsList.innerHTML = `<p class="empty-state">Nog geen secties. Klik op "Standaard indeling" voor de vaste rubrieken, of kies hieronder los een blok.</p>`;
+    els.sectionsList.innerHTML = `<p class="empty-state">Nog geen blokken. Laat de nieuwsbrief hierboven schrijven, of voeg er zelf een toe.</p>`;
     return;
   }
   els.sectionsList.innerHTML = state.sections.map((sec, i) => `
     <div class="section-card" data-section-row="${sec.id}">
       <div class="section-card-head">
-        <span class="section-type-label">${escapeHtml(sectionLabel(sec))}</span>
+        <span class="section-type-label">${escapeHtml((sec.icoon || '') + ' ' + (sec.kop || 'Blok'))}</span>
         <div class="section-actions">
-          <button type="button" class="btn-icon" data-action="move-up" data-section="${sec.id}" ${i === 0 ? 'disabled' : ''} title="Naar boven">↑</button>
-          <button type="button" class="btn-icon" data-action="move-down" data-section="${sec.id}" ${i === state.sections.length - 1 ? 'disabled' : ''} title="Naar beneden">↓</button>
-          <button type="button" class="btn-danger" data-action="delete-section" data-section="${sec.id}" title="Verwijderen">✕</button>
+          <button type="button" class="btn-icon" data-actie="omhoog" data-section="${sec.id}" ${i === 0 ? 'disabled' : ''} title="Naar boven">↑</button>
+          <button type="button" class="btn-icon" data-actie="omlaag" data-section="${sec.id}" ${i === state.sections.length - 1 ? 'disabled' : ''} title="Naar beneden">↓</button>
+          <button type="button" class="btn-danger" data-actie="blok-weg" data-section="${sec.id}" title="Verwijderen">✕</button>
         </div>
       </div>
       ${sectionFieldsHTML(sec)}
@@ -2422,20 +2398,16 @@ function renderSectionsEditor() {
 function findSection(id) { return state.sections.find(s => s.id === id); }
 
 els.sectionsList.addEventListener('input', (e) => {
-  const target = e.target;
-  const row = target.closest('[data-section-row]');
-  if (!row) return;
-  const sec = findSection(row.dataset.sectionRow);
+  const rij = e.target.closest('[data-section-row]');
+  if (!rij) return;
+  const sec = findSection(rij.dataset.sectionRow);
   if (!sec) return;
 
-  if (target.dataset.field) {
-    sec[target.dataset.field] = target.value;
-  } else if (target.dataset.tileField) {
-    const tile = sec.tiles.find(t => t.id === target.dataset.tile);
-    if (tile) tile[target.dataset.tileField] = target.value;
-  } else if (target.dataset.itemField) {
-    const item = sec.items.find(it => it.id === target.dataset.item);
-    if (item) item[target.dataset.itemField] = target.value;
+  if (e.target.dataset.field) {
+    sec[e.target.dataset.field] = e.target.value;
+  } else if (e.target.dataset.itemField) {
+    const item = (sec.items || []).find(it => it.id === e.target.dataset.item);
+    if (item) item[e.target.dataset.itemField] = e.target.value;
   } else {
     return;
   }
@@ -2444,30 +2416,29 @@ els.sectionsList.addEventListener('input', (e) => {
 });
 
 els.sectionsList.addEventListener('click', (e) => {
-  const btn = e.target.closest('button[data-action]');
-  if (!btn) return;
-  const action = btn.dataset.action;
-  const sec = findSection(btn.dataset.section);
-  const idx = state.sections.indexOf(sec);
+  const knop = e.target.closest('[data-actie]');
+  if (!knop) return;
+  const sec = findSection(knop.dataset.section);
   if (!sec) return;
+  const i = state.sections.indexOf(sec);
+  const actie = knop.dataset.actie;
 
-  if (action === 'move-up' && idx > 0) {
-    [state.sections[idx - 1], state.sections[idx]] = [state.sections[idx], state.sections[idx - 1]];
-  } else if (action === 'move-down' && idx < state.sections.length - 1) {
-    [state.sections[idx + 1], state.sections[idx]] = [state.sections[idx], state.sections[idx + 1]];
-  } else if (action === 'delete-section') {
-    if (!confirm('Deze sectie verwijderen?')) return;
-    state.sections.splice(idx, 1);
-  } else if (action === 'add-tile') {
-    sec.tiles.push({ id: uid(), getal: '0', label: 'Nieuw cijfer', toelichting: '' });
-  } else if (action === 'delete-tile') {
-    const tIdx = sec.tiles.findIndex(t => t.id === btn.dataset.tile);
-    if (tIdx > -1) sec.tiles.splice(tIdx, 1);
-  } else if (action === 'add-item') {
-    sec.items.push({ id: uid(), tekst: 'Nieuw project of nieuwe vraag', toelichting: '' });
-  } else if (action === 'delete-item') {
-    const iIdx = sec.items.findIndex(it => it.id === btn.dataset.item);
-    if (iIdx > -1) sec.items.splice(iIdx, 1);
+  if (actie === 'omhoog' && i > 0) {
+    [state.sections[i - 1], state.sections[i]] = [state.sections[i], state.sections[i - 1]];
+  } else if (actie === 'omlaag' && i < state.sections.length - 1) {
+    [state.sections[i + 1], state.sections[i]] = [state.sections[i], state.sections[i + 1]];
+  } else if (actie === 'blok-weg') {
+    if (!confirm('Dit blok verwijderen?')) return;
+    state.sections.splice(i, 1);
+  } else if (actie === 'kleur') {
+    sec.kleur = knop.dataset.waarde;
+  } else if (actie === 'opmaak') {
+    sec.opmaak = knop.dataset.waarde;
+    if (OPMAKEN[sec.opmaak].lijst && !(sec.items || []).length) sec.items = [nieuwItem()];
+  } else if (actie === 'item-erbij') {
+    sec.items = (sec.items || []).concat([nieuwItem()]);
+  } else if (actie === 'item-weg') {
+    sec.items = (sec.items || []).filter(it => it.id !== knop.dataset.item);
   } else {
     return;
   }
@@ -2475,143 +2446,84 @@ els.sectionsList.addEventListener('click', (e) => {
 });
 
 document.getElementById('btn-add-section').addEventListener('click', () => {
-  state.sections.push(nieuwSectie(els.newSectionType.value));
-  herteken();
-});
-
-document.getElementById('btn-standaard').addEventListener('click', () => {
-  if (state.sections.length && !confirm('Dit vervangt de huidige secties door de acht vaste rubrieken. Doorgaan?')) return;
-  state.sections = STANDAARD_VOLGORDE.map(nieuwSectie);
+  state.sections.push(nieuweSectie({ kop: 'Nieuw blok', tekst: '' }));
   herteken();
 });
 
 /* --------------------------------- Preview -------------------------------- */
-function rubriekWrapper(sec, binnenkant, extraClass) {
-  const kop = rubriekKop(sec);
+function blokWrapper(sec, binnenkant, extraClass) {
+  const kleur = KLEUREN.indexOf(sec.kleur) === -1 ? 'groen' : sec.kleur;
   return `
     <div class="nl-section">
-      <div class="rubriek rubriek--${kop.kleur}${extraClass ? ' ' + extraClass : ''}">
-        <div class="rubriek-label">
-          <span>${kop.icoon}</span> ${escapeHtml(kop.label)}
-          ${kop.subtitel ? `<span class="rubriek-subtitel">${escapeHtml(kop.subtitel)}</span>` : ''}
-        </div>
+      <div class="rubriek rubriek--${kleur}${extraClass ? ' ' + extraClass : ''}">
+        ${sec.kop ? `<div class="rubriek-label">
+          ${sec.icoon ? `<span>${escapeHtml(sec.icoon)}</span>` : ''} ${escapeHtml(sec.kop)}
+          ${sec.ondertitel ? `<span class="rubriek-subtitel">${escapeHtml(sec.ondertitel)}</span>` : ''}
+        </div>` : ''}
         <div class="rubriek-body">${binnenkant}</div>
       </div>
     </div>`;
 }
 
 function sectionPreviewHTML(sec) {
-  switch (sec.type) {
-    /* --- Vaste rubrieken --- */
-    case 'kopvandemaand':
-      return rubriekWrapper(sec, `
-        <h3 class="rubriek-kop">${escapeHtml(sec.kop)}</h3>
-        ${sec.term ? `<span class="term-chip">${escapeHtml(sec.term)}</span>` : ''}
-        ${textToParagraphs(sec.uitleg)}
-        ${sec.brug ? `<div class="rubriek-brug">👉 ${escapeHtml(sec.brug)}</div>` : ''}`);
+  const items = (sec.items || []).filter(it => (it.tekst || '').trim() || (it.bij || '').trim());
+  const slot = (sec.slot || '').trim();
 
-    case 'iam':
-      return rubriekWrapper(sec, `
-        <h3 class="rubriek-kop">${escapeHtml(sec.titel)}</h3>
-        ${textToParagraphs(sec.uitleg)}
-        ${sec.tip ? `<div class="rubriek-tip">💡 ${escapeHtml(sec.tip)}</div>` : ''}`);
+  switch (opmaakVan(sec)) {
+    case 'lijst':
+      return blokWrapper(sec, `
+        ${textToParagraphs(sec.tekst)}
+        <ul class="successen-lijst">
+          ${items.map(it => `<li><strong>${escapeHtml(it.tekst)}</strong>
+            ${it.bij ? `<span class="toelichting">${escapeHtml(it.bij)}</span>` : ''}</li>`).join('')}
+        </ul>
+        ${slot ? `<div class="rubriek-brug">👉 ${escapeHtml(slot)}</div>` : ''}`);
 
-    case 'stamdata':
-      return rubriekWrapper(sec, `
-        <div class="woordenboek">
-          <span class="woord">${escapeHtml(sec.term)}</span>
-          <span class="definitie">${escapeHtml(sec.definitie)}</span>
+    case 'citaat':
+      return blokWrapper(sec, `
+        <div class="card-quote">“${escapeHtml(sec.tekst)}”
+          ${slot ? `<div class="naam">${escapeHtml(slot)}</div>` : ''}
+        </div>`);
+
+    case 'cijfers':
+      return blokWrapper(sec, `
+        ${textToParagraphs(sec.tekst)}
+        <div class="cijfer-grid">
+          ${items.map(it => `<div class="cijfer-tile">
+            <div class="getal">${escapeHtml(it.tekst)}</div>
+            ${it.bij ? `<div class="label">${escapeHtml(it.bij)}</div>` : ''}
+          </div>`).join('')}
         </div>
-        ${textToParagraphs(sec.constatering)}`);
+        ${slot ? `<div class="rubriek-brug">👉 ${escapeHtml(slot)}</div>` : ''}`);
 
-    case 'aianalytics': {
-      const url = safeUrl(sec.link);
-      return rubriekWrapper(sec, `
-        <h3 class="rubriek-kop">${escapeHtml(sec.titel)}</h3>
-        ${sec.bron ? `<div class="bron-regel">📄 ${escapeHtml(sec.bron)}</div>` : ''}
-        ${textToParagraphs(sec.uitleg)}
-        ${url ? `<a class="bron-link" href="${escapeHtml(url)}" target="_blank" rel="noopener">${escapeHtml(url)}</a>` : ''}`);
+    case 'woordenboek': {
+      const eerste = items[0] || { tekst: '', bij: '' };
+      return blokWrapper(sec, `
+        <div class="woordenboek">
+          <span class="woord">${escapeHtml(eerste.tekst)}</span>
+          <span class="definitie">${escapeHtml(eerste.bij)}</span>
+        </div>
+        ${textToParagraphs(sec.tekst)}
+        ${slot ? `<div class="rubriek-brug">👉 ${escapeHtml(slot)}</div>` : ''}`);
     }
 
-    case 'successen':
-      return rubriekWrapper(sec, `
-        <ul class="successen-lijst">
-          ${(sec.items || []).map(it => `
-            <li><strong>${escapeHtml(it.tekst)}</strong>
-              ${it.toelichting ? `<span class="toelichting">${escapeHtml(it.toelichting)}</span>` : ''}
-            </li>`).join('')}
-        </ul>`);
+    case 'stappen':
+      return blokWrapper(sec, `
+        ${sec.tekst ? `<div class="jargon-prikkel">“${escapeHtml(sec.tekst)}”</div>` : ''}
+        ${items.map((it, i) => `<div class="jargon-stap${i === items.length - 1 && items.length > 1 ? ' jargon-stap--pointe' : ''}">
+          <span class="stap-nr">${i + 1}</span><span>${escapeHtml(it.tekst)}</span></div>`).join('')}
+        ${slot ? `<div class="jargon-strip">📖 ${escapeHtml(slot)}</div>` : ''}`);
 
-    case 'jargonjudo':
-      return rubriekWrapper(sec, `
-        <div class="jargon-term">${escapeHtml(sec.term)}</div>
-        <div class="jargon-prikkel">“${escapeHtml(sec.prikkel)}”</div>
-        <div class="jargon-stap"><span class="stap-nr">1</span><span>${escapeHtml(sec.observatie)}</span></div>
-        <div class="jargon-stap jargon-stap--pointe"><span class="stap-nr">2</span><span>${escapeHtml(sec.ontknoping)}</span></div>
-        ${sec.striplink ? `<div class="jargon-strip">📖 ${escapeHtml(sec.striplink)}</div>` : ''}`);
+    case 'oproep':
+      return blokWrapper(sec, `
+        <p class="vraag-tekst">${escapeHtml(sec.tekst)}</p>
+        ${items.map(it => `<p>${escapeHtml(it.tekst)}</p>`).join('')}
+        ${slot ? `<div class="beloning">🍪 ${escapeHtml(slot)}</div>` : ''}`, 'vraag-coupon');
 
-    case 'actietips':
-      return rubriekWrapper(sec, `
-        ${textToParagraphs(sec.tekst)}
-        ${sec.actie ? `<span class="actie">👉 ${escapeHtml(sec.actie)}</span>` : ''}`);
-
-    case 'vraagvandemaand':
-      return rubriekWrapper(sec, `
-        <p class="vraag-tekst">${escapeHtml(sec.vraag)}</p>
-        ${sec.waar ? `<p>${escapeHtml(sec.waar)}</p>` : ''}
-        ${sec.beloning ? `<div class="beloning">🍪 ${escapeHtml(sec.beloning)}</div>` : ''}`, 'vraag-coupon');
-
-    /* --- Vrije blokken --- */
-    case 'wistjedat':
-      return `
-        <div class="nl-section">
-          <div class="nl-section-title"><span class="icon-badge">${escapeHtml(sec.emoji || '💡')}</span> ${escapeHtml(sec.titel)}</div>
-          <div class="card-wistjedat">
-            <span class="stempel">Wist je dat?</span>
-            <div class="bron">${escapeHtml(sec.bron)}</div>
-            <blockquote>${escapeHtml(sec.citaat)}</blockquote>
-            ${textToParagraphs(sec.uitleg)}
-          </div>
-        </div>`;
-    case 'onderwerp':
-      return `
-        <div class="nl-section">
-          <div class="nl-section-title"><span class="icon-badge">${escapeHtml(sec.icoon || '📘')}</span> ${escapeHtml(sec.titel)}</div>
-          <div class="card-onderwerp">
-            ${textToParagraphs(sec.uitleg)}
-            <div class="waarom"><strong>Waarom dit ertoe doet:</strong> ${escapeHtml(sec.waarom)}</div>
-            ${sec.actie ? `<span class="actie">👉 ${escapeHtml(sec.actie)}</span>` : ''}
-          </div>
-        </div>`;
-    case 'cijfer':
-      return `
-        <div class="nl-section">
-          <div class="nl-section-title"><span class="icon-badge">📊</span> ${escapeHtml(sec.titel)}</div>
-          <div class="cijfer-grid">
-            ${sec.tiles.map(t => `
-              <div class="cijfer-tile">
-                <div class="getal">${escapeHtml(t.getal)}</div>
-                <div class="label">${escapeHtml(t.label)}</div>
-                ${t.toelichting ? `<div class="toelichting">${escapeHtml(t.toelichting)}</div>` : ''}
-              </div>`).join('')}
-          </div>
-        </div>`;
-    case 'quote':
-      return `
-        <div class="nl-section">
-          <div class="card-quote">
-            “${escapeHtml(sec.quote)}”
-            <div class="naam">${escapeHtml(sec.naam)} <span class="functie">— ${escapeHtml(sec.functie)}</span></div>
-          </div>
-        </div>`;
-    case 'tekst':
-      return `
-        <div class="nl-section">
-          ${sec.titel ? `<div class="nl-section-title"><span class="icon-badge">📝</span> ${escapeHtml(sec.titel)}</div>` : ''}
-          <div class="card-tekst">${textToParagraphs(sec.tekst)}</div>
-        </div>`;
     default:
-      return '';
+      return blokWrapper(sec, `
+        ${textToParagraphs(sec.tekst)}
+        ${slot ? `<div class="rubriek-brug">👉 ${escapeHtml(slot)}</div>` : ''}`);
   }
 }
 
@@ -2783,22 +2695,24 @@ function pluisRedactieJSON(tekst) {
   return JSON.parse(schoon.slice(van, tot + 1));
 }
 
-function gekozenRubrieken() {
-  return Array.from(document.querySelectorAll('#r-rubrieken input:checked')).map(i => i.value);
-}
-
 function redactieInvoer() {
   return {
     waarover: document.getElementById('r-waarover').value,
     maand: document.getElementById('r-maand').value,
     moeilijkWoord: document.getElementById('r-woord').value,
-    successen: document.getElementById('r-successen').value,
-    rubrieken: gekozenRubrieken()
+    successen: document.getElementById('r-successen').value
   };
 }
 
 function vulUitRedactie(antwoord) {
   const uitkomst = sectiesUitRedactie(antwoord);
+  /* Zit er een strip bij, dan tekent de strip maker die meteen. */
+  if (antwoord && antwoord.strip && window.__conoBouwStrip) {
+    try {
+      window.__conoBouwStrip(antwoord.strip);
+      haalStripOp();
+    } catch (e) { /* strip mislukt, de tekst blijft gewoon staan */ }
+  }
   if (uitkomst.titel) state.meta.titel = uitkomst.titel;
   if (uitkomst.ondertitel) state.meta.ondertitel = uitkomst.ondertitel;
   if (uitkomst.editie) state.meta.editie = uitkomst.editie;
@@ -2806,25 +2720,14 @@ function vulUitRedactie(antwoord) {
   state.sections = uitkomst.secties;
   fillStaticFields();
   herteken();
+  /* Meteen passend maken, zodat er niets meer bij te stellen valt. */
+  maakPassend();
   return uitkomst.secties.length;
 }
-
-/* De lijst met rubrieken om uit te kiezen; standaard staan ze allemaal aan
-   behalve de twee die niet elke maand een onderwerp zijn. */
-(function vulRubriekKeuze() {
-  const doel = document.getElementById('r-rubrieken');
-  if (!doel) return;
-  const uitgezet = ['iam', 'aianalytics'];
-  doel.innerHTML = STANDAARD_VOLGORDE.map(soort => {
-    const meta = RUBRIEK_META[soort];
-    return `<label class="schakel"><input type="checkbox" value="${soort}"${uitgezet.indexOf(soort) === -1 ? ' checked' : ''}> ${meta.icoon} ${escapeHtml(meta.label)}</label>`;
-  }).join('');
-})();
 
 document.getElementById('r-btn-prompt').addEventListener('click', () => {
   const invoer = redactieInvoer();
   if (!invoer.waarover.trim()) { redactieMelding('Schrijf eerst kort waar het deze maand over gaat.', 'fout'); return; }
-  if (!invoer.rubrieken.length) { redactieMelding('Kies minstens één rubriek.', 'fout'); return; }
   const prompt = redactiePrompt(invoer);
   const klaar = () => {
     redactieMelding('Prompt gekopieerd. Plak hem in ChatGPT, Claude of Copilot en zet het antwoord hieronder terug.', 'goed');
@@ -2848,7 +2751,7 @@ document.getElementById('r-btn-vul').addEventListener('click', () => {
   if (!ruw.trim()) { redactieMelding('Plak eerst het antwoord van de LLM.', 'fout'); return; }
   try {
     const aantal = vulUitRedactie(pluisRedactieJSON(ruw));
-    redactieMelding(`${aantal} rubrieken ingevuld. Pas gerust nog teksten en koppen aan.`, 'goed');
+    redactieMelding(`${aantal} blokken klaar, strip erbij. Pas gerust nog teksten en koppen aan.`, 'goed');
   } catch (fout) {
     redactieMelding('Dit lukte niet: ' + fout.message, 'fout');
   }
@@ -2863,13 +2766,12 @@ if (redactieKnop && window.claude && typeof window.claude.use === 'function') {
     redactieKnop.addEventListener('click', () => {
       const invoer = redactieInvoer();
       if (!invoer.waarover.trim()) { redactieMelding('Schrijf eerst kort waar het deze maand over gaat.', 'fout'); return; }
-      if (!invoer.rubrieken.length) { redactieMelding('Kies minstens één rubriek.', 'fout'); return; }
-      redactieKnop.disabled = true;
+          redactieKnop.disabled = true;
       redactieMelding('Claude schrijft de nieuwsbrief...');
       sample.json(redactiePrompt(invoer), { modelTier: 'default' }).then((antwoord) => {
         try {
           const aantal = vulUitRedactie(antwoord);
-          redactieMelding(`${aantal} rubrieken geschreven. Niet tevreden? Klik nog eens — elke keer is anders.`, 'goed');
+          redactieMelding(`${aantal} blokken geschreven. Niet tevreden? Klik nog eens — elke keer is anders.`, 'goed');
         } catch (fout) {
           redactieMelding('Het antwoord klopte niet: ' + fout.message, 'fout');
         }
@@ -2890,174 +2792,157 @@ renderPreview();
 
 /* CONO Nieuwsbrief — de redactie.
  *
- * Je vult een paar dingen in (waar ging het deze maand over, welke rubrieken
- * je wilt), een LLM schrijft de stukken, en deze code zet ze in de bouwer.
- * De LLM bepaalt alleen de tekst en de koppen; de opmaak blijft van het
- * sjabloon. Alles wat eruit komt kun je daarna gewoon bijschaven.
+ * Je typt in wat er deze maand speelde. Een LLM bepaalt zelf welke blokken
+ * erin komen, schrijft de teksten en de koppen, en levert er meteen een
+ * stripscript bij. Deze code zet dat om in de nieuwsbrief.
+ *
+ * Er valt dus niets te kiezen: geen rubrieken aanvinken, geen soort blok
+ * uitzoeken. Wat eruit komt kun je daarna gewoon overschrijven.
  */
 
-/* Welke velden een rubriek heeft. Alleen deze worden overgenomen uit het
-   antwoord van de LLM, zodat een verzonnen extra veld niets kan breken. */
-const RUBRIEK_VELDEN = {
-  kopvandemaand:   ['kop', 'term', 'uitleg', 'brug'],
-  iam:             ['titel', 'uitleg', 'tip'],
-  stamdata:        ['term', 'definitie', 'constatering'],
-  aianalytics:     ['titel', 'bron', 'uitleg'],
-  successen:       [],
-  jargonjudo:      ['term', 'prikkel', 'observatie', 'ontknoping', 'striplink'],
-  actietips:       ['tekst', 'actie'],
-  vraagvandemaand: ['vraag', 'waar', 'beloning']
-};
-
-/* Wat elke rubriek van de schrijver vraagt, in gewone taal. */
-const RUBRIEK_OPDRACHT = {
-  kopvandemaand:
-`  - soort "kopvandemaand": de opening. Velden:
-      kop     = een prikkelende vraag van hoogstens 12 woorden
-      term    = het begrip erachter in twee of drie woorden (mag leeg)
-      uitleg  = 4 tot 6 zinnen, maximaal 90 woorden. Begin met een voorbeeld
-                dat iedereen van buiten het werk herkent.
-      brug    = één zin die het doortrekt naar CONO, als vraag aan de lezer`,
-  iam:
-`  - soort "iam": over inloggen, wachtwoorden en toegang. Velden:
-      titel   = de vraag die collega's hier echt over hebben
-      uitleg  = precies drie zinnen, maximaal 60 woorden, met één simpele
-                vergelijking (een slot, een sleutelbos, een portier). Woorden
-                als encryptie of authenticatie mag je niet gebruiken.
-      tip     = één zin met de eerste stap`,
-  stamdata:
-`  - soort "stamdata": één term uit onze eigen systemen. Velden:
-      term         = de term zelf
-      definitie    = één korte zin, zoals in een woordenboek
-      constatering = 3 zinnen, maximaal 55 woorden: eerst de verrassing (wat
-                     staat er níét vastgelegd), dan een praktische tip`,
-  aianalytics:
-`  - soort "aianalytics": wat er buiten CONO gebeurt met AI. Velden:
-      titel   = hoogstens 12 woorden
-      bron    = de bronvermelding in één regel (mag leeg)
-      uitleg  = 4 tot 5 zinnen, maximaal 75 woorden, over wat mensen ervan
-                merken in het dagelijks leven — niet over de techniek`,
-  successen:
-`  - soort "successen": waar we zelf mee bezig zijn. Veld:
-      items   = een lijst van 3 of 4 regels, elk hoogstens 12 woorden,
-                geschreven als resultaat of als de vraag die beantwoord werd.
-                Verzin er niets bij.`,
-  jargonjudo:
-`  - soort "jargonjudo": een moeilijk woord uitgelegd met een grap. Velden:
-      term       = het woord zelf
-      prikkel    = een krantenkop van hoogstens 10 woorden die een logische
-                   maar foute conclusie hardop uitspreekt
-      observatie = 2 zinnen over wat je in de cijfers ziet (dat klopt gewoon)
-      ontknoping = 2 tot 3 zinnen waarom die kop toch onzin is
-      striplink  = "Zie de strip onderaan deze pagina."`,
-  actietips:
-`  - soort "actietips": wat de lezer zelf kan doen. Velden:
-      tekst   = 2 zinnen, maximaal 45 woorden
-      actie   = de concrete actie in één zin`,
-  vraagvandemaand:
-`  - soort "vraagvandemaand": de oproep om vragen te sturen. Velden:
-      vraag    = de oproep in één zin
-      waar     = waar de vraag heen kan
-      beloning = wat de beste vraag oplevert (mag leeg)`
-};
-
-/* ---------------------------------------------------------------------- */
+const TOEGESTANE_OPMAKEN = ['tekst', 'lijst', 'citaat', 'cijfers', 'woordenboek', 'stappen', 'oproep'];
+const TOEGESTANE_KLEUREN = ['rood', 'groen', 'goud', 'blauw'];
 
 function redactiePrompt(invoer) {
-  const gekozen = (invoer.rubrieken || []).filter(r => RUBRIEK_OPDRACHT[r]);
-  const opdrachten = gekozen.map(r => RUBRIEK_OPDRACHT[r]).join('\n\n');
   const successen = String(invoer.successen || '').trim();
   const woord = String(invoer.moeilijkWoord || '').trim();
+  const maand = String(invoer.maand || '').trim();
 
-  return `Je schrijft de interne nieuwsbrief van CONO Kaasmakers, een
+  return `Je maakt de interne nieuwsbrief van CONO Kaasmakers, een
 zuivelcoöperatie. De lezers zijn collega's van alle afdelingen: van de
 productievloer tot kantoor. De meesten zijn geen data-experts en willen dat
 ook niet worden.
 
-WAAR HET DEZE MAAND OVER GAAT
+WAT ER DEZE MAAND SPEELDE
 ${String(invoer.waarover || '').trim() || '(niets opgegeven — kies zelf iets passends bij een zuivelcoöperatie)'}
+${maand ? '\nMAAND: ' + maand : ''}
+${successen ? '\nSUCCESSEN (gebruik deze, verzin er niets bij):\n' + successen : ''}
+${woord ? '\nMOEILIJK WOORD OM UIT TE LEGGEN: ' + woord : ''}
 
-MAAND: ${String(invoer.maand || '').trim() || '(niet opgegeven)'}
-${successen ? 'SUCCESSEN VAN DEZE MAAND (gebruik deze, verzin er niets bij):\n' + successen : 'SUCCESSEN: niet opgegeven — laat de rubriek weg of houd hem algemeen.'}
-${woord ? 'MOEILIJK WOORD OM UIT TE LEGGEN: ' + woord : ''}
+JIJ BEPAALT DE INDELING
+Kies zelf welke blokken erin komen en in welke volgorde, op basis van wat er
+te melden is. Zit er deze maand niets over een onderwerp bij, laat het dan
+weg — liever vijf goede blokken dan acht halfvolle. Maak er 4 tot 6.
 
-SCHRIJFREGELS — deze zijn belangrijker dan volledigheid
+Geef elk blok een kop in gewone taal: iets wat een collega hardop zou zeggen.
+Niet de systeemnaam, niet het vakjargon.
+
+SCHRIJFREGELS — belangrijker dan volledigheid
 - Nederlands, spreektaal, alsof je een collega aanspreekt bij de
   koffieautomaat. Vrolijk en uitnodigend, niet belerend.
 - Geen vakjargon. Gebruik je toch een moeilijk woord, leg het dan in dezelfde
-  zin uit. Woorden als "datakwaliteit", "governance", "stakeholder" en
-  "implementatie" komen er niet in.
-- Ook de koppen in gewone taal: een kop die een collega hardop zou zeggen.
-- Houd je aan de woordaantallen. Alles moet samen op één A4 passen; te lang
-  is erger dan te kort.
+  zin uit. Woorden als "datakwaliteit", "governance", "stakeholder",
+  "implementatie" en "IAM" komen er niet in.
+- Kort. Een tekstblok is hoogstens 70 woorden, meestal minder. Alles moet
+  samen op één A4 passen, strip inbegrepen; te lang is erger dan te kort.
 - Verzin geen cijfers, resultaten of citaten. Weet je iets niet, houd het dan
   algemeen.
 
+DE OPMAAK VAN EEN BLOK
+Kies per blok de vorm die bij de inhoud past:
+  "tekst"       gewone alinea's. Velden: tekst, slot (afsluitende regel).
+  "lijst"       opsomming. Velden: regels (lijst), eventueel tekst als inleiding.
+  "citaat"      iemand aan het woord. Velden: tekst (het citaat), slot (wie).
+  "cijfers"     losse getallen. regels: elke regel is {"tekst": het getal,
+                "bij": waar het over gaat}.
+  "woordenboek" één term uitgelegd. regels: één regel met {"tekst": de term,
+                "bij": de definitie}; tekst = de constatering erachter.
+  "stappen"     iets in twee of drie stappen uitleggen. tekst = een
+                prikkelende kop die logisch klinkt maar niet klopt; regels =
+                de stappen; slot = de afsluiter.
+  "oproep"      een vraag of verzoek aan de lezer. tekst = de oproep;
+                regels = waar het heen kan; slot = wat het oplevert.
+
 WAT JE OPLEVERT
-Alleen JSON, zonder uitleg eromheen, met precies deze vorm:
+Alleen JSON, zonder uitleg eromheen:
 
 {
   "titel": "CONO Databericht",
   "ondertitel": "één zin over deze editie",
-  "editie": "bijv. Editie 4 — ${String(invoer.maand || 'maand').trim()}",
-  "voorwoord": "één alinea van hoogstens 60 woorden die de editie aankondigt",
-  "rubrieken": [
-    { "soort": "...", "rubriekkop": "...", "rubrieksubtitel": "...", ...de velden hieronder }
-  ]
+  "editie": "bijv. Editie 4${maand ? ' — ' + maand : ''}",
+  "voorwoord": "één alinea van hoogstens 60 woorden",
+  "blokken": [
+    {
+      "kop": "de kop in gewone taal",
+      "ondertitel": "kort regeltje ernaast, mag leeg",
+      "icoon": "één emoji die erbij past",
+      "kleur": "rood, groen, goud of blauw",
+      "opmaak": "tekst",
+      "tekst": "...",
+      "regels": [ { "tekst": "...", "bij": "" } ],
+      "slot": "..."
+    }
+  ],
+  "strip": {
+    "titel": "JargonJudo",
+    "ondertitel": "waar de strip over gaat",
+    "vakjes": [
+      { "decor": "kantoor", "wie": ["Daan", "Bert"], "spreker": "Daan",
+        "emotie": "verbaasd", "gebaar": "wijst", "ballon": "spreek",
+        "tekst": "hoogstens 14 woorden", "bijschrift": "" }
+    ]
+  }
 }
 
-"rubriekkop" is de naam van de rubriek zoals die in de gekleurde balk komt te
-staan, en "rubrieksubtitel" het regeltje ernaast (mag leeg). Verzin daar een
-korte naam in gewone taal voor — iets wat een collega zou zeggen. Let op: dat
-is iets anders dan de velden van de rubriek zelf. Bij "kopvandemaand" is
-"rubriekkop" dus bijvoorbeeld "Kop van de maand" en is "kop" de prikkelende
-vraag; herhaal ze niet.
+Laat "regels" weg bij een blok dat geen lijst nodig heeft. Wissel de kleuren
+af, zodat de pagina niet eentonig wordt.
 
-Lever de rubrieken in deze volgorde, en alleen deze:
-
-${opdrachten}`;
+DE STRIP
+Maak altijd een strip van precies 3 vakjes, in deze opbouw: de situatie, een
+logische maar foute conclusie, en de clou waarin het wordt rechtgezet. Drie
+vakjes naast elkaar, zoals een krantenstrip — meer past er niet op de pagina. Houd twee vaste personages
+aan, Daan van het datateam en Bert uit de praktijk. Niemand wordt voor gek
+gezet: wie het mis heeft, heeft een begrijpelijk punt. Per vakje hoogstens 14
+woorden, want het moet in een tekstballon passen.
+Toegestane waarden:
+  decor:  kantoor, vergaderzaal, kaasfabriek, wei, boerderij, strand, thuis,
+          buiten, feest
+  emotie: neutraal, blij, verbaasd, verward, denkend, fel, geschrokken,
+          verdrietig, trots, moe
+  gebaar: neutraal, wijst, armen-omhoog, hand-op-kin, armen-over-elkaar,
+          zwaait, handen-spreiden, wijst-omhoog
+  ballon: spreek, denk, roep`;
 }
 
 /* ---------------------------------------------------------------------- */
 
-/* Zet het antwoord van de LLM om in secties voor de bouwer. */
-function sectiesUitRedactie(script) {
-  if (!script || typeof script !== 'object') throw new Error('Geen leesbaar antwoord gevonden.');
-  const lijst = Array.isArray(script.rubrieken) ? script.rubrieken : [];
-  if (!lijst.length) throw new Error('Het antwoord bevat geen "rubrieken".');
+/* Zet het antwoord van de LLM om in blokken voor de bouwer. */
+function sectiesUitRedactie(antwoord) {
+  if (!antwoord || typeof antwoord !== 'object') throw new Error('Geen leesbaar antwoord gevonden.');
+  const lijst = Array.isArray(antwoord.blokken) ? antwoord.blokken : [];
+  if (!lijst.length) throw new Error('Het antwoord bevat geen "blokken".');
 
   const secties = [];
   lijst.forEach(bron => {
     if (!bron || typeof bron !== 'object') return;
-    const soort = String(bron.soort || '').trim();
-    if (!RUBRIEK_VELDEN[soort]) return;
+    const opmaak = TOEGESTANE_OPMAKEN.indexOf(String(bron.opmaak)) > -1 ? String(bron.opmaak) : 'tekst';
+    const kleur = TOEGESTANE_KLEUREN.indexOf(String(bron.kleur)) > -1 ? String(bron.kleur) : 'groen';
+    const regels = Array.isArray(bron.regels) ? bron.regels : [];
 
-    const sec = nieuwSectie(soort);
-    if (bron.rubriekkop) sec.label = String(bron.rubriekkop);
-    sec.subtitel = bron.rubrieksubtitel ? String(bron.rubrieksubtitel) : '';
+    const sec = nieuweSectie({
+      kop: String(bron.kop || 'Blok'),
+      ondertitel: String(bron.ondertitel || ''),
+      icoon: String(bron.icoon || '📄').slice(0, 3),
+      kleur: kleur,
+      opmaak: opmaak,
+      tekst: String(bron.tekst || ''),
+      slot: String(bron.slot || ''),
+      items: regels.slice(0, 8).map(r => nieuwItem(
+        String((r && (typeof r === 'string' ? r : r.tekst)) || ''),
+        String((r && r.bij) || '')
+      )).filter(it => it.tekst || it.bij)
+    });
 
-    if (soort === 'successen') {
-      const items = Array.isArray(bron.items) ? bron.items : [];
-      sec.items = items.filter(Boolean).slice(0, 6).map(it => ({
-        id: uid(),
-        tekst: String(typeof it === 'string' ? it : (it.tekst || '')),
-        toelichting: String((it && it.toelichting) || '')
-      }));
-      if (!sec.items.length) return;
-    } else {
-      RUBRIEK_VELDEN[soort].forEach(veld => {
-        if (bron[veld] !== undefined && bron[veld] !== null) sec[veld] = String(bron[veld]);
-      });
-    }
+    if (!sec.tekst.trim() && !sec.items.length && !sec.slot.trim()) return;
     secties.push(sec);
   });
 
-  if (!secties.length) throw new Error('Geen bruikbare rubrieken in het antwoord.');
+  if (!secties.length) throw new Error('Geen bruikbare blokken in het antwoord.');
   return {
-    titel: script.titel ? String(script.titel) : '',
-    ondertitel: script.ondertitel ? String(script.ondertitel) : '',
-    editie: script.editie ? String(script.editie) : '',
-    voorwoord: script.voorwoord ? String(script.voorwoord) : '',
+    titel: antwoord.titel ? String(antwoord.titel) : '',
+    ondertitel: antwoord.ondertitel ? String(antwoord.ondertitel) : '',
+    editie: antwoord.editie ? String(antwoord.editie) : '',
+    voorwoord: antwoord.voorwoord ? String(antwoord.voorwoord) : '',
     secties: secties
   };
 }
@@ -4445,6 +4330,17 @@ tekenAlles();
    er eerst iets gewijzigd hoeft te worden. */
 saveLocal(STORAGE_KEY, state);
 
+/* De nieuwsbrief laat hier een stripscript tekenen, zodat één klik daar
+   zowel de tekst als de strip oplevert. */
+window.__conoBouwStrip = function (script) {
+  const nieuw = bouwUitScript(script);
+  bewaarStap();
+  state = nieuw;
+  selectie = { paneelId: allePanelen()[0].id };
+  tekenAlles();
+  saveLocal(STORAGE_KEY, state);
+};
+
 /* CONO Strip maker — de regisseur.
  *
  * Een LLM schrijft alleen het draaiboek: wie staat er in beeld, wat zegt
@@ -4578,8 +4474,10 @@ function bouwUitScript(script) {
 
   /* Indeling: vier vakjes worden twee rijen van twee, zes worden twee rijen
      van drie. Dat leest als een krantenstrip en past op een nieuwsbriefpagina. */
-  const verdeling = { 1: [1], 2: [2], 3: [3], 4: [2, 2], 5: [3, 2], 6: [3, 3] }[vakjes.length] || [vakjes.length];
-  const gewicht = { 1: 3, 2: 2.2, 3: 1.5 };
+  /* Eén rij leest als een krantenstrip en kost de minste hoogte op de
+     nieuwsbriefpagina; pas vanaf vijf vakjes gaat het over twee rijen. */
+  const verdeling = { 1: [1], 2: [2], 3: [3], 4: [4], 5: [3, 2], 6: [3, 3] }[vakjes.length] || [vakjes.length];
+  const gewicht = { 1: 3, 2: 2.2, 3: 1.5, 4: 1.15 };
 
   const rijen = [];
   let index = 0;

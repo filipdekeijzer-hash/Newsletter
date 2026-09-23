@@ -131,8 +131,10 @@ function bouwUitScript(script) {
 
   /* Indeling: vier vakjes worden twee rijen van twee, zes worden twee rijen
      van drie. Dat leest als een krantenstrip en past op een nieuwsbriefpagina. */
-  const verdeling = { 1: [1], 2: [2], 3: [3], 4: [2, 2], 5: [3, 2], 6: [3, 3] }[vakjes.length] || [vakjes.length];
-  const gewicht = { 1: 3, 2: 2.2, 3: 1.5 };
+  /* Eén rij leest als een krantenstrip en kost de minste hoogte op de
+     nieuwsbriefpagina; pas vanaf vijf vakjes gaat het over twee rijen. */
+  const verdeling = { 1: [1], 2: [2], 3: [3], 4: [4], 5: [3, 2], 6: [3, 3] }[vakjes.length] || [vakjes.length];
+  const gewicht = { 1: 3, 2: 2.2, 3: 1.5, 4: 1.15 };
 
   const rijen = [];
   let index = 0;

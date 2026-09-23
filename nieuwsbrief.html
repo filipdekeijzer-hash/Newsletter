@@ -62,12 +62,8 @@
         <label for="r-successen">Successen deze maand (optioneel)</label>
         <textarea id="r-successen" rows="3" placeholder="Eén per regel. Bijvoorbeeld: lactaat herkennen met AI"></textarea>
       </div>
-      <details class="meer-opties" id="r-rubriek-blok">
-        <summary>Welke rubrieken deze editie?</summary>
-        <div id="r-rubrieken" class="rubriek-keuze"></div>
-      </details>
       <div class="knoppenrij" style="margin-top:.8em;">
-        <button class="btn btn-primary" id="r-btn-claude" hidden>✨ Laat Claude het schrijven</button>
+        <button class="btn btn-primary" id="r-btn-claude" hidden>✨ Schrijf de nieuwsbrief</button>
         <button class="btn btn-secondary" id="r-btn-prompt">📋 Prompt kopiëren</button>
       </div>
       <details class="meer-opties" id="r-plak-blok">
@@ -78,7 +74,7 @@
         <button class="btn btn-secondary" id="r-btn-vul">Nieuwsbrief vullen</button>
       </details>
       <p class="regie-melding" id="r-melding"></p>
-      <small class="hint">De LLM schrijft alleen de teksten en de koppen; de opmaak blijft van het sjabloon. Alles wat eruit komt kun je hieronder nog aanpassen.</small>
+      <small class="hint">De schrijver bepaalt zelf welke blokken erin komen, geeft ze een kop in gewone taal en levert de strip er meteen bij. Alles is daarna nog met de hand te overschrijven.</small>
     </div>
 
     <div class="panel">
@@ -115,32 +111,10 @@
     </div>
 
     <div class="panel">
-      <h3><span class="emoji">🧩</span> Inhoud van deze editie</h3>
-      <button class="btn btn-ghost" id="btn-standaard" style="margin-bottom:.9em;">📋 Standaard indeling (8 vaste rubrieken)</button>
+      <h3><span class="emoji">🧩</span> De blokken</h3>
       <div id="sections-list"></div>
-      <div class="add-section-row">
-        <select id="new-section-type">
-          <optgroup label="Vaste rubrieken">
-            <option value="kopvandemaand">📰 Kop van de maand</option>
-            <option value="iam">🔑 Veilig inloggen</option>
-            <option value="stamdata">🔦 Uit ons systeem</option>
-            <option value="aianalytics">🤖 AI in het echte leven</option>
-            <option value="successen">🏆 Waar we trots op zijn</option>
-            <option value="jargonjudo">🥋 JargonJudo</option>
-            <option value="actietips">✅ Wat kun jij doen?</option>
-            <option value="vraagvandemaand">❓ Vraag van de maand</option>
-          </optgroup>
-          <optgroup label="Vrije blokken">
-            <option value="wistjedat">💡 Wist-je-dat — voorbeeld uit een artikel</option>
-            <option value="onderwerp">📘 Onderwerp uitgelegd — in simpele taal</option>
-            <option value="cijfer">📊 Cijfers &amp; weetjes</option>
-            <option value="quote">💬 Quote van een collega</option>
-            <option value="tekst">📝 Los tekstblok</option>
-          </optgroup>
-        </select>
-        <button class="btn btn-secondary" id="btn-add-section">+ Sectie toevoegen</button>
-      </div>
-      <small class="hint">De acht vaste rubrieken keren elke editie terug. Niet elke rubriek hoeft elke maand gevuld te worden — verwijder gerust wat je overslaat. Met de pijltjes verander je de volgorde.</small>
+      <button class="btn btn-secondary" id="btn-add-section">+ Blok toevoegen</button>
+      <small class="hint">Elk blok is vrij: je bepaalt zelf de kop, de tekst en de vorm. Met de pijltjes verander je de volgorde.</small>
     </div>
 
     <div class="panel">
