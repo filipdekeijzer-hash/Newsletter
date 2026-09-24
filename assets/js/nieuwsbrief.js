@@ -720,6 +720,8 @@ if (redactieKnop && window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then((sample) => {
     if (!sample) return;
     redactieKnop.hidden = false;
+    /* Claude kan het hier zelf; dan is kopiëren de tweede keus. */
+    document.getElementById('r-btn-prompt').className = 'btn btn-secondary';
     redactieKnop.addEventListener('click', () => {
       const invoer = redactieInvoer();
       if (!invoer.waarover.trim()) { redactieMelding('Schrijf eerst kort waar het deze maand over gaat.', 'fout'); return; }

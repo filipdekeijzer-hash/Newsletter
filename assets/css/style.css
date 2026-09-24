@@ -1006,6 +1006,16 @@ label {
 }
 .info-strip h3 { color: var(--cono-green-dark); }
 .info-strip ul { margin: 0; padding-left: 1.2em; }
+.stappenlijst {
+  margin: 0;
+  padding-left: 1.3em;
+  counter-reset: stap;
+}
+.stappenlijst li {
+  margin-bottom: .7em;
+  padding-left: .2em;
+}
+.stappenlijst li strong { color: var(--cono-green-dark); }
 .info-strip li { margin-bottom: .4em; }
 
 footer.site-footer {

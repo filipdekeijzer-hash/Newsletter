@@ -1063,6 +1063,16 @@ label {
 }
 .info-strip h3 { color: var(--cono-green-dark); }
 .info-strip ul { margin: 0; padding-left: 1.2em; }
+.stappenlijst {
+  margin: 0;
+  padding-left: 1.3em;
+  counter-reset: stap;
+}
+.stappenlijst li {
+  margin-bottom: .7em;
+  padding-left: .2em;
+}
+.stappenlijst li strong { color: var(--cono-green-dark); }
 .info-strip li { margin-bottom: .4em; }
 
 footer.site-footer {
@@ -1160,7 +1170,7 @@ footer.site-footer {
       </div>
       <div class="knoppenrij" style="margin-top:.8em;">
         <button class="btn btn-primary" id="r-btn-claude" hidden>✨ Schrijf de nieuwsbrief</button>
-        <button class="btn btn-secondary" id="r-btn-prompt">📋 Prompt kopiëren</button>
+        <button class="btn btn-primary" id="r-btn-prompt">📋 Prompt kopiëren</button>
       </div>
       <details class="meer-opties" id="r-plak-blok">
         <summary>Antwoord van de LLM plakken</summary>
@@ -1286,7 +1296,7 @@ footer.site-footer {
       </div>
       <div class="knoppenrij">
         <button class="btn btn-primary" id="st-btn-claude" hidden>✨ Laat Claude de strip tekenen</button>
-        <button class="btn btn-secondary" id="st-btn-prompt">📋 Prompt kopiëren</button>
+        <button class="btn btn-primary" id="st-btn-prompt">📋 Prompt kopiëren</button>
       </div>
       <details class="meer-opties" id="st-plak-blok">
         <summary>Antwoord van de LLM plakken</summary>
@@ -2763,6 +2773,8 @@ if (redactieKnop && window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then((sample) => {
     if (!sample) return;
     redactieKnop.hidden = false;
+    /* Claude kan het hier zelf; dan is kopiëren de tweede keus. */
+    document.getElementById('r-btn-prompt').className = 'btn btn-secondary';
     redactieKnop.addEventListener('click', () => {
       const invoer = redactieInvoer();
       if (!invoer.waarover.trim()) { redactieMelding('Schrijf eerst kort waar het deze maand over gaat.', 'fout'); return; }
@@ -4298,6 +4310,7 @@ if (window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then((sample) => {
     if (!sample) return;
     claudeKnop.hidden = false;
+    document.getElementById('st-btn-prompt').className = 'btn btn-secondary';
     claudeKnop.addEventListener('click', () => {
       const verhaal = document.getElementById('st-verhaal').value;
       if (!verhaal.trim()) { melding('Schrijf eerst je verhaal hierboven.', 'fout'); return; }

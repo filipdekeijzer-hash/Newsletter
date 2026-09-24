@@ -666,6 +666,7 @@ if (window.claude && typeof window.claude.use === 'function') {
   window.claude.use('sample').then((sample) => {
     if (!sample) return;
     claudeKnop.hidden = false;
+    document.getElementById('st-btn-prompt').className = 'btn btn-secondary';
     claudeKnop.addEventListener('click', () => {
       const verhaal = document.getElementById('st-verhaal').value;
       if (!verhaal.trim()) { melding('Schrijf eerst je verhaal hierboven.', 'fout'); return; }

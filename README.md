@@ -9,27 +9,37 @@ geen installatie of build-stap nodig — gewoon openen in de browser.
 Open `index.html` in een browser (dubbelklikken volstaat), of host de map als
 statische site (GitHub Pages, Netlify, een interne webserver, etc.).
 
-## Delen met collega's
+## De website
 
-Er zijn drie manieren, van makkelijk naar netst:
+De site staat online via GitHub Pages en is voor iedereen te openen — geen
+account, geen inloggen:
+
+**https://filipdekeijzer-hash.github.io/Newsletter/**
+
+Staat die link nog niet aan, zet hem dan eenmalig aan in de repository:
+**Settings → Pages → Source: "Deploy from a branch" → Branch:
+`claude/cono-newsletter-template-pjh2ho` / `(root)` → Save.** Na een minuut of
+twee staat de site er. Vanaf dan werkt elke push de site automatisch bij.
+
+De map bevat `.nojekyll`, zodat GitHub de bestanden ongemoeid doorgeeft.
+
+### Twee andere manieren om te delen
 
 1. **Eén los bestand.** `dist/index.html` is de hele tool — nieuwsbrief én
-   strip, als twee tabbladen — in één bestand, zonder losse onderdelen. Je
-   kunt dat bestand mailen of op een gedeelde schijf zetten; dubbelklikken
-   is genoeg. Dit bestand wordt gegenereerd, dus pas het niet met de hand
-   aan; draai in plaats daarvan `node build-artifact.js` opnieuw nadat je
-   iets in de bronbestanden hebt veranderd.
-2. **Een online link.** Datzelfde bestand is gepubliceerd als deelbare
-   pagina, zodat collega's alleen een link nodig hebben.
-3. **GitHub Pages.** Zet in de repository-instellingen Pages aan op de
-   branch die je wilt tonen; de site staat dan op
-   `https://<gebruikersnaam>.github.io/Newsletter/` en werkt met de losse
-   pagina's uit deze map. Elke push werkt de site meteen bij.
+   strip, als twee tabbladen — in één bestand. Mailen of op een gedeelde
+   schijf zetten kan gewoon; dubbelklikken is genoeg. Het bestand wordt
+   gegenereerd, dus pas het niet met de hand aan: draai
+   `node build-artifact.js` opnieuw na een wijziging.
+2. **Een editie doorgeven.** "Exporteer JSON" geeft de huidige editie als
+   tekst; de ontvanger laadt die met "Importeer JSON" weer in.
 
-In een afgeschermde online omgeving mag een pagina zelf geen bestanden
-wegschrijven. Daarom biedt **Exporteer JSON** altijd óók "Kopieer naar
-klembord" aan: dat werkt overal, en de gekopieerde tekst kan de ontvanger
-via **Importeer JSON** weer inladen.
+### Let op bij een publieke webpagina
+
+De knop **"Schrijf de nieuwsbrief"**, die het in één klik doet, werkt alleen
+binnen claude.ai. Op de gewone website is de route: **Prompt kopiëren** →
+plakken in ChatGPT, Claude of Copilot → het antwoord terugplakken. Dat werkt
+met elke AI-assistent en zonder sleutels of accounts in de pagina. Om die
+reden staat "Prompt kopiëren" daar als hoofdknop.
 
 ## Onderdelen
 
